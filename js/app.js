@@ -11,7 +11,7 @@ function setMobileStep(step){
   const map={upload:0,crop:1,size:2};
   ["Upload","Crop","Size","Play"].forEach((x,i)=>$("step"+x).classList.toggle("active",i<=map[step]));
   if(window.matchMedia("(max-width:850px)").matches) window.scrollTo({top:0,behavior:"smooth"});
-}function fmt(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}function steps(n){["Upload","Crop","Size","Play"].forEach((x,i)=>$("step"+x).classList.toggle("active",i<=n))}function setSize(n){state.size=n;document.querySelectorAll(".sizeBtn").forEach(b=>b.classList.toggle("active",+b.dataset.size===n));el.size.textContent=n+"×"+n}document.querySelectorAll(".sizeBtn").forEach(b=>b.onclick=()=>setSize(+b.dataset.size));function load(src){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;im.src=src})}async function setImage(src){
+}function fmt(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}function steps(n){["Upload","Crop","Size","Play"].forEach((x,i)=>$("step"+x).classList.toggle("active",i<=n))}function setSize(n){state.size=n;document.querySelectorAll(".sizeBtn").forEach(b=>b.classList.toggle("active",+b.dataset.size===n));el.size.textContent=n+"×"+n}document.querySelectorAll(".sizeBtn").forEach(b=>b.onclick=()=>setSize(+b.dataset.size));function load(src){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;if(src.startsWith("data:")||src.startsWith("blob:")){im.src=src;return}fetch(src).then(r=>r.blob()).then(b=>{const fr=new FileReader();fr.onload=()=>{im.src=fr.result};fr.onerror=()=>{im.crossOrigin="anonymous";im.src=src};fr.readAsDataURL(b)}).catch(()=>{im.crossOrigin="anonymous";im.src=src})})}async function setImage(src){
   state.src=src;
   el.source.src=src;
   el.cropImg.src=src;
@@ -90,6 +90,25 @@ function setMobileStep(step){
   ctx.drawImage(img, dx, dy, drawW, drawH);
   return can.toDataURL("image/jpeg", .92);
 }function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function start(){if(!state.timer)state.timer=setInterval(()=>{state.time++;stats()},1000)}function stop(){clearInterval(state.timer);state.timer=null}function stats(){el.time.textContent=fmt(state.time);el.moves.textContent=state.moves;el.left.textContent=state.tray.length;el.size.textContent=state.size+"×"+state.size}
+function hasTraySelection(){
+  return state.selected && state.selected.from==="tray";
+}
+function goHome(){
+  el.modal.classList.remove("show");
+  el.app.classList.remove("playMode");
+  state.board=[];
+  state.tray=[];
+  state.pieces=[];
+  state.selected=null;
+  state.moves=0;
+  state.time=0;
+  state.solved=false;
+  state.hint=false;
+  stop();
+  draw();
+  setMobileStep("upload");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 function hideHintAfterMove(){
   if(!state.hint) return;
   state.hint=false;
@@ -98,7 +117,7 @@ function hideHintAfterMove(){
   if(el.board) el.board.classList.remove("hintOn");
 }
 async function create(){state.square=await cropSquare();const img=await load(state.square),n=state.size;state.pieces=[];for(let r=0;r<n;r++){for(let c=0;c<n;c++){const id=r*n+c,can=document.createElement("canvas");can.width=300;can.height=225;can.getContext("2d").drawImage(img,c*state.outW/n,r*state.outH/n,state.outW/n,state.outH/n,0,0,300,225);state.pieces.push({id,url:can.toDataURL("image/jpeg",.92)})}}state.board=Array(n*n).fill(null);state.tray=shuffle(state.pieces.map(p=>p.id));state.selected=null;state.moves=0;state.time=0;state.solved=false;state.hint=false;stop();draw();steps(3);el.app.classList.add("playMode");window.scrollTo({top:0,behavior:"smooth"});toast("Puzzle created")}function piece(id){return state.pieces.find(p=>p.id===id)}function select(from,index){if(state.drag&&state.drag.moved)return;if(state.selected&&state.selected.from===from&&state.selected.index===index)state.selected=null;else state.selected={from,index};draw()}function place(i){if(!state.selected||state.solved)return;start();if(state.selected.from==="tray"){const id=state.tray[state.selected.index];if(id==null)return;const old=state.board[i];state.tray.splice(state.selected.index,1);if(old!=null)state.tray.push(old);state.board[i]=id}else{const from=state.selected.index;if(from===i){state.selected=null;draw();return}const a=state.board[from],b=state.board[i];state.board[i]=a;state.board[from]=b}state.moves++;state.selected=null;hideHintAfterMove();draw();check()}function remove(){if(!state.selected||state.selected.from!=="board")return;start();const id=state.board[state.selected.index];state.board[state.selected.index]=null;state.tray.push(id);state.selected=null;state.moves++;hideHintAfterMove();draw()}function dropPayloadToSlot(payload,i){state.selected=payload;place(i)}function dropPayloadToTray(payload){if(payload.from!=="board")return;state.selected=payload;remove()}function make(id,from,index){const b=document.createElement("button");b.className=(from==="tray"?"trayPiece ":"")+"piece";b.dataset.from=from;b.dataset.index=index;if(state.selected&&state.selected.from===from&&state.selected.index===index)b.classList.add("selected");const im=document.createElement("img");im.src=piece(id).url;b.appendChild(im);b.onclick=e=>{e.stopPropagation();select(from,index)};b.addEventListener("pointerdown",e=>beginDrag(e,b,{from,index,id}));return b}function beginDrag(e,node,payload){if(e.button!==undefined&&e.button!==0)return;state.drag={payload,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,moved:false,ghost:null};try{node.setPointerCapture(e.pointerId)}catch(_){}node.addEventListener("pointermove",dragMove);node.addEventListener("pointerup",dragEnd,{once:true});node.addEventListener("pointercancel",dragEnd,{once:true});function dragMove(ev){const d=state.drag;if(!d)return;d.x=ev.clientX;d.y=ev.clientY;if(!d.moved&&Math.hypot(d.x-d.startX,d.y-d.startY)>8){d.moved=true;d.ghost=node.cloneNode(true);d.ghost.className="dragGhost";document.body.appendChild(d.ghost)}if(d.ghost){d.ghost.style.left=d.x+"px";d.ghost.style.top=d.y+"px";markDrop(d.x,d.y)}}function dragEnd(ev){node.removeEventListener("pointermove",dragMove);clearDropMarks();const d=state.drag;if(!d)return;if(d.ghost)d.ghost.remove();if(d.moved){const target=document.elementFromPoint(ev.clientX,ev.clientY);const slot=target&&target.closest?target.closest(".slot"):null;const tray=target&&target.closest?target.closest("#tray"):null;if(slot){dropPayloadToSlot(d.payload,+slot.dataset.i)}else if(tray){dropPayloadToTray(d.payload)}}setTimeout(()=>{state.drag=null},0)}}function markDrop(x,y){clearDropMarks();const target=document.elementFromPoint(x,y);const slot=target&&target.closest?target.closest(".slot"):null;const tray=target&&target.closest?target.closest("#tray"):null;if(slot)slot.classList.add("dropTarget");if(tray)tray.classList.add("dropTarget")}function clearDropMarks(){document.querySelectorAll(".dropTarget").forEach(x=>x.classList.remove("dropTarget"))}function draw(){const n=state.size;el.board.innerHTML="";el.board.classList.remove("grid4","grid6","grid8");el.board.classList.add("grid"+n);el.board.style.gridTemplateColumns=`repeat(${n},1fr)`;el.board.style.gridTemplateRows=`repeat(${n},1fr)`;const h=document.createElement("div");h.className="hint";h.style.backgroundImage=`url(${state.square})`;h.style.opacity=state.hint?".18":"0";el.board.classList.toggle("hintOn", state.hint);el.board.appendChild(h);state.board.forEach((id,i)=>{const s=document.createElement("div");
-s.className="slot";
+s.className=hasTraySelection()&&id==null?"slot placementTarget":"slot";
 s.dataset.i=i;
 s.style.setProperty("--hint-img", `url(${piece(i).url})`);
 if(state.selected&&state.selected.from==="board"&&state.selected.index===i)s.classList.add("target");
@@ -115,6 +134,8 @@ document.querySelectorAll(".demoCard").forEach(btn=>{
     if(src) setImage(src);
   });
 });el.file.onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>setImage(r.result);r.readAsDataURL(f)};$("againBtn").onclick=()=>{$("restartBtn").click();el.modal.classList.remove("show")};$("closeBtn").onclick=()=>el.modal.classList.remove("show");
+$("closeBtn").onclick=goHome;
+el.newBtn.onclick=goHome;
 /* Concept B.4: top stepper works on both mobile and desktop. */
 const topUpload = $("stepUpload");
 const topCrop = $("stepCrop");
