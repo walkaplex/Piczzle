@@ -1988,3 +1988,173 @@ h3 {
     opacity: .18 !important;
   }
 }
+
+
+/* Mobile comfort experiment:
+   Keep the same game, but make phone play easier to scan and tap. */
+@media (max-width: 850px) {
+  .app.playMode {
+    padding: max(6px, env(safe-area-inset-top)) 6px max(8px, env(safe-area-inset-bottom)) !important;
+  }
+
+  .app.playMode .game {
+    grid-template-rows: auto minmax(0, 1fr) minmax(172px, .58fr) auto !important;
+    gap: 7px !important;
+    padding: 7px !important;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.045)),
+      rgba(15,20,43,.92) !important;
+  }
+
+  .app.playMode .stats {
+    gap: 5px !important;
+  }
+
+  .app.playMode .stat {
+    min-height: 31px !important;
+    padding: 5px 3px !important;
+  }
+
+  .app.playMode .stat strong {
+    font-size: .76rem !important;
+  }
+
+  .app.playMode .stat span {
+    font-size: .48rem !important;
+  }
+
+  .app.playMode .boardWrap {
+    padding: 5px !important;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.045)) !important;
+  }
+
+  .app.playMode .board {
+    width: min(100%, 49svh) !important;
+    max-height: 100% !important;
+    gap: 2px !important;
+    background: rgba(255,255,255,.16) !important;
+  }
+
+  .app.playMode .slot {
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.075) !important;
+  }
+
+  .app.playMode .slot.target,
+  .app.playMode .slot.dropTarget {
+    outline: 3px solid rgba(255,216,95,.98) !important;
+    outline-offset: -3px !important;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.18),
+      0 0 0 3px rgba(255,216,95,.20) !important;
+  }
+
+  .app.playMode .piece.selected {
+    outline: 3px solid #ffd85f !important;
+    outline-offset: -3px !important;
+    box-shadow:
+      0 0 0 3px rgba(255,216,95,.22),
+      0 10px 22px rgba(0,0,0,.34) !important;
+  }
+
+  .app.playMode .trayCard {
+    min-height: 172px !important;
+    padding: 8px !important;
+    background: rgba(255,255,255,.07) !important;
+  }
+
+  .app.playMode .trayHead {
+    min-height: 30px !important;
+    align-items: center !important;
+  }
+
+  .app.playMode .trayHead p {
+    color: rgba(247,249,255,.74) !important;
+    font-weight: 800 !important;
+  }
+
+  .app.playMode .trayHead .tool {
+    min-height: 30px !important;
+    min-width: 58px !important;
+  }
+
+  .app.playMode .tray {
+    min-height: 126px !important;
+    gap: 8px !important;
+    padding: 8px !important;
+    background: rgba(0,0,0,.20) !important;
+    scroll-padding: 8px !important;
+  }
+
+  .app.playMode .tray.dropTarget {
+    outline: 3px dashed rgba(85,215,255,.95) !important;
+    outline-offset: -4px !important;
+    background: rgba(85,215,255,.10) !important;
+  }
+
+  .app.playMode .trayPiece {
+    width: 62px !important;
+    min-width: 62px !important;
+    border-radius: 12px !important;
+  }
+
+  .app.playMode .tools {
+    gap: 5px !important;
+    padding-bottom: 1px !important;
+  }
+
+  .app.playMode .tool {
+    min-height: 36px !important;
+    padding: 8px 2px !important;
+    font-size: .58rem !important;
+    border-radius: 12px !important;
+  }
+
+  .dragGhost {
+    width: 84px !important;
+    height: 63px !important;
+    border-radius: 13px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .app.playMode .game {
+    grid-template-rows: auto minmax(0, 1fr) minmax(184px, .66fr) auto !important;
+  }
+
+  .app.playMode .trayCard {
+    min-height: 184px !important;
+  }
+
+  .app.playMode .tray {
+    min-height: 136px !important;
+  }
+
+  .app.playMode .trayPiece {
+    width: 60px !important;
+    min-width: 60px !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .app.playMode .game {
+    grid-template-rows: auto minmax(0, 1fr) minmax(154px, .56fr) auto !important;
+  }
+
+  .app.playMode .trayCard {
+    min-height: 154px !important;
+  }
+
+  .app.playMode .tray {
+    min-height: 108px !important;
+  }
+
+  .app.playMode .trayPiece {
+    width: 52px !important;
+    min-width: 52px !important;
+  }
+
+  .app.playMode .tool {
+    font-size: .55rem !important;
+  }
+}
