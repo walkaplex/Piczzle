@@ -11,7 +11,7 @@ function setMobileStep(step){
   const map={upload:0,crop:1,size:2};
   ["Upload","Crop","Size","Play"].forEach((x,i)=>$("step"+x).classList.toggle("active",i<=map[step]));
   if(window.matchMedia("(max-width:850px)").matches) window.scrollTo({top:0,behavior:"smooth"});
-}function fmt(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}function steps(n){["Upload","Crop","Size","Play"].forEach((x,i)=>$("step"+x).classList.toggle("active",i<=n))}function setSize(n){state.size=n;document.querySelectorAll(".sizeBtn").forEach(b=>b.classList.toggle("active",+b.dataset.size===n));el.size.textContent=n+"×"+n}document.querySelectorAll(".sizeBtn").forEach(b=>b.onclick=()=>setSize(+b.dataset.size));function load(src){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;im.src=src})}async function setImage(src){
+}function fmt(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}function steps(n){["Upload","Crop","Size","Play"].forEach((x,i)=>$("step"+x).classList.toggle("active",i<=n))}function setSize(n){state.size=n;document.querySelectorAll(".sizeBtn").forEach(b=>b.classList.toggle("active",+b.dataset.size===n));el.size.textContent=n+"×"+n}document.querySelectorAll(".sizeBtn").forEach(b=>b.onclick=()=>setSize(+b.dataset.size));function load(src){return new Promise((res,rej)=>{const im=new Image();if(!src.startsWith("data:")&&!src.startsWith("blob:"))im.crossOrigin="anonymous";im.onload=()=>res(im);im.onerror=rej;im.src=src})}async function setImage(src){
   state.src=src;
   el.source.src=src;
   el.cropImg.src=src;
