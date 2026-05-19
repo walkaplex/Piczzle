@@ -1,0 +1,7 @@
+node_modules/
+www/
+.DS_Store
+
+# Native projects are generated locally when you run Capacitor.
+ios/
+android/
