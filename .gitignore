@@ -2,6 +2,4 @@ node_modules/
 www/
 .DS_Store
 
-# Native projects are generated locally when you run Capacitor.
-ios/
-android/
+# Capacitor native projects should be committed after they are generated.
