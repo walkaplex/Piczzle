@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<base href="/Piczzle/">
+<title>Piczzle Preview</title>
+<link rel="stylesheet" href="css/styles.css?v=20260516">
+</head>
+<body>
+<script>
+(async()=>{
+  const page=await fetch('index.html?v=preview-reset-cleanup').then(r=>r.text());
+  const doc=new DOMParser().parseFromString(page,'text/html');
+  document.body.innerHTML=doc.body.innerHTML;
+  document.querySelectorAll('script').forEach(s=>s.remove());
+  const app=document.createElement('script');
+  app.src='https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/reset-cleanup/js/app.js?v=reset-cleanup-preview';
+  document.body.appendChild(app);
+})();
+</script>
+</body>
+</html>
