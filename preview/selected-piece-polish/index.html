@@ -6,21 +6,21 @@
 <meta name="robots" content="noindex">
 <base href="/Piczzle/">
 <title>Piczzle Selection Polish Preview</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/selected-piece-polish/css/styles.css?v=selected-piece-polish-2">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/selected-piece-polish/css/selection-polish.css?v=selected-piece-polish-2">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/selected-piece-polish/css/styles.css?v=selected-piece-polish-3">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/selected-piece-polish/css/selection-polish.css?v=selected-piece-polish-3">
 </head>
 <body>
 <script>
 (async()=>{
-  const page=await fetch('index.html?v=selected-piece-polish-2').then(r=>r.text());
+  const page=await fetch('index.html?v=selected-piece-polish-3').then(r=>r.text());
   const doc=new DOMParser().parseFromString(page,'text/html');
   document.body.innerHTML=doc.body.innerHTML;
   document.querySelectorAll('script').forEach(s=>s.remove());
   const app=document.createElement('script');
-  app.src='https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/selected-piece-polish/js/app.js?v=selected-piece-polish-2';
+  app.src='https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/selected-piece-polish/js/app.js?v=selected-piece-polish-3';
   document.body.appendChild(app);
   const polish=document.createElement('script');
-  polish.src='https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/selected-piece-polish/js/selection-polish.js?v=selected-piece-polish-2';
+  polish.src='https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/selected-piece-polish/js/selection-polish.js?v=selected-piece-polish-3';
   document.body.appendChild(polish);
 })();
 </script>
