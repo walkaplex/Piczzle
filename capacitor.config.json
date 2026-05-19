@@ -1,0 +1,20 @@
+{
+  "appId": "com.walkaplex.piczzle",
+  "appName": "Piczzle",
+  "webDir": "www",
+  "backgroundColor": "#0b1020",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 900,
+      "launchAutoHide": true,
+      "launchFadeOutDuration": 180,
+      "backgroundColor": "#0b1020ff",
+      "androidScaleType": "CENTER_CROP",
+      "splashFullScreen": false,
+      "splashImmersive": false
+    }
+  }
+}
