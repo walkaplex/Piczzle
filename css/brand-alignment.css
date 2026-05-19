@@ -6,9 +6,9 @@
   border: 1px solid rgba(255, 255, 255, .13) !important;
   border-radius: 28px !important;
   background:
-    radial-gradient(circle at 14% 10%, rgba(222, 58, 255, .20), transparent 35%),
-    radial-gradient(circle at 74% 88%, rgba(32, 215, 255, .13), transparent 36%),
-    linear-gradient(135deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .035)) !important;
+    radial-gradient(circle at 14% 10%, rgba(222, 58, 255, .18), transparent 35%),
+    radial-gradient(circle at 74% 88%, rgba(32, 215, 255, .12), transparent 36%),
+    linear-gradient(135deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .032)) !important;
   box-shadow:
     0 18px 42px rgba(0, 0, 0, .24),
     inset 0 1px 0 rgba(255, 255, 255, .16) !important;
@@ -21,7 +21,7 @@
   width: 42% !important;
   height: 190% !important;
   border-radius: 999px !important;
-  background: linear-gradient(180deg, rgba(203, 60, 255, .22), rgba(32, 215, 255, .08)) !important;
+  background: linear-gradient(180deg, rgba(203, 60, 255, .18), rgba(32, 215, 255, .07)) !important;
   transform: rotate(28deg) !important;
   filter: blur(2px) !important;
   pointer-events: none !important;
@@ -55,21 +55,25 @@
 }
 
 .brand h1 {
-  font-size: 2.16rem !important;
+  font-size: 2.18rem !important;
   line-height: .9 !important;
-  letter-spacing: -.08em !important;
-  background: linear-gradient(100deg, #ff64f4 0%, #8a75ff 35%, #25d9ff 62%, #ffd85f 100%) !important;
+  letter-spacing: -.075em !important;
+  background: linear-gradient(100deg, #ffffff 0%, #f7d7ff 20%, #58ddff 58%, #ffe28a 100%) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   color: transparent !important;
-  text-shadow: none !important;
+  -webkit-text-stroke: .35px rgba(255, 255, 255, .28) !important;
+  filter:
+    drop-shadow(0 2px 0 rgba(28, 14, 82, .62))
+    drop-shadow(0 0 13px rgba(46, 218, 255, .28)) !important;
 }
 
 .brand p {
   margin-top: 7px !important;
-  color: rgba(247, 249, 255, .78) !important;
+  color: rgba(247, 249, 255, .86) !important;
   font-weight: 820 !important;
   letter-spacing: -.01em !important;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, .32) !important;
 }
 
 @media (max-width: 850px) {
@@ -90,7 +94,8 @@
   }
 
   .brand h1 {
-    font-size: 1.64rem !important;
+    font-size: 1.66rem !important;
+    letter-spacing: -.07em !important;
   }
 
   .brand p {
