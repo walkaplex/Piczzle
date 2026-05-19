@@ -38,6 +38,10 @@
   font-weight: 950 !important;
 }
 
+.dragGhost {
+  transform: translate(-50%, -50%) !important;
+}
+
 @media (max-width: 850px) {
   .app.playMode .piece.selected {
     outline-width: 3px !important;
@@ -49,5 +53,11 @@
   .app.playMode .slot.placementTarget::after {
     inset: 26% !important;
     opacity: .95 !important;
+  }
+
+  .dragGhost {
+    width: 62px !important;
+    height: 47px !important;
+    transform: translate(-50%, -50%) !important;
   }
 }
