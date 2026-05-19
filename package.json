@@ -1,0 +1,23 @@
+{
+  "name": "piczzle",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/prepare-capacitor.mjs",
+    "cap:sync": "npm run build && npx cap sync",
+    "cap:add:ios": "npm run build && npx cap add ios",
+    "cap:add:android": "npm run build && npx cap add android",
+    "cap:open:ios": "npm run build && npx cap open ios",
+    "cap:open:android": "npm run build && npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/ios": "^8.0.0",
+    "@capacitor/splash-screen": "^8.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.0.0"
+  }
+}
