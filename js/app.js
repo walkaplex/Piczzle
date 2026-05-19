@@ -93,18 +93,32 @@ function setMobileStep(step){
 function hasTraySelection(){
   return state.selected && state.selected.from==="tray";
 }
-function goHome(){
-  el.modal.classList.remove("show");
-  el.app.classList.remove("playMode");
+function resetPlayState(clearPieces){
   state.board=[];
   state.tray=[];
-  state.pieces=[];
+  if(clearPieces) state.pieces=[];
   state.selected=null;
   state.moves=0;
   state.time=0;
   state.solved=false;
   state.hint=false;
   stop();
+  const hintBtn=$("hintBtn");
+  if(hintBtn) hintBtn.textContent="Hint";
+  if(el.board) el.board.classList.remove("hintOn");
+}
+function restartPuzzle(){
+  if(!state.pieces.length) return;
+  resetPlayState(false);
+  state.board=Array(state.size*state.size).fill(null);
+  state.tray=shuffle(state.pieces.map(p=>p.id));
+  draw();
+  toast("Restarted");
+}
+function goHome(){
+  el.modal.classList.remove("show");
+  el.app.classList.remove("playMode");
+  resetPlayState(true);
   draw();
   setMobileStep("upload");
   window.scrollTo({top:0,behavior:"smooth"});
@@ -123,7 +137,7 @@ s.style.setProperty("--hint-img", `url(${piece(i).url})`);
 if(state.selected&&state.selected.from==="board"&&state.selected.index===i)s.classList.add("target");
 s.onclick=()=>place(i);
 if(id!=null)s.appendChild(make(id,"board",i));
-el.board.appendChild(s)});el.tray.innerHTML="";if(!state.tray.length){const p=document.createElement("p");p.className="muted";p.textContent="No loose pieces.";p.style.padding="8px";el.tray.appendChild(p)}else state.tray.forEach((id,i)=>el.tray.appendChild(make(id,"tray",i)));el.tray.onclick=e=>{if(e.target===el.tray)remove()};el.select.textContent=state.selected?(state.selected.from==="tray"?"Piece selected — tap a square":"Board piece selected — tap another square or Remove"):"No piece selected";stats()}function check(){if(state.board.length&&state.board.every((id,i)=>id===i)){state.solved=true;stop();$("modalTime").textContent=fmt(state.time);$("modalMoves").textContent=state.moves;$("modalSize").textContent=state.size+"×"+state.size;el.modal.classList.add("show")}}$("shuffleBtn").onclick=()=>{state.tray=shuffle(state.tray);draw();toast("Shuffled")};$("hintBtn").onclick=()=>{state.hint=!state.hint;$("hintBtn").textContent=state.hint?"Hide":"Hint";draw()};$("restartBtn").onclick=()=>{state.board=Array(state.size*state.size).fill(null);state.tray=shuffle(state.pieces.map(p=>p.id));state.selected=null;state.moves=0;state.time=0;state.solved=false;stop();draw();toast("Restarted")};$("solveBtn").onclick=()=>{state.board=state.pieces.map(p=>p.id);state.tray=[];state.solved=true;stop();draw();check()};$("removeBtn").onclick=remove;$("unselectBtn").onclick=()=>{state.selected=null;draw()};$("editBtn").onclick=()=>{el.app.classList.remove("playMode");steps(2);window.scrollTo({top:0,behavior:"smooth"})};el.create.onclick=create;el.newBtn.onclick=()=>{el.app.classList.remove("playMode");state.board=[];state.tray=[];state.pieces=[];state.moves=0;state.time=0;stop();draw();setMobileStep("upload")};const mbu=$("mobileBackUpload"), mts=$("mobileToSize"), mbc=$("mobileBackCrop");
+el.board.appendChild(s)});el.tray.innerHTML="";if(!state.tray.length){const p=document.createElement("p");p.className="muted";p.textContent="No loose pieces.";p.style.padding="8px";el.tray.appendChild(p)}else state.tray.forEach((id,i)=>el.tray.appendChild(make(id,"tray",i)));el.tray.onclick=e=>{if(e.target===el.tray)remove()};el.select.textContent=state.selected?(state.selected.from==="tray"?"Piece selected — tap a square":"Board piece selected — tap another square or Remove"):"No piece selected";stats()}function check(){if(state.board.length&&state.board.every((id,i)=>id===i)){state.solved=true;stop();$("modalTime").textContent=fmt(state.time);$("modalMoves").textContent=state.moves;$("modalSize").textContent=state.size+"×"+state.size;el.modal.classList.add("show")}}$("shuffleBtn").onclick=()=>{state.tray=shuffle(state.tray);draw();toast("Shuffled")};$("hintBtn").onclick=()=>{state.hint=!state.hint;$("hintBtn").textContent=state.hint?"Hide":"Hint";draw()};$("restartBtn").onclick=restartPuzzle;$("solveBtn").onclick=()=>{if(!state.pieces.length)return;state.board=state.pieces.map(p=>p.id);state.tray=[];state.solved=true;stop();draw();check()};$("removeBtn").onclick=remove;$("unselectBtn").onclick=()=>{state.selected=null;draw()};$("editBtn").onclick=()=>{el.app.classList.remove("playMode");steps(2);window.scrollTo({top:0,behavior:"smooth"})};el.create.onclick=create;el.newBtn.onclick=goHome;const mbu=$("mobileBackUpload"), mts=$("mobileToSize"), mbc=$("mobileBackCrop");
 if(mbu) mbu.onclick=()=>setMobileStep("upload");
 if(mts) mts.onclick=()=>setMobileStep("size");
 if(mbc) mbc.onclick=()=>setMobileStep("crop");
@@ -133,9 +147,7 @@ document.querySelectorAll(".demoCard").forEach(btn=>{
     const src = btn.getAttribute("data-demo");
     if(src) setImage(src);
   });
-});el.file.onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>setImage(r.result);r.readAsDataURL(f)};$("againBtn").onclick=()=>{$("restartBtn").click();el.modal.classList.remove("show")};$("closeBtn").onclick=()=>el.modal.classList.remove("show");
-$("closeBtn").onclick=goHome;
-el.newBtn.onclick=goHome;
+});el.file.onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>setImage(r.result);r.readAsDataURL(f)};$("againBtn").onclick=()=>{restartPuzzle();el.modal.classList.remove("show")};$("closeBtn").onclick=goHome;
 /* Concept B.4: top stepper works on both mobile and desktop. */
 const topUpload = $("stepUpload");
 const topCrop = $("stepCrop");
