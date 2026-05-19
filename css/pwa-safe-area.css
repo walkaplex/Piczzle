@@ -1,0 +1,37 @@
+/* Safe-area fixes for installed mobile apps. Keeps the existing design intact. */
+html,
+body {
+  min-height: 100%;
+  background-color: #0b1020;
+}
+
+@supports (padding: max(0px)) {
+  body {
+    background:
+      radial-gradient(circle at top left, rgba(116, 124, 255, 0.18), transparent 28%),
+      radial-gradient(circle at top right, rgba(85, 215, 255, 0.14), transparent 22%),
+      linear-gradient(180deg, #0b1020, #11182b 52%, #0b1020);
+    background-color: #0b1020;
+  }
+
+  @media (max-width: 850px) {
+    .app {
+      padding-top: max(10px, calc(env(safe-area-inset-top) + 10px)) !important;
+      padding-bottom: max(10px, calc(env(safe-area-inset-bottom) + 10px)) !important;
+    }
+
+    .app:not(.playMode) {
+      min-height: 100dvh !important;
+      height: 100dvh !important;
+    }
+
+    .app:not(.playMode) .shell {
+      min-height: 0 !important;
+    }
+
+    .app.playMode {
+      padding-top: max(6px, calc(env(safe-area-inset-top) + 6px)) !important;
+      padding-bottom: max(8px, calc(env(safe-area-inset-bottom) + 8px)) !important;
+    }
+  }
+}
