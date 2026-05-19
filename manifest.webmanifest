@@ -1,0 +1,21 @@
+{
+  "name": "Piczzle",
+  "short_name": "Piczzle",
+  "description": "Turn your photos into playable puzzles.",
+  "id": "/Piczzle/",
+  "start_url": "/Piczzle/?source=pwa",
+  "scope": "/Piczzle/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
+  "categories": ["games", "photo", "entertainment"],
+  "icons": [
+    {
+      "src": "/Piczzle/assets/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

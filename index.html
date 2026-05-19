@@ -4,6 +4,11 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="description" content="Turn your photos into playable puzzles. Upload a photo, frame it, choose a difficulty, and start solving.">
+<meta name="theme-color" content="#0b1020">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Piczzle">
+<meta name="mobile-web-app-capable" content="yes">
 
 <meta property="og:title" content="Piczzle">
 <meta property="og:description" content="Turn your photos into playable puzzles.">
@@ -18,6 +23,9 @@
 <meta name="twitter:description" content="Turn your photos into playable puzzles.">
 <meta name="twitter:image" content="https://walkaplex.github.io/Piczzle/piczzle-preview.png">
 <title>Piczzle</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/app-icon.svg">
 <link rel="stylesheet" href="css/styles.css?v=20260516">
 </head>
 <body>
@@ -61,4 +69,4 @@
 </div><button class="btn" id="createBtn" type="button">Create Puzzle</button><button class="btn secondary" id="newBtn" type="button">Start Over</button></div><div class="mobileStepActions sizeOnlyActions"><button class="btn secondary" id="mobileBackCrop" type="button">Back</button></div></div></aside>
 <main class="card game"><div class="gameTop"><div><h2>Your puzzle</h2><p class="muted">Drag pieces into place, or tap a loose piece and then tap a board square.</p></div></div><div class="stats"><div class="stat"><strong id="timeStat">00:00</strong><span>Time</span></div><div class="stat"><strong id="movesStat">0</strong><span>Moves</span></div><div class="stat"><strong id="leftStat">0</strong><span>Left</span></div><div class="stat"><strong id="sizeStat">4×4</strong><span>Size</span></div></div><div class="boardWrap"><div class="board" id="board"></div></div><div class="trayCard"><div class="trayHead"><div><h3 style="margin:0">Pieces</h3><p id="selectText">No piece selected</p></div><button class="tool" id="unselectBtn" type="button">Clear</button></div><div class="tray" id="tray"></div></div><div class="tools"><button class="tool" id="shuffleBtn">Shuffle</button><button class="tool" id="hintBtn">Hint</button><button class="tool" id="restartBtn">Restart</button><button class="tool" id="solveBtn">Solve</button><button class="tool" id="removeBtn">Remove</button><button class="tool" id="editBtn">Edit</button></div></main></div></div>
 <div class="toast" id="toast"></div><div class="modalBg" id="modal"><div class="modal"><h2>Puzzle complete</h2><p class="muted">Nice work. Your puzzle is finished.</p><div class="modalStats"><div class="stat"><strong id="modalTime">00:00</strong><span>Time</span></div><div class="stat"><strong id="modalMoves">0</strong><span>Moves</span></div><div class="stat"><strong id="modalSize">4×4</strong><span>Size</span></div></div><button class="btn" id="againBtn">Play Again</button><button class="btn secondary" id="closeBtn">Back to Start</button></div></div>
-<script src="js/app.js?v=20260516-backstart"></script></body></html>
+<script src="js/app.js?v=20260516-backstart"></script><script src="js/pwa.js?v=20260519"></script></body></html>
