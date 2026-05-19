@@ -1,8 +1,9 @@
-const CACHE_NAME = "piczzle-app-v1";
+const CACHE_NAME = "piczzle-app-v2";
 const APP_SHELL = [
   "/Piczzle/",
   "/Piczzle/index.html",
   "/Piczzle/css/styles.css?v=20260516",
+  "/Piczzle/css/pwa-safe-area.css?v=20260519",
   "/Piczzle/js/app.js?v=20260516-backstart",
   "/Piczzle/assets/app-icon.svg",
   "/Piczzle/assets/demo-pet.png",
