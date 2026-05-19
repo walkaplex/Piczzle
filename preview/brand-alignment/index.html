@@ -6,18 +6,18 @@
 <meta name="robots" content="noindex">
 <base href="/Piczzle/">
 <title>Piczzle Brand Preview</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/brand-alignment/css/styles.css?v=brand-alignment-1">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/brand-alignment/css/brand-alignment.css?v=brand-alignment-1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/brand-alignment/css/styles.css?v=brand-alignment-2">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/brand-alignment/css/brand-alignment.css?v=brand-alignment-2">
 </head>
 <body>
 <script>
 (async()=>{
-  const page=await fetch('index.html?v=brand-alignment-1').then(r=>r.text());
+  const page=await fetch('index.html?v=brand-alignment-2').then(r=>r.text());
   const doc=new DOMParser().parseFromString(page,'text/html');
   document.body.innerHTML=doc.body.innerHTML;
   document.querySelectorAll('script').forEach(s=>s.remove());
   const app=document.createElement('script');
-  app.src='https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/brand-alignment/js/app.js?v=brand-alignment-1';
+  app.src='https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/brand-alignment/js/app.js?v=brand-alignment-2';
   document.body.appendChild(app);
 })();
 </script>
