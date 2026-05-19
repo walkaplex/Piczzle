@@ -7,12 +7,12 @@
 <base href="/Piczzle/">
 <title>Piczzle Brand Preview</title>
 <link rel="stylesheet" href="css/styles.css?v=20260516">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/brand-alignment/css/brand-alignment.css?v=brand-icon-2">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/walkaplex/Piczzle@codex/brand-alignment/css/brand-alignment.css?v=brand-icon-3">
 </head>
 <body>
 <script>
 (async()=>{
-  const page=await fetch('index.html?v=brand-icon-2').then(r=>r.text());
+  const page=await fetch('index.html?v=brand-icon-3').then(r=>r.text());
   const doc=new DOMParser().parseFromString(page,'text/html');
   document.body.innerHTML=doc.body.innerHTML;
   document.querySelectorAll('script').forEach(s=>s.remove());
