@@ -1,4 +1,17 @@
-/* Icon-only brand polish. No puzzle or gameplay styles. */
+/* Icon-focused brand polish. No puzzle or gameplay styles. */
+.top {
+  position: static !important;
+  overflow: visible !important;
+}
+
+.top::after {
+  content: none !important;
+}
+
+.brand {
+  gap: 12px !important;
+}
+
 .logo {
   width: 66px !important;
   height: 66px !important;
@@ -20,11 +33,49 @@
   filter: drop-shadow(0 9px 16px rgba(0, 0, 0, .30)) !important;
 }
 
+.brand h1 {
+  font-size: 1.55rem !important;
+  line-height: 1 !important;
+  letter-spacing: -.05em !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: var(--text) !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+.brand p {
+  margin: 3px 0 0 !important;
+  color: var(--muted) !important;
+  font-size: .84rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-shadow: none !important;
+}
+
 @media (max-width: 850px) {
+  .brand {
+    gap: 10px !important;
+  }
+
   .logo {
     width: 56px !important;
     height: 56px !important;
     border-radius: 19px !important;
     padding: 4px !important;
+  }
+
+  .brand h1 {
+    font-size: 1.36rem !important;
+  }
+
+  .brand p {
+    max-width: none !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    font-size: .76rem !important;
   }
 }
