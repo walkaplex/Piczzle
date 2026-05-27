@@ -13,6 +13,14 @@ https://walkaplex.github.io/Piczzle/index.html?puzzle=abc123
 
 Opening that link fetches the puzzle package and starts the normal puzzle engine.
 
+The share modal has three actions:
+
+- `Share Link` opens the platform share sheet when the browser or Android WebView supports it.
+- `Copy Link` copies the public GitHub Pages puzzle URL.
+- `Open Puzzle` opens the received-puzzle flow for quick local testing. In the Android app, this stays inside Piczzle instead of launching Chrome.
+
+If cloud sharing is unavailable, Piczzle creates a same-device test link and disables `Share Link` so testers do not accidentally send a URL that only works in their current browser.
+
 ## Supabase setup
 
 1. Create a Supabase project.
@@ -35,6 +43,16 @@ window.PiczzleShareConfig = {
 The anon key is designed to be used in browser/mobile apps. Row-level security is what limits what it can do.
 
 Use the project URL, such as `https://YOUR-PROJECT.supabase.co`. If Supabase shows a REST URL ending in `/rest/v1`, Piczzle will normalize it, but the shorter project URL is cleaner.
+
+## Local verification
+
+Run this before pushing sharing changes:
+
+```sh
+npm run verify:sharing
+```
+
+The check confirms that the versioned sharing scripts match the service worker cache entries, the Supabase config is not using placeholders, the public share URL points at `index.html`, and REST-style Supabase URLs are still normalized.
 
 ## MVP safety limits
 
