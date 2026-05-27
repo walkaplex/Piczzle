@@ -22,11 +22,12 @@ function assert(condition, message) {
   }
 }
 
-const [indexHtml, swJs, shareConfig, shareCloud] = await Promise.all([
+const [indexHtml, swJs, shareConfig, shareCloud, privateSharingDoc] = await Promise.all([
   read("index.html"),
   read("sw.js"),
   read("js/share-config.js"),
-  read("js/share-cloud.js")
+  read("js/share-cloud.js"),
+  read("docs/private-sharing.md")
 ]);
 
 const cachedAssets = [
@@ -64,6 +65,10 @@ assert(publicBaseUrl.endsWith("/index.html"), "Public share URL should point to 
 assert(
   shareCloud.includes(".replace(/\\/rest\\/v1$/, \"\")"),
   "share-cloud.js should normalize Supabase REST URLs"
+);
+assert(
+  privateSharingDoc.includes("npm run verify:sharing"),
+  "Private sharing docs should mention npm run verify:sharing"
 );
 
 console.log("Sharing configuration verified.");
