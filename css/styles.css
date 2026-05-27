@@ -2352,6 +2352,14 @@ h3 {
   text-decoration: none;
 }
 
+.shareFinePrint {
+  margin: 10px 0 0;
+  color: rgba(247,249,255,.58);
+  font-size: .78rem;
+  font-weight: 800;
+  text-align: center;
+}
+
 /* Play-space rebalance after adding Share Puzzle.
    Keep controls visible, but give the loose pieces room to breathe again. */
 @media (max-width: 850px) {
