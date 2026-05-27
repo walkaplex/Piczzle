@@ -2197,6 +2197,9 @@ h3 {
   .app.playMode .trayPiece {
     width: 60px !important;
     min-width: 60px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 4 / 3 !important;
   }
 }
 
@@ -2347,4 +2350,67 @@ h3 {
   display: block;
   text-align: center;
   text-decoration: none;
+}
+
+/* Play-space rebalance after adding Share Puzzle.
+   Keep controls visible, but give the loose pieces room to breathe again. */
+@media (max-width: 850px) {
+  .app.playMode .game {
+    grid-template-rows: auto minmax(0, 1.08fr) minmax(154px, .54fr) auto !important;
+    gap: 6px !important;
+  }
+
+  .app.playMode .board {
+    width: min(100%, 54svh) !important;
+  }
+
+  .app.playMode .trayCard {
+    min-height: 154px !important;
+    padding: 7px !important;
+  }
+
+  .app.playMode .tray {
+    min-height: 106px !important;
+    gap: 8px !important;
+    padding: 8px !important;
+  }
+
+  .app.playMode .trayPiece {
+    width: 60px !important;
+    min-width: 60px !important;
+  }
+
+  .app.playMode .tools,
+  .app.playMode .tools.mobileTools {
+    gap: 6px !important;
+    padding-bottom: calc(6px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .app.playMode .tool {
+    min-height: 40px !important;
+    padding: 8px 4px !important;
+    font-size: .68rem !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .app.playMode .game {
+    grid-template-rows: auto minmax(0, 1fr) minmax(136px, .5fr) auto !important;
+  }
+
+  .app.playMode .trayCard {
+    min-height: 136px !important;
+  }
+
+  .app.playMode .tray {
+    min-height: 88px !important;
+  }
+
+  .app.playMode .trayPiece {
+    width: 52px !important;
+    min-width: 52px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 4 / 3 !important;
+  }
 }

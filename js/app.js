@@ -165,6 +165,13 @@ function publicShareBase(){
   return url.toString();
 }
 function shareUrl(id){return `${publicShareBase()}?puzzle=${encodeURIComponent(id)}`}
+function appShareUrl(id){
+  const url=new URL(window.location.href);
+  url.hash="";
+  url.search="";
+  url.searchParams.set("puzzle",id);
+  return url.toString();
+}
 async function sharePuzzle(){
   impact();
   toast("Creating share link...");
@@ -187,7 +194,11 @@ async function sharePuzzle(){
     message="Cloud unavailable - saved test link";
   }
   if(el.shareLink)el.shareLink.value=link;
-  if(el.openShare)el.openShare.href=link;
+  if(el.openShare){
+    const inAppLink=native.isNative?appShareUrl(id):link;
+    el.openShare.href=inAppLink;
+    el.openShare.dataset.appHref=inAppLink;
+  }
   if(el.shareModal)el.shareModal.classList.add("show");
   toast(message);
 }
@@ -206,7 +217,7 @@ s.style.setProperty("--hint-img", `url(${piece(i).url})`);
 if(state.selected&&state.selected.from==="board"&&state.selected.index===i)s.classList.add("target");
 s.onclick=()=>place(i);
 if(id!=null)s.appendChild(make(id,"board",i));
-el.board.appendChild(s)});el.tray.innerHTML="";if(!state.tray.length){const p=document.createElement("p");p.className="muted";p.textContent="No loose pieces.";p.style.padding="8px";el.tray.appendChild(p)}else state.tray.forEach((id,i)=>el.tray.appendChild(make(id,"tray",i)));el.tray.onclick=e=>{if(e.target===el.tray)remove()};el.select.textContent=state.selected?(state.selected.from==="tray"?"Piece selected - tap a square":"Board piece selected - tap another square or Remove"):"No piece selected";stats()}function check(){if(state.board.length&&state.board.every((id,i)=>id===i)){state.solved=true;success();stop();$("modalTime").textContent=fmt(state.time);$("modalMoves").textContent=state.moves;$("modalSize").textContent=state.size+"x"+state.size;el.modal.classList.add("show")}}$("shuffleBtn").onclick=()=>{tap();state.tray=shuffle(state.tray);draw();toast("Shuffled")};$("hintBtn").onclick=()=>{tap();state.hint=!state.hint;$("hintBtn").textContent=state.hint?"Hide":"Hint";draw()};$("restartBtn").onclick=()=>{impact();state.board=Array(state.size*state.size).fill(null);state.tray=shuffle(state.pieces.map(p=>p.id));state.selected=null;state.moves=0;state.time=0;state.solved=false;stop();draw();toast("Restarted")};$("solveBtn").onclick=()=>{impact();state.board=state.pieces.map(p=>p.id);state.tray=[];state.solved=true;stop();draw();check()};$("removeBtn").onclick=remove;$("unselectBtn").onclick=()=>{tap();state.selected=null;draw()};$("editBtn").onclick=()=>{tap();el.app.classList.remove("playMode");steps(2);window.scrollTo({top:0,behavior:"smooth"})};el.create.onclick=create;if(el.shareBtn)el.shareBtn.onclick=sharePuzzle;if(el.copyShare)el.copyShare.onclick=async()=>{if(!el.shareLink)return;el.shareLink.select();try{await navigator.clipboard.writeText(el.shareLink.value);toast("Link copied")}catch(_){document.execCommand("copy");toast("Link copied")}};if(el.closeShare)el.closeShare.onclick=()=>el.shareModal.classList.remove("show");if(el.missingShareClose)el.missingShareClose.onclick=goHome;el.newBtn.onclick=()=>{el.app.classList.remove("playMode");state.board=[];state.tray=[];state.pieces=[];state.moves=0;state.time=0;stop();draw();setMobileStep("upload")};const mbu=$("mobileBackUpload"), mts=$("mobileToSize"), mbc=$("mobileBackCrop");
+el.board.appendChild(s)});el.tray.innerHTML="";if(!state.tray.length){const p=document.createElement("p");p.className="muted";p.textContent="No loose pieces.";p.style.padding="8px";el.tray.appendChild(p)}else state.tray.forEach((id,i)=>el.tray.appendChild(make(id,"tray",i)));el.tray.onclick=e=>{if(e.target===el.tray)remove()};el.select.textContent=state.selected?(state.selected.from==="tray"?"Piece selected - tap a square":"Board piece selected - tap another square or Remove"):"No piece selected";stats()}function check(){if(state.board.length&&state.board.every((id,i)=>id===i)){state.solved=true;success();stop();$("modalTime").textContent=fmt(state.time);$("modalMoves").textContent=state.moves;$("modalSize").textContent=state.size+"x"+state.size;el.modal.classList.add("show")}}$("shuffleBtn").onclick=()=>{tap();state.tray=shuffle(state.tray);draw();toast("Shuffled")};$("hintBtn").onclick=()=>{tap();state.hint=!state.hint;$("hintBtn").textContent=state.hint?"Hide":"Hint";draw()};$("restartBtn").onclick=()=>{impact();state.board=Array(state.size*state.size).fill(null);state.tray=shuffle(state.pieces.map(p=>p.id));state.selected=null;state.moves=0;state.time=0;state.solved=false;stop();draw();toast("Restarted")};$("solveBtn").onclick=()=>{impact();state.board=state.pieces.map(p=>p.id);state.tray=[];state.solved=true;stop();draw();check()};$("removeBtn").onclick=remove;$("unselectBtn").onclick=()=>{tap();state.selected=null;draw()};$("editBtn").onclick=()=>{tap();el.app.classList.remove("playMode");steps(2);window.scrollTo({top:0,behavior:"smooth"})};el.create.onclick=create;if(el.shareBtn)el.shareBtn.onclick=sharePuzzle;if(el.copyShare)el.copyShare.onclick=async()=>{if(!el.shareLink)return;el.shareLink.select();try{await navigator.clipboard.writeText(el.shareLink.value);toast("Link copied")}catch(_){document.execCommand("copy");toast("Link copied")}};if(el.openShare)el.openShare.onclick=e=>{if(!native.isNative)return;e.preventDefault();window.location.href=el.openShare.dataset.appHref||el.openShare.href};if(el.closeShare)el.closeShare.onclick=()=>el.shareModal.classList.remove("show");if(el.missingShareClose)el.missingShareClose.onclick=goHome;el.newBtn.onclick=()=>{el.app.classList.remove("playMode");state.board=[];state.tray=[];state.pieces=[];state.moves=0;state.time=0;stop();draw();setMobileStep("upload")};const mbu=$("mobileBackUpload"), mts=$("mobileToSize"), mbc=$("mobileBackCrop");
 if(mbu) mbu.onclick=()=>{tap();setMobileStep("upload")};
 if(mts) mts.onclick=()=>{tap();setMobileStep("size")};
 if(mbc) mbc.onclick=()=>{tap();setMobileStep("crop")};
