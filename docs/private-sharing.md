@@ -34,6 +34,8 @@ window.PiczzleShareConfig = {
 
 The anon key is designed to be used in browser/mobile apps. Row-level security is what limits what it can do.
 
+Use the project URL, such as `https://YOUR-PROJECT.supabase.co`. If Supabase shows a REST URL ending in `/rest/v1`, Piczzle will normalize it, but the shorter project URL is cleaner.
+
 ## MVP safety limits
 
 - Shared puzzles expire after 30 days.

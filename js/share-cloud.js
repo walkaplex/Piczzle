@@ -11,8 +11,14 @@
     );
   }
 
+  function baseUrl() {
+    return config.supabaseUrl
+      .replace(/\/$/, "")
+      .replace(/\/rest\/v1$/, "");
+  }
+
   function apiUrl(path) {
-    return `${config.supabaseUrl.replace(/\/$/, "")}${path}`;
+    return `${baseUrl()}${path}`;
   }
 
   function headers(extra) {
