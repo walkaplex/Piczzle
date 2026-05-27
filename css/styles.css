@@ -1042,6 +1042,31 @@ body {
   font-size: .76rem !important;
 }
 
+.sizeStepBody {
+  margin-top: 12px;
+}
+
+.sizeActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.sizeActions #createBtn {
+  grid-column: 1 / -1;
+}
+
+.sizeActions .btn,
+.sizeActions .btn.secondary {
+  margin-top: 0;
+}
+
+.sizeActions .btn {
+  min-height: 44px;
+  padding: 12px 12px;
+}
+
 /* Keep the board full-size and naturally responsive. */
 .board {
   width: 100% !important;
@@ -1100,6 +1125,37 @@ body {
 
   .smartSizes {
     grid-template-columns: 1fr !important;
+  }
+
+  .panel.mobile-size .sizeStepBody {
+    margin-top: 8px;
+  }
+
+  .panel.mobile-size .smartSizes {
+    gap: 7px !important;
+    margin-top: 8px !important;
+  }
+
+  .panel.mobile-size .smartSizes .sizeBtn {
+    padding: 10px 12px !important;
+  }
+
+  .panel.mobile-size .smartSizes .sizeBtn strong {
+    font-size: .96rem !important;
+  }
+
+  .panel.mobile-size .smartSizes .sizeBtn span {
+    font-size: .72rem !important;
+  }
+
+  .panel.mobile-size .sizeActions {
+    gap: 7px;
+    margin-top: 8px;
+  }
+
+  .panel.mobile-size .sizeActions .btn {
+    min-height: 42px !important;
+    padding: 10px 9px !important;
   }
 }
 
