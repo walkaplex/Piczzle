@@ -26,31 +26,15 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/app-icon.svg">
-<link rel="stylesheet" href="css/styles.css?v=20260516">
-<link rel="stylesheet" href="css/pwa-safe-area.css?v=20260519">
+<link rel="stylesheet" href="css/styles.css?v=20260520">
+<link rel="stylesheet" href="css/pwa-safe-area.css?v=20260520">
 </head>
 <body>
 <div class="app" id="app"><div class="top"><div class="brand"><div class="logo" aria-hidden="true">
-  <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="pzIcon" x1="12" y1="10" x2="84" y2="86" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stop-color="#FFD75E"/>
-        <stop offset="0.42" stop-color="#75F0A6"/>
-        <stop offset="0.72" stop-color="#31DCFF"/>
-        <stop offset="1" stop-color="#8B5CFF"/>
-      </linearGradient>
-      <filter id="pzShadow" x="-20%" y="-20%" width="140%" height="140%">
-        <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="rgba(20, 25, 55, .35)"/>
-      </filter>
-    </defs>
-    <rect x="13" y="13" width="70" height="70" rx="22" fill="url(#pzIcon)" filter="url(#pzShadow)"/>
-    <path d="M31 27h16c0 5.8 3.7 9.4 8.5 9.4S64 32.8 64 27h7c3.3 0 6 2.7 6 6v13c5.8 0 9.4 3.7 9.4 8.5S82.8 63 77 63v8c0 3.3-2.7 6-6 6H55c0-5.8-3.7-9.4-8.5-9.4S38 71.2 38 77h-7c-3.3 0-6-2.7-6-6V55c-5.8 0-9.4-3.7-9.4-8.5S19.2 38 25 38v-5c0-3.3 2.7-6 6-6Z" fill="rgba(255,255,255,.28)" stroke="rgba(255,255,255,.82)" stroke-width="3.2" stroke-linejoin="round"/>
-    <path d="M33 55c6.5-8 16.4-8.9 24.8-2.7 4.5 3.3 9.3 4 14.2.8" fill="none" stroke="rgba(10,16,38,.42)" stroke-width="5.5" stroke-linecap="round"/>
-    <circle cx="35" cy="38" r="4.4" fill="rgba(255,255,255,.88)"/>
-  </svg>
+  <img src="assets/app-icon.svg" alt="">
 </div><div><h1>Piczzle</h1><p>Turn your photos into playable puzzles</p></div></div></div>
 <div class="stepper"><div class="step active" id="stepUpload">Upload</div><div class="step" id="stepCrop">Frame</div><div class="step" id="stepSize">Size</div><div class="step" id="stepPlay">Play</div></div>
-<div class="shell"><aside class="card panel"><h2>Make your puzzle</h2><p class="muted">Upload a photo, frame it inside the puzzle area, choose a puzzle size, then start solving.</p><div class="mobileStepLabel" id="mobileStepLabel">Choose photo</div><div class="setupChunk uploadChunk"><div class="uploadBox"><div class="preview"><img id="sourcePreview"></div><label class="btn" for="fileInput" style="display:block;text-align:center">Choose a Photo</label><input class="file" id="fileInput" type="file" accept="image/*"><div class="demoPicker" aria-label="Try a demo puzzle">
+<div class="shell"><aside class="card panel"><h2>Make your puzzle</h2><p class="muted">Upload a photo, frame it inside the puzzle area, choose a puzzle size, then start solving.</p><div class="mobileStepLabel" id="mobileStepLabel">Choose photo</div><div class="setupChunk uploadChunk"><div class="uploadBox"><div class="preview"><img id="sourcePreview"></div><label class="btn" for="fileInput" style="display:block;text-align:center">Choose a Photo</label><button class="btn secondary nativeCameraBtn" id="cameraBtn" type="button">Take Photo</button><input class="file" id="fileInput" type="file" accept="image/*"><div class="demoPicker" aria-label="Try a demo puzzle">
       <button class="demoCard" type="button" data-demo="assets/demo-pet.png">
         <img src="assets/demo-pet.png" alt="">
         <span>Pet</span>
@@ -64,10 +48,12 @@
         <span>Challenge</span>
       </button>
     </div></div></div><div class="setupChunk cropChunk"><div class="cropBox"><h3>Frame your puzzle</h3><p class="muted">Drag the image to reposition it. Use the zoom slider to zoom in, or zoom out when you want a little more room around the image.</p><div class="cropStage" id="cropStage"><img id="cropImg" class="cropImg"><div class="cropGrid"></div></div><div class="rangeRow"><span>Zoom</span><input id="zoomRange" type="range" min="1" max="3" step="0.01" value="1"></div></div><div class="mobileStepActions cropOnlyActions"><button class="btn secondary" id="mobileBackUpload" type="button">Back</button><button class="btn" id="mobileToSize" type="button">Continue</button></div></div><div class="setupChunk sizeChunk"><div style="margin-top:16px"><h3>Puzzle size</h3><div class="sizeGrid smartSizes">
-  <button class="sizeBtn active" data-size="4"><strong>Beginner</strong><span>4 × 4 • 16 pieces</span></button>
-  <button class="sizeBtn" data-size="6"><strong>Classic</strong><span>6 × 6 • 36 pieces</span></button>
-  <button class="sizeBtn" data-size="8"><strong>Challenge</strong><span>8 × 8 • 64 pieces</span></button>
-</div><button class="btn" id="createBtn" type="button">Create Puzzle</button><button class="btn secondary" id="newBtn" type="button">Start Over</button></div><div class="mobileStepActions sizeOnlyActions"><button class="btn secondary" id="mobileBackCrop" type="button">Back</button></div></div></aside>
-<main class="card game"><div class="gameTop"><div><h2>Your puzzle</h2><p class="muted">Drag pieces into place, or tap a loose piece and then tap a board square.</p></div></div><div class="stats"><div class="stat"><strong id="timeStat">00:00</strong><span>Time</span></div><div class="stat"><strong id="movesStat">0</strong><span>Moves</span></div><div class="stat"><strong id="leftStat">0</strong><span>Left</span></div><div class="stat"><strong id="sizeStat">4×4</strong><span>Size</span></div></div><div class="boardWrap"><div class="board" id="board"></div></div><div class="trayCard"><div class="trayHead"><div><h3 style="margin:0">Pieces</h3><p id="selectText">No piece selected</p></div><button class="tool" id="unselectBtn" type="button">Clear</button></div><div class="tray" id="tray"></div></div><div class="tools"><button class="tool" id="shuffleBtn">Shuffle</button><button class="tool" id="hintBtn">Hint</button><button class="tool" id="restartBtn">Restart</button><button class="tool" id="solveBtn">Solve</button><button class="tool" id="removeBtn">Remove</button><button class="tool" id="editBtn">Edit</button></div></main></div></div>
-<div class="toast" id="toast"></div><div class="modalBg" id="modal"><div class="modal"><h2>Puzzle complete</h2><p class="muted">Nice work. Your puzzle is finished.</p><div class="modalStats"><div class="stat"><strong id="modalTime">00:00</strong><span>Time</span></div><div class="stat"><strong id="modalMoves">0</strong><span>Moves</span></div><div class="stat"><strong id="modalSize">4×4</strong><span>Size</span></div></div><button class="btn" id="againBtn">Play Again</button><button class="btn secondary" id="closeBtn">Back to Start</button></div></div>
-<script src="js/app.js?v=20260516-backstart"></script><script src="js/pwa.js?v=20260519"></script></body></html>
+  <button class="sizeBtn active" data-size="4"><strong>Beginner</strong><span>4 &times; 4 &bull; 16 pieces</span></button>
+  <button class="sizeBtn" data-size="6"><strong>Classic</strong><span>6 &times; 6 &bull; 36 pieces</span></button>
+  <button class="sizeBtn" data-size="8"><strong>Challenge</strong><span>8 &times; 8 &bull; 64 pieces</span></button>
+</div><button class="btn" id="createBtn" type="button">Create Puzzle</button><button class="btn secondary shareAction" id="shareBtn" type="button">Share Puzzle</button><button class="btn secondary" id="newBtn" type="button">Start Over</button></div><div class="mobileStepActions sizeOnlyActions"><button class="btn secondary" id="mobileBackCrop" type="button">Back</button></div></div></aside>
+<main class="card game"><div class="gameTop"><div><h2>Your puzzle</h2><p class="muted">Drag pieces into place, or tap a loose piece and then tap a board square.</p></div></div><div class="stats"><div class="stat"><strong id="timeStat">00:00</strong><span>Time</span></div><div class="stat"><strong id="movesStat">0</strong><span>Moves</span></div><div class="stat"><strong id="leftStat">0</strong><span>Left</span></div><div class="stat"><strong id="sizeStat">4x4</strong><span>Size</span></div></div><div class="boardWrap"><div class="board" id="board"></div></div><div class="trayCard"><div class="trayHead"><div><h3 style="margin:0">Pieces</h3><p id="selectText">No piece selected</p></div><button class="tool" id="unselectBtn" type="button">Clear</button></div><div class="tray" id="tray"></div></div><div class="tools mobileTools"><button class="tool" id="shuffleBtn">Shuffle</button><button class="tool" id="hintBtn">Hint</button><button class="tool" id="restartBtn">Restart</button><button class="tool" id="solveBtn">Solve</button><button class="tool" id="removeBtn">Remove</button><button class="tool" id="editBtn">Edit</button></div></main></div></div>
+<div class="toast" id="toast"></div><div class="modalBg" id="modal"><div class="modal"><h2>Puzzle complete</h2><p class="muted">Nice work. Your puzzle is finished.</p><div class="modalStats"><div class="stat"><strong id="modalTime">00:00</strong><span>Time</span></div><div class="stat"><strong id="modalMoves">0</strong><span>Moves</span></div><div class="stat"><strong id="modalSize">4x4</strong><span>Size</span></div></div><button class="btn" id="againBtn">Play Again</button><button class="btn secondary" id="closeBtn">Back to Start</button></div></div>
+<div class="modalBg" id="shareModal"><div class="modal"><h2>Puzzle link created</h2><p class="muted">When cloud sharing is configured, this link works in any browser. Until then, it stays a same-device test preview.</p><input class="shareLinkInput" id="shareLink" readonly><button class="btn" id="copyShareBtn" type="button">Copy Link</button><a class="btn secondary shareOpenLink" id="openShareBtn" href="#">Open Puzzle</a><button class="btn secondary" id="closeShareBtn" type="button">Close</button></div></div>
+<div class="modalBg" id="missingShareModal"><div class="modal"><h2>Shared puzzle unavailable</h2><p class="muted">This link could not load. The puzzle may only exist on the original test device, or cloud sharing may not be configured yet.</p><button class="btn" id="missingShareCloseBtn" type="button">Back to Piczzle</button></div></div>
+<script src="js/native.js?v=20260520"></script><script src="js/share-config.js?v=20260527"></script><script src="js/share-cloud.js?v=20260527"></script><script src="js/app.js?v=20260520"></script><script src="js/pwa.js?v=20260520"></script></body></html>

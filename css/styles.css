@@ -56,6 +56,16 @@ body {
   height: 34px;
 }
 
+.logo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: inherit;
+  object-fit: cover;
+  transform: scale(1.46);
+  transform-origin: center;
+}
+
 .brand h1 {
   font-size: 1.42rem;
 }
@@ -1436,15 +1446,13 @@ h3 {
 .logo {
   width: 66px !important;
   height: 66px !important;
-  border-radius: 24px !important;
-  background:
-    linear-gradient(145deg, rgba(255,255,255,.28), rgba(255,255,255,.06)) !important;
-  border: 1px solid rgba(255,255,255,.22) !important;
-  box-shadow:
-    0 20px 42px rgba(49,220,255,.20),
-    inset 0 1px 0 rgba(255,255,255,.32) !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: 0 12px 28px rgba(49,220,255,.14) !important;
   transform: none !important;
-  padding: 5px !important;
+  padding: 0 !important;
 }
 
 .logo svg {
@@ -2192,4 +2200,95 @@ h3 {
   .modal .btn.secondary {
     min-height: 48px !important;
   }
+}
+
+
+/* Native iOS/Android polish */
+.nativeCameraBtn {
+  display: none;
+}
+
+@media (max-width: 850px) {
+  .nativeCameraBtn {
+    display: block;
+    margin-top: 8px !important;
+  }
+
+  html.is-native,
+  html.is-native body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  html.is-native input,
+  html.is-native button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html.is-native .app:not(.playMode) .panel {
+    overscroll-behavior: contain;
+  }
+
+  html.is-native .tray {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+
+/* Android emulator pass: make play controls harder to miss. */
+@media (max-width: 850px) {
+  .app.playMode .game {
+    grid-template-rows: auto minmax(0, 1fr) minmax(132px, .38fr) auto !important;
+  }
+
+  .app.playMode .trayCard {
+    min-height: 132px !important;
+  }
+
+  .app.playMode .tray {
+    min-height: 82px !important;
+  }
+
+  .app.playMode .tools,
+  .app.playMode .tools.mobileTools {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 7px !important;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .app.playMode .tool {
+    min-height: 46px !important;
+    font-size: .74rem !important;
+    padding: 10px 5px !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .app.playMode .tool {
+    font-size: .68rem !important;
+  }
+}
+
+/* Share Puzzle experiment inside the normal Piczzle flow. */
+.shareAction {
+  border-color: rgba(50,230,163,.22) !important;
+  background: rgba(50,230,163,.09) !important;
+}
+
+.shareLinkInput {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(6,10,19,.72);
+  color: var(--text);
+  padding: 13px;
+  margin: 14px 0 10px;
+  font: inherit;
+}
+
+.shareOpenLink {
+  display: block;
+  text-align: center;
+  text-decoration: none;
 }

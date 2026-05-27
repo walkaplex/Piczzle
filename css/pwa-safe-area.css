@@ -20,6 +20,10 @@ body {
       padding-bottom: max(10px, calc(env(safe-area-inset-bottom) + 10px)) !important;
     }
 
+    html.is-native .app:not(.playMode) {
+      padding-top: max(54px, calc(env(safe-area-inset-top) + 18px)) !important;
+    }
+
     .app:not(.playMode) {
       min-height: 100dvh !important;
       height: 100dvh !important;

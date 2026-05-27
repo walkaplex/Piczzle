@@ -24,10 +24,16 @@ let index = await readFile(path.join(root, "index.html"), "utf8");
 // Native shells do not need the web manifest or service worker. Removing them
 // avoids GitHub Pages-specific paths inside the packaged iOS/Android app.
 index = index
-  .replace(/<link rel="manifest" href="manifest\.webmanifest">\n/, "")
-  .replace(/<script src="js\/pwa\.js\?v=[^"]+"><\/script>/, "");
+  .replace(/<link rel="manifest" href="manifest\.webmanifest">\s*/g, "")
+  .replace(/<script src="js\/pwa\.js\?v=[^"]+"><\/script>\s*/g, "");
 
 await writeFile(path.join(outDir, "index.html"), index);
+
+try {
+  await cp(path.join(root, "share-lab.html"), path.join(outDir, "share-lab.html"));
+} catch {
+  // The share lab is an optional dev experiment.
+}
 
 const manifest = await readFile(path.join(root, "manifest.webmanifest"), "utf8");
 const nativeManifest = JSON.parse(manifest);
