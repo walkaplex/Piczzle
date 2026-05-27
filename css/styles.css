@@ -2360,6 +2360,13 @@ h3 {
   text-align: center;
 }
 
+.btn:disabled,
+.btn[disabled] {
+  cursor: not-allowed;
+  opacity: .52;
+  filter: saturate(.7);
+}
+
 /* Play-space rebalance after adding Share Puzzle.
    Keep controls visible, but give the loose pieces room to breathe again. */
 @media (max-width: 850px) {

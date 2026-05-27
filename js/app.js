@@ -1,4 +1,4 @@
-(()=>{const DEMO="assets/demo-splash.png";const $=id=>document.getElementById(id);const native=window.PiczzleNative||{};const el={app:$("app"),file:$("fileInput"),camera:$("cameraBtn"),demo:$("demoBtn"),source:$("sourcePreview"),cropImg:$("cropImg"),cropStage:$("cropStage"),zoom:$("zoomRange"),create:$("createBtn"),shareBtn:$("shareBtn"),newBtn:$("newBtn"),shareModal:$("shareModal"),missingShareModal:$("missingShareModal"),missingShareClose:$("missingShareCloseBtn"),shareLink:$("shareLink"),sendShare:$("sendShareBtn"),copyShare:$("copyShareBtn"),openShare:$("openShareBtn"),closeShare:$("closeShareBtn"),board:$("board"),tray:$("tray"),time:$("timeStat"),moves:$("movesStat"),left:$("leftStat"),size:$("sizeStat"),select:$("selectText"),toast:$("toast"),modal:$("modal"),modalTitle:$("modalTitle"),modalMessage:$("modalMessage"),again:$("againBtn"),close:$("closeBtn")};const state={src:DEMO,size:4,cropX:0,cropY:0,zoom:1,minZoom:1,img:null,pieces:[],board:[],tray:[],selected:null,moves:0,time:0,timer:null,solved:false,hint:false,shared:false,dragging:false,lastX:0,lastY:0,baseScale:1,square:DEMO,drag:null,cropRatio:4/3,outW:1200,outH:900};const SHARE_PREFIX="piczzle.share.";function tap(){if(native.selection)native.selection()}function impact(){if(native.lightImpact)native.lightImpact()}function success(){if(native.success)native.success()}function toast(t){el.toast.textContent=t;el.toast.classList.add("show");clearTimeout(state.tt);state.tt=setTimeout(()=>el.toast.classList.remove("show"),1700)}
+(()=>{const DEMO="assets/demo-splash.png";const $=id=>document.getElementById(id);const native=window.PiczzleNative||{};const el={app:$("app"),file:$("fileInput"),camera:$("cameraBtn"),demo:$("demoBtn"),source:$("sourcePreview"),cropImg:$("cropImg"),cropStage:$("cropStage"),zoom:$("zoomRange"),create:$("createBtn"),shareBtn:$("shareBtn"),newBtn:$("newBtn"),shareModal:$("shareModal"),shareModalTitle:$("shareModalTitle"),shareModalMessage:$("shareModalMessage"),shareFinePrint:$("shareFinePrint"),missingShareModal:$("missingShareModal"),missingShareClose:$("missingShareCloseBtn"),shareLink:$("shareLink"),sendShare:$("sendShareBtn"),copyShare:$("copyShareBtn"),openShare:$("openShareBtn"),closeShare:$("closeShareBtn"),board:$("board"),tray:$("tray"),time:$("timeStat"),moves:$("movesStat"),left:$("leftStat"),size:$("sizeStat"),select:$("selectText"),toast:$("toast"),modal:$("modal"),modalTitle:$("modalTitle"),modalMessage:$("modalMessage"),again:$("againBtn"),close:$("closeBtn")};const state={src:DEMO,size:4,cropX:0,cropY:0,zoom:1,minZoom:1,img:null,pieces:[],board:[],tray:[],selected:null,moves:0,time:0,timer:null,solved:false,hint:false,shared:false,dragging:false,lastX:0,lastY:0,baseScale:1,square:DEMO,drag:null,cropRatio:4/3,outW:1200,outH:900};const SHARE_PREFIX="piczzle.share.";function tap(){if(native.selection)native.selection()}function impact(){if(native.lightImpact)native.lightImpact()}function success(){if(native.success)native.success()}function toast(t){el.toast.textContent=t;el.toast.classList.add("show");clearTimeout(state.tt);state.tt=setTimeout(()=>el.toast.classList.remove("show"),1700)}
 function setMobileStep(step){
   const panel=document.querySelector(".panel");
   if(!panel)return;
@@ -183,11 +183,13 @@ async function sharePuzzle(){
   const data={id,image,size:state.size,createdAt:new Date().toISOString(),v:1};
   let link=shareUrl(id);
   let message="Share preview saved";
+  let cloudSaved=false;
   try{
     if(cloud&&cloud.isReady()){
       const saved=await cloud.savePuzzle(data);
       link=cloud.publicLink(saved.id||id);
       message="Share link created";
+      cloudSaved=true;
     }else{
       localStorage.setItem(SHARE_PREFIX+id,JSON.stringify(data));
     }
@@ -196,6 +198,10 @@ async function sharePuzzle(){
     message="Cloud unavailable - saved test link";
   }
   if(el.shareLink)el.shareLink.value=link;
+  if(el.shareModalTitle)el.shareModalTitle.textContent=cloudSaved?"Puzzle link created":"Test link saved";
+  if(el.shareModalMessage)el.shareModalMessage.textContent=cloudSaved?"Send this link to a friend. They solve the puzzle first, then the image is revealed.":"This puzzle is saved in this browser for testing. Cloud sharing was unavailable, so this link is not ready to send to a friend.";
+  if(el.shareFinePrint)el.shareFinePrint.textContent=cloudSaved?"Unlisted link. Expires after 30 days.":"Same-device test link only.";
+  if(el.sendShare)el.sendShare.disabled=!cloudSaved;
   if(el.openShare){
     const inAppLink=native.isNative?appShareUrl(id):link;
     el.openShare.href=inAppLink;
