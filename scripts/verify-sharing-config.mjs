@@ -29,29 +29,28 @@ const [indexHtml, swJs, shareConfig, shareCloud] = await Promise.all([
   read("js/share-cloud.js")
 ]);
 
-const indexShareCloudVersion = matchOne(
-  "share-cloud script in index.html",
-  indexHtml,
-  /js\/share-cloud\.js\?v=([^"]+)/
-);
-const swShareCloudVersion = matchOne(
-  "share-cloud cache entry in sw.js",
-  swJs,
-  /\/Piczzle\/js\/share-cloud\.js\?v=([^",]+)/
-);
+const cachedAssets = [
+  { file: "css/styles.css", indexPattern: /css\/styles\.css\?v=([^"]+)/ },
+  { file: "js/share-config.js", indexPattern: /js\/share-config\.js\?v=([^"]+)/ },
+  { file: "js/share-cloud.js", indexPattern: /js\/share-cloud\.js\?v=([^"]+)/ },
+  { file: "js/app.js", indexPattern: /js\/app\.js\?v=([^"]+)/ },
+  { file: "js/pwa.js", indexPattern: /js\/pwa\.js\?v=([^"]+)/ }
+];
 
-assert(
-  indexShareCloudVersion === swShareCloudVersion,
-  `share-cloud cache version mismatch: index=${indexShareCloudVersion}, sw=${swShareCloudVersion}`
-);
+for (const asset of cachedAssets) {
+  const escapedFile = asset.file.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const indexVersion = matchOne(`${asset.file} reference in index.html`, indexHtml, asset.indexPattern);
+  const swVersion = matchOne(
+    `${asset.file} cache entry in sw.js`,
+    swJs,
+    new RegExp(`/Piczzle/${escapedFile}\\?v=([^",]+)`)
+  );
 
-const indexAppVersion = matchOne("app script in index.html", indexHtml, /js\/app\.js\?v=([^"]+)/);
-const swAppVersion = matchOne("app cache entry in sw.js", swJs, /\/Piczzle\/js\/app\.js\?v=([^",]+)/);
-
-assert(
-  indexAppVersion === swAppVersion,
-  `app cache version mismatch: index=${indexAppVersion}, sw=${swAppVersion}`
-);
+  assert(
+    indexVersion === swVersion,
+    `${asset.file} cache version mismatch: index=${indexVersion}, sw=${swVersion}`
+  );
+}
 
 const supabaseUrl = matchOne("supabaseUrl", shareConfig, /supabaseUrl:\s*"([^"]+)"/);
 const publicBaseUrl = matchOne("publicBaseUrl", shareConfig, /publicBaseUrl:\s*"([^"]+)"/);
