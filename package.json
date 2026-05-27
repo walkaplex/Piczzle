@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/prepare-capacitor.mjs",
+    "verify:sharing": "node scripts/verify-sharing-config.mjs",
     "cap:sync": "npm run build && npx cap sync",
     "cap:add:ios": "npm run build && npx cap add ios",
     "cap:add:android": "npm run build && npx cap add android",
