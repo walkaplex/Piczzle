@@ -69,6 +69,8 @@ const manifestTarget = path.join(releaseDir, `piczzle-debug-${version}.json`);
 const gitCommand = isWindows ? "git.exe" : "git";
 const commit = await run(gitCommand, ["rev-parse", "--short", "HEAD"], { capture: true });
 const branch = await run(gitCommand, ["branch", "--show-current"], { capture: true });
+const workingTreeStatus = await run(gitCommand, ["status", "--porcelain"], { capture: true });
+const workingTreeClean = workingTreeStatus.length === 0;
 
 await mkdir(releaseDir, { recursive: true });
 await copyFile(apkSource, apkTarget);
@@ -81,6 +83,7 @@ await writeFile(
     version,
     branch,
     commit,
+    workingTreeClean,
     apk: apkName,
     sizeBytes: info.size,
     sha256: hash,
@@ -94,6 +97,7 @@ await writeFile(
     "",
     `Branch: ${branch}`,
     `Commit: ${commit}`,
+    `Working tree: ${workingTreeClean ? "clean" : "has uncommitted changes"}`,
     `APK: ${apkName}`,
     `Size: ${info.size} bytes`,
     `SHA-256: ${hash}`,

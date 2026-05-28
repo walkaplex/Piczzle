@@ -24,7 +24,7 @@ npm run android:package
 
 The APK, checksum, and short install notes are written to the ignored `release/` folder.
 
-The generated `.txt` note is meant to travel with the APK. It includes the branch, commit, checksum, private-test warning, basic install notes, and simple feedback prompts for testers. The generated `.json` file captures the same build identity in a machine-readable form.
+The generated `.txt` note is meant to travel with the APK. It includes the branch, commit, working-tree state, checksum, private-test warning, basic install notes, and simple feedback prompts for testers. The generated `.json` file captures the same build identity in a machine-readable form.
 
 ## Before Sending
 
