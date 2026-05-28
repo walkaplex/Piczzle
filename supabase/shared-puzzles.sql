@@ -30,3 +30,25 @@ using (expires_at > now());
 
 create index if not exists shared_puzzles_expires_at_idx
 on public.shared_puzzles (expires_at);
+
+create or replace function public.delete_expired_shared_puzzles()
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  deleted_count integer;
+begin
+  delete from public.shared_puzzles
+  where expires_at <= now();
+
+  get diagnostics deleted_count = row_count;
+  return deleted_count;
+end;
+$$;
+
+revoke all on function public.delete_expired_shared_puzzles() from public;
+revoke all on function public.delete_expired_shared_puzzles() from anon;
+revoke all on function public.delete_expired_shared_puzzles() from authenticated;
+grant execute on function public.delete_expired_shared_puzzles() to service_role;
