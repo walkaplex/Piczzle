@@ -35,9 +35,6 @@ The generated `.txt` note is meant to travel with the APK. It includes the branc
 ## Before Sending
 
 - Open the app on the emulator.
-- Confirm the start screen shows the private test notes about local photos and 30-day shared links.
-- Open `Privacy and tester info` and confirm it explains photos, shared links, and report details.
-- Open `What to test` and confirm it lists the main tester flows.
 - Create a puzzle from a demo image.
 - Create a puzzle from a user-style photo in the emulator gallery.
 - Use `Hint`, then place a piece and confirm the hint turns off.
