@@ -12,6 +12,12 @@ const copyTargets = [
   "piczzle-preview.png"
 ];
 
+const devOnlyArtifacts = [
+  "share-lab.html",
+  "css/share-lab.css",
+  "js/share-lab.js"
+];
+
 await rm(outDir, { recursive: true, force: true });
 await mkdir(outDir, { recursive: true });
 
@@ -29,10 +35,8 @@ index = index
 
 await writeFile(path.join(outDir, "index.html"), index);
 
-try {
-  await cp(path.join(root, "share-lab.html"), path.join(outDir, "share-lab.html"));
-} catch {
-  // The share lab is an optional dev experiment.
+for (const artifact of devOnlyArtifacts) {
+  await rm(path.join(outDir, artifact), { force: true });
 }
 
 const manifest = await readFile(path.join(root, "manifest.webmanifest"), "utf8");

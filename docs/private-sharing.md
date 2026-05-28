@@ -13,6 +13,8 @@ https://walkaplex.github.io/Piczzle/index.html?puzzle=abc123
 
 Opening that link fetches the puzzle package and starts the normal puzzle engine.
 
+Older `share-lab` experiment files may still exist locally while the feature is being folded into the main app. The Capacitor build prep intentionally leaves those lab files out of the packaged mobile app.
+
 The share modal has three actions:
 
 - `Share Link` opens the platform share sheet when the browser or Android WebView supports it.
