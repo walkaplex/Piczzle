@@ -2,7 +2,7 @@ const CACHE_NAME = "piczzle-app-v8";
 const APP_SHELL = [
   "/Piczzle/",
   "/Piczzle/index.html",
-  "/Piczzle/css/styles.css?v=20260528-safety1",
+  "/Piczzle/css/styles.css?v=20260528-trust1",
   "/Piczzle/css/pwa-safe-area.css?v=20260520",
   "/Piczzle/js/native.js?v=20260520",
   "/Piczzle/js/share-config.js?v=20260527",
