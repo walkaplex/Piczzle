@@ -1818,7 +1818,8 @@ h3 {
 
 @media (max-width: 850px) {
   .uploadBox {
-    gap: 10px !important;
+    gap: 8px !important;
+    padding: 10px !important;
   }
 
   .uploadBox .preview {
@@ -2450,14 +2451,19 @@ h3 {
 }
 
 @media (max-width: 850px) {
+  .app:not(.playMode) .panel.mobile-upload {
+    overflow-y: auto !important;
+  }
+
   .testerNotes {
     margin: 0 0 8px;
-    padding: 8px 10px;
-    font-size: .66rem;
+    padding: 7px 9px;
+    font-size: .62rem;
+    line-height: 1.25;
   }
 
   .textButton {
-    font-size: .66rem;
+    font-size: .62rem;
   }
 
   .testerInfoModal {
