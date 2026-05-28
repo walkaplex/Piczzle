@@ -10,6 +10,12 @@ Run the full verification pass:
 npm run verify
 ```
 
+Confirm GitHub Pages is serving the current cache-sensitive app files:
+
+```sh
+npm run verify:public
+```
+
 If an emulator is running, install and launch the current app:
 
 ```sh
