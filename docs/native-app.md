@@ -40,6 +40,33 @@ npm run cap:open:ios
 npm run cap:open:android
 ```
 
+## Windows Android verification
+
+On this Windows setup, Android Studio's bundled Java runtime is the reliable Gradle runtime. From the project root, use this PowerShell flow to build the debug APK without depending on a global `JAVA_HOME`:
+
+```powershell
+$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'
+$env:Path="$env:JAVA_HOME\bin;C:\Program Files\nodejs;$env:Path"
+$env:GRADLE_USER_HOME='C:\Users\walkm\Downloads\Piczzle-live\.gradle-codex'
+npm run build
+Push-Location android
+.\gradlew.bat :app:assembleDebug --console=plain --quiet
+Pop-Location
+```
+
+With the emulator running, install and launch the current debug build:
+
+```powershell
+$adb="$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe"
+& $adb -s emulator-5554 install -r .\android\app\build\outputs\apk\debug\app-debug.apk
+& $adb -s emulator-5554 shell am force-stop com.walkaplex.piczzle
+& $adb -s emulator-5554 shell am start -n com.walkaplex.piczzle/.MainActivity
+Start-Sleep -Seconds 8
+& $adb -s emulator-5554 shell pidof com.walkaplex.piczzle
+```
+
+The final command should print a process id when Piczzle launches successfully.
+
 ## Requirements
 
 - iOS builds require a Mac with Xcode.
