@@ -22,14 +22,15 @@ function assert(condition, message) {
   }
 }
 
-const [indexHtml, manifestText, swJs, appJs, shareConfig, shareCloud, privateSharingDoc] = await Promise.all([
+const [indexHtml, manifestText, swJs, appJs, shareConfig, shareCloud, privateSharingDoc, sharingSql] = await Promise.all([
   read("index.html"),
   read("manifest.webmanifest"),
   read("sw.js"),
   read("js/app.js"),
   read("js/share-config.js"),
   read("js/share-cloud.js"),
-  read("docs/private-sharing.md")
+  read("docs/private-sharing.md"),
+  read("supabase/shared-puzzles.sql")
 ]);
 
 const manifest = JSON.parse(manifestText);
@@ -78,6 +79,17 @@ assert(
 assert(
   privateSharingDoc.includes("npm run verify:sharing"),
   "Private sharing docs should mention npm run verify:sharing"
+);
+assert(
+  sharingSql.includes("expires_at timestamptz not null default (now() + interval '30 days')") &&
+    sharingSql.includes("using (expires_at > now())"),
+  "Supabase sharing SQL should expire shared puzzles after 30 days and block expired reads"
+);
+assert(
+  sharingSql.includes("function public.delete_expired_shared_puzzles()") &&
+    sharingSql.includes("grant execute on function public.delete_expired_shared_puzzles() to service_role") &&
+    sharingSql.includes("revoke all on function public.delete_expired_shared_puzzles() from anon"),
+  "Supabase sharing SQL should include admin-only expired puzzle cleanup"
 );
 assert(
   indexHtml.includes('<link rel="apple-touch-icon" href="assets/app-icon-premium.png">'),
