@@ -73,6 +73,12 @@ The packaged APK and `.sha256` checksum are written to the ignored `release/` fo
 
 Before sending that APK to anyone, use the checklist in [`tester-handoff.md`](tester-handoff.md).
 
+To save the current emulator screen into the ignored `preview/` folder:
+
+```sh
+npm run android:screenshot
+```
+
 Add native projects when you are ready:
 
 ```sh
