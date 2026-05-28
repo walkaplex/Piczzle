@@ -70,6 +70,11 @@ assert(
   "share-cloud.js should normalize Supabase REST URLs"
 );
 assert(
+  indexHtml.includes("js/app.js?v=20260527-share5") &&
+    swJs.includes("/Piczzle/js/app.js?v=20260527-share5"),
+  "app.js cache version should be bumped after shared-puzzle runtime changes"
+);
+assert(
   privateSharingDoc.includes("npm run verify:sharing"),
   "Private sharing docs should mention npm run verify:sharing"
 );

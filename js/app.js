@@ -174,6 +174,10 @@ function appShareUrl(id){
   url.searchParams.set("puzzle",id);
   return url.toString();
 }
+function normalizeSharedSize(size){
+  const n=Number(size);
+  return [4,6,8].includes(n)?n:4;
+}
 async function sharePuzzle(){
   impact();
   toast("Creating share link...");
@@ -237,7 +241,7 @@ async function loadSharedPuzzle(data){
   if(!data||!data.image){
     throw new Error("Missing shared puzzle image");
   }
-  await startPuzzleFromImage(data.image,data.size||4,"Puzzle received",{shared:true});
+  await startPuzzleFromImage(data.image,normalizeSharedSize(data.size),"Puzzle received",{shared:true});
   if(el.select)el.select.textContent="Received puzzle - solve it to reveal the photo";
   requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"smooth"}));
 }
