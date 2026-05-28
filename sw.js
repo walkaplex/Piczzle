@@ -9,6 +9,7 @@ const APP_SHELL = [
   "/Piczzle/js/share-cloud.js?v=20260527-cloud2",
   "/Piczzle/js/app.js?v=20260528-safety1",
   "/Piczzle/js/tester-info.js?v=20260528-trust2",
+  "/Piczzle/js/share-feedback.js?v=20260528-feedback1",
   "/Piczzle/js/pwa.js?v=20260527-cache",
   "/Piczzle/assets/app-icon.svg",
   "/Piczzle/assets/app-icon-premium.png",
