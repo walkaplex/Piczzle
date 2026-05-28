@@ -183,7 +183,7 @@ async function sharePuzzle(){
   toast("Creating share link...");
   const cloud=window.PiczzleShareCloud;
   const image=cloud&&cloud.isReady()?await compactShareImage(await cropSquare()):await cropSquare();
-  const id=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID().slice(0,12):Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+  const id=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2,14);
   const data={id,image,size:state.size,createdAt:new Date().toISOString(),v:1};
   let link=shareUrl(id);
   let message="Share preview saved";

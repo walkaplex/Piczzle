@@ -77,6 +77,11 @@ assert(
   "app.js should normalize incoming shared puzzle sizes"
 );
 assert(
+  appJs.includes("(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():") &&
+    !appJs.includes("randomUUID().slice(0,12)"),
+  "app.js should use full random UUIDs for new shared puzzle ids"
+);
+assert(
   privateSharingDoc.includes("npm run verify:sharing"),
   "Private sharing docs should mention npm run verify:sharing"
 );
