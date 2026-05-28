@@ -1,5 +1,7 @@
 # Piczzle Native App Setup
 
+See the root [`README.md`](../README.md) for the short project overview and common command list.
+
 Piczzle is still a web app first. The Capacitor setup in this branch lets the same app be copied into native iOS and Android projects without changing the GitHub Pages version.
 
 ## What this adds

@@ -1,5 +1,7 @@
 # Private Puzzle Sharing
 
+See the root [`README.md`](../README.md) for the short project overview and common command list.
+
 Stage 2 adds real link-based sharing behind a small cloud adapter.
 
 ## Current behavior
