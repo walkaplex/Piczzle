@@ -56,6 +56,17 @@ npm run verify:sharing
 
 The check confirms that the versioned sharing scripts match the service worker cache entries, the Supabase config is not using placeholders, the public share URL points at `index.html`, and REST-style Supabase URLs are still normalized.
 
+For a full smoke test:
+
+1. Open Piczzle locally or from GitHub Pages.
+2. Choose a demo or user photo.
+3. Continue to `Puzzle size`.
+4. Tap `Share Puzzle`.
+5. Confirm the modal says `Puzzle link created`, shows `Unlisted link. Expires after 30 days.`, and keeps `Share Link` enabled.
+6. Open the generated URL in a fresh browser tab.
+7. Confirm the received puzzle opens directly in play mode with loose pieces.
+8. Solve the puzzle and confirm the completion modal says `Puzzle solved` with `Send One Back`.
+
 ## MVP safety limits
 
 - Shared puzzles expire after 30 days.
