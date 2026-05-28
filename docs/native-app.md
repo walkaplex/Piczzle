@@ -25,6 +25,14 @@ Prepare the native web bundle:
 npm run build
 ```
 
+Before handing a native build to testers, verify the packaged app copy:
+
+```sh
+npm run verify:native
+```
+
+This confirms that the native bundle does not include GitHub Pages service-worker wiring, web-only manifest hookup, or old dev-only sharing lab files.
+
 Add native projects when you are ready:
 
 ```sh
