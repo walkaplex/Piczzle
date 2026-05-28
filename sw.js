@@ -10,6 +10,8 @@ const APP_SHELL = [
   "/Piczzle/js/app.js?v=20260527-share4",
   "/Piczzle/js/pwa.js?v=20260527-cache",
   "/Piczzle/assets/app-icon.svg",
+  "/Piczzle/assets/app-icon-premium.png",
+  "/Piczzle/assets/app-icon-maskable.png",
   "/Piczzle/assets/demo-pet.png",
   "/Piczzle/assets/demo-landscape.png",
   "/Piczzle/assets/demo-challenge.png",

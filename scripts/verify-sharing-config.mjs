@@ -22,13 +22,16 @@ function assert(condition, message) {
   }
 }
 
-const [indexHtml, swJs, shareConfig, shareCloud, privateSharingDoc] = await Promise.all([
+const [indexHtml, manifestText, swJs, shareConfig, shareCloud, privateSharingDoc] = await Promise.all([
   read("index.html"),
+  read("manifest.webmanifest"),
   read("sw.js"),
   read("js/share-config.js"),
   read("js/share-cloud.js"),
   read("docs/private-sharing.md")
 ]);
+
+const manifest = JSON.parse(manifestText);
 
 const cachedAssets = [
   { file: "css/styles.css", indexPattern: /css\/styles\.css\?v=([^"]+)/ },
@@ -69,6 +72,23 @@ assert(
 assert(
   privateSharingDoc.includes("npm run verify:sharing"),
   "Private sharing docs should mention npm run verify:sharing"
+);
+assert(
+  indexHtml.includes('<link rel="apple-touch-icon" href="assets/app-icon-premium.png">'),
+  "index.html should use the polished PNG icon for Apple touch installs"
+);
+assert(
+  manifest.icons.some(icon => icon.src === "/Piczzle/assets/app-icon-premium.png" && icon.purpose === "any"),
+  "manifest.webmanifest should include the polished PNG app icon"
+);
+assert(
+  manifest.icons.some(icon => icon.src === "/Piczzle/assets/app-icon-maskable.png" && icon.purpose === "maskable"),
+  "manifest.webmanifest should include the padded maskable app icon"
+);
+assert(
+  swJs.includes("/Piczzle/assets/app-icon-premium.png") &&
+    swJs.includes("/Piczzle/assets/app-icon-maskable.png"),
+  "sw.js should cache the PNG app icons"
 );
 
 console.log("Sharing configuration verified.");

@@ -12,10 +12,22 @@
   "categories": ["games", "photo", "entertainment"],
   "icons": [
     {
+      "src": "/Piczzle/assets/app-icon-premium.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/Piczzle/assets/app-icon-maskable.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "/Piczzle/assets/app-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
