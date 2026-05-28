@@ -56,6 +56,12 @@ npm run verify:sharing
 
 The check confirms that the versioned sharing scripts match the service worker cache entries, the Supabase config is not using placeholders, the public share URL points at `index.html`, and REST-style Supabase URLs are still normalized.
 
+To run every current Piczzle verifier before a tester build or release pass:
+
+```sh
+npm run verify
+```
+
 For a full smoke test:
 
 1. Open Piczzle locally or from GitHub Pages.

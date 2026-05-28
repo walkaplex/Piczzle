@@ -33,6 +33,12 @@ npm run verify:native
 
 This confirms that the native bundle does not include GitHub Pages service-worker wiring, web-only manifest hookup, or old dev-only sharing lab files.
 
+To run every current Piczzle verifier before a tester build or release pass:
+
+```sh
+npm run verify
+```
+
 Add native projects when you are ready:
 
 ```sh
