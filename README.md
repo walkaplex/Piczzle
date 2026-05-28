@@ -76,6 +76,8 @@ On this Windows setup, `npm run android:doctor` checks the Android build environ
 
 Use [`docs/tester-handoff.md`](docs/tester-handoff.md) before sending a private build to testers.
 
+If a chat or automation loses context, start from [`docs/continuity.md`](docs/continuity.md).
+
 ## Private sharing
 
 Private puzzle sharing uses Supabase for real cross-browser links. The setup, safety limits, and manual smoke test are documented in [`docs/private-sharing.md`](docs/private-sharing.md).
