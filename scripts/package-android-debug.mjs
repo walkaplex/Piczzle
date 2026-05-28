@@ -17,16 +17,27 @@ function run(command, args, options = {}) {
       cwd: options.cwd || root,
       env: options.env || process.env,
       shell: false,
-      stdio: "inherit"
+      stdio: options.capture ? ["ignore", "pipe", "pipe"] : "inherit"
     });
+
+    let stdout = "";
+    let stderr = "";
+    if (options.capture) {
+      child.stdout.on("data", chunk => {
+        stdout += chunk;
+      });
+      child.stderr.on("data", chunk => {
+        stderr += chunk;
+      });
+    }
 
     child.on("error", reject);
     child.on("exit", code => {
       if (code === 0) {
-        resolve();
+        resolve(stdout.trim());
         return;
       }
-      reject(new Error(`${command} ${args.join(" ")} exited with code ${code}`));
+      reject(new Error(`${command} ${args.join(" ")} exited with code ${code}${stderr ? `\n${stderr}` : ""}`));
     });
   });
 }
@@ -54,15 +65,35 @@ const apkName = `piczzle-debug-${version}.apk`;
 const apkTarget = path.join(releaseDir, apkName);
 const checksumTarget = `${apkTarget}.sha256`;
 const notesTarget = path.join(releaseDir, `piczzle-debug-${version}.txt`);
+const manifestTarget = path.join(releaseDir, `piczzle-debug-${version}.json`);
+const gitCommand = isWindows ? "git.exe" : "git";
+const commit = await run(gitCommand, ["rev-parse", "--short", "HEAD"], { capture: true });
+const branch = await run(gitCommand, ["branch", "--show-current"], { capture: true });
 
 await mkdir(releaseDir, { recursive: true });
 await copyFile(apkSource, apkTarget);
 await writeFile(checksumTarget, `${hash}  ${apkName}\n`);
 await writeFile(
+  manifestTarget,
+  `${JSON.stringify({
+    app: "Piczzle",
+    type: "android-debug",
+    version,
+    branch,
+    commit,
+    apk: apkName,
+    sizeBytes: info.size,
+    sha256: hash,
+    generatedAt: new Date().toISOString()
+  }, null, 2)}\n`
+);
+await writeFile(
   notesTarget,
   [
     `Piczzle Android debug build ${version}`,
     "",
+    `Branch: ${branch}`,
+    `Commit: ${commit}`,
     `APK: ${apkName}`,
     `Size: ${info.size} bytes`,
     `SHA-256: ${hash}`,
