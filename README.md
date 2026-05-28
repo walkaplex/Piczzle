@@ -28,6 +28,12 @@ Check the public GitHub Pages deployment when needed:
 npm run verify:public
 ```
 
+Check the local Android build setup:
+
+```sh
+npm run android:doctor
+```
+
 Prepare the native web bundle:
 
 ```sh
@@ -60,7 +66,7 @@ npm run android:package
 
 ## Android notes
 
-On this Windows setup, `npm run android:debug` uses Android Studio's bundled Java runtime for Gradle builds. `npm run android:run` installs and launches the app on the running emulator. `npm run android:package` creates an ignored private-test APK copy with checksum notes in `release/`. The full manual command sequence is documented in [`docs/native-app.md`](docs/native-app.md).
+On this Windows setup, `npm run android:doctor` checks the Android build environment. `npm run android:debug` uses Android Studio's bundled Java runtime for Gradle builds. `npm run android:run` installs and launches the app on the running emulator. `npm run android:package` creates an ignored private-test APK copy with checksum notes in `release/`. The full manual command sequence is documented in [`docs/native-app.md`](docs/native-app.md).
 
 Use [`docs/tester-handoff.md`](docs/tester-handoff.md) before sending a private build to testers.
 

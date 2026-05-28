@@ -41,6 +41,12 @@ To run every current Piczzle verifier before a tester build or release pass:
 npm run verify
 ```
 
+To check that the local Android build setup can be found:
+
+```sh
+npm run android:doctor
+```
+
 To build the Android debug APK without using Android Studio's Run button:
 
 ```sh
