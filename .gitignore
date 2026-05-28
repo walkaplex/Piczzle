@@ -11,3 +11,8 @@ android-share-fix-check.png
 
 # Capacitor native projects should be committed after they are generated.
 android/.idea/
+
+# Older private-sharing lab experiment kept local only.
+share-lab.html
+css/share-lab.css
+js/share-lab.js
