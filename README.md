@@ -40,9 +40,15 @@ Build the Android debug APK:
 npm run android:debug
 ```
 
+Build, install, and launch on a running Android emulator:
+
+```sh
+npm run android:run
+```
+
 ## Android notes
 
-On this Windows setup, `npm run android:debug` uses Android Studio's bundled Java runtime for Gradle builds. The full manual command sequence is documented in [`docs/native-app.md`](docs/native-app.md).
+On this Windows setup, `npm run android:debug` uses Android Studio's bundled Java runtime for Gradle builds. `npm run android:run` also installs and launches the app on the running emulator. The full manual command sequence is documented in [`docs/native-app.md`](docs/native-app.md).
 
 ## Private sharing
 

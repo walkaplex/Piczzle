@@ -49,6 +49,14 @@ npm run android:debug
 
 The APK is created at `android/app/build/outputs/apk/debug/app-debug.apk`.
 
+To build, install, and launch Piczzle on a running emulator:
+
+```sh
+npm run android:run
+```
+
+If more than one Android device is connected, set `ANDROID_SERIAL` to choose the target.
+
 Add native projects when you are ready:
 
 ```sh
