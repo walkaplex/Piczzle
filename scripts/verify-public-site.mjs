@@ -31,13 +31,6 @@ function assert(condition, message) {
   }
 }
 
-const [localIndex, localSw, publicIndex, publicSw] = await Promise.all([
-  read("index.html"),
-  read("sw.js"),
-  fetchText(`${publicBase}/index.html`),
-  fetchText(`${publicBase}/sw.js`)
-]);
-
 const assetPatterns = [
   ["styles.css", /css\/styles\.css\?v=([^"]+)/],
   ["share-config.js", /js\/share-config\.js\?v=([^"]+)/],
@@ -46,26 +39,61 @@ const assetPatterns = [
   ["pwa.js", /js\/pwa\.js\?v=([^"]+)/]
 ];
 
-for (const [label, pattern] of assetPatterns) {
-  const localVersion = matchOne(`${label} local version`, localIndex, pattern);
-  const publicVersion = matchOne(`${label} public version`, publicIndex, pattern);
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function checkPublicSite() {
+  const [localIndex, localSw, publicIndex, publicSw] = await Promise.all([
+    read("index.html"),
+    read("sw.js"),
+    fetchText(`${publicBase}/index.html`),
+    fetchText(`${publicBase}/sw.js`)
+  ]);
+
+  for (const [label, pattern] of assetPatterns) {
+    const localVersion = matchOne(`${label} local version`, localIndex, pattern);
+    const publicVersion = matchOne(`${label} public version`, publicIndex, pattern);
+    assert(
+      localVersion === publicVersion,
+      `${label} public version mismatch: local=${localVersion}, public=${publicVersion}`
+    );
+  }
+
+  const localCacheName = matchOne("local cache name", localSw, /CACHE_NAME\s*=\s*"([^"]+)"/);
+  const publicCacheName = matchOne("public cache name", publicSw, /CACHE_NAME\s*=\s*"([^"]+)"/);
+
   assert(
-    localVersion === publicVersion,
-    `${label} public version mismatch: local=${localVersion}, public=${publicVersion}`
+    localCacheName === publicCacheName,
+    `Public service worker cache mismatch: local=${localCacheName}, public=${publicCacheName}`
+  );
+  assert(
+    publicIndex.includes("Puzzle link created") &&
+      publicIndex.includes("Unlisted link. Expires after 30 days."),
+    "Public index should include the current share modal text"
   );
 }
 
-const localCacheName = matchOne("local cache name", localSw, /CACHE_NAME\s*=\s*"([^"]+)"/);
-const publicCacheName = matchOne("public cache name", publicSw, /CACHE_NAME\s*=\s*"([^"]+)"/);
+const attempts = Number(process.env.VERIFY_PUBLIC_ATTEMPTS || 6);
+const waitMs = Number(process.env.VERIFY_PUBLIC_WAIT_MS || 10000);
+let lastError;
+let verified = false;
 
-assert(
-  localCacheName === publicCacheName,
-  `Public service worker cache mismatch: local=${localCacheName}, public=${publicCacheName}`
-);
-assert(
-  publicIndex.includes("Puzzle link created") &&
-    publicIndex.includes("Unlisted link. Expires after 30 days."),
-  "Public index should include the current share modal text"
-);
+for (let attempt = 1; attempt <= attempts; attempt += 1) {
+  try {
+    await checkPublicSite();
+    console.log("Public GitHub Pages site verified.");
+    verified = true;
+    break;
+  } catch (error) {
+    lastError = error;
+    if (attempt < attempts) {
+      console.log(`Public site not updated yet (${attempt}/${attempts}): ${error.message}`);
+      await wait(waitMs);
+    }
+  }
+}
 
-console.log("Public GitHub Pages site verified.");
+if (!verified) {
+  throw lastError;
+}
