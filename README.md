@@ -22,6 +22,12 @@ Run all project verifiers:
 npm run verify
 ```
 
+Check the public GitHub Pages deployment when needed:
+
+```sh
+npm run verify:public
+```
+
 Prepare the native web bundle:
 
 ```sh

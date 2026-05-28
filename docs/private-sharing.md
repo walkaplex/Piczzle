@@ -64,6 +64,12 @@ To run every current Piczzle verifier before a tester build or release pass:
 npm run verify
 ```
 
+To check that GitHub Pages is serving the same cache-sensitive files as the current repo:
+
+```sh
+npm run verify:public
+```
+
 For a full smoke test:
 
 1. Open Piczzle locally or from GitHub Pages.
