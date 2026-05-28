@@ -65,6 +65,8 @@ npm run android:package
 
 The packaged APK and `.sha256` checksum are written to the ignored `release/` folder.
 
+Before sending that APK to anyone, use the checklist in [`tester-handoff.md`](tester-handoff.md).
+
 Add native projects when you are ready:
 
 ```sh

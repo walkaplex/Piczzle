@@ -56,6 +56,8 @@ npm run android:package
 
 On this Windows setup, `npm run android:debug` uses Android Studio's bundled Java runtime for Gradle builds. `npm run android:run` installs and launches the app on the running emulator. `npm run android:package` creates an ignored private-test APK copy with checksum notes in `release/`. The full manual command sequence is documented in [`docs/native-app.md`](docs/native-app.md).
 
+Use [`docs/tester-handoff.md`](docs/tester-handoff.md) before sending a private build to testers.
+
 ## Private sharing
 
 Private puzzle sharing uses Supabase for real cross-browser links. The setup, safety limits, and manual smoke test are documented in [`docs/private-sharing.md`](docs/private-sharing.md).
