@@ -93,7 +93,9 @@ This can be changed before publishing, but it should not be changed casually aft
 
 ## Icons and splash screens
 
-This setup reuses the current Piczzle app icon as the brand source. The next step is to generate platform-specific icon and splash assets after the native projects exist, then check them in with `ios/` and `android/`.
+The Android project includes checked-in launcher icon and splash resources generated from the current Piczzle branding. When the brand changes, regenerate the platform assets, rebuild the native package, and verify the app in the emulator before handing a build to testers.
+
+iOS assets should be generated and checked in after the iOS project is created on macOS.
 
 ## Native shell behavior
 
