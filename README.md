@@ -34,9 +34,15 @@ Copy the current web bundle into Android:
 npx cap copy android
 ```
 
+Build the Android debug APK:
+
+```sh
+npm run android:debug
+```
+
 ## Android notes
 
-On this Windows setup, use Android Studio's bundled Java runtime for Gradle builds. The full command sequence is documented in [`docs/native-app.md`](docs/native-app.md).
+On this Windows setup, `npm run android:debug` uses Android Studio's bundled Java runtime for Gradle builds. The full manual command sequence is documented in [`docs/native-app.md`](docs/native-app.md).
 
 ## Private sharing
 

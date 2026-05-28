@@ -41,6 +41,14 @@ To run every current Piczzle verifier before a tester build or release pass:
 npm run verify
 ```
 
+To build the Android debug APK without using Android Studio's Run button:
+
+```sh
+npm run android:debug
+```
+
+The APK is created at `android/app/build/outputs/apk/debug/app-debug.apk`.
+
 Add native projects when you are ready:
 
 ```sh

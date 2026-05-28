@@ -8,6 +8,7 @@
     "verify": "npm run verify:sharing && npm run verify:native",
     "verify:sharing": "node scripts/verify-sharing-config.mjs",
     "verify:native": "npm run build && node scripts/verify-native-package.mjs",
+    "android:debug": "node scripts/build-android-debug.mjs",
     "cap:sync": "npm run build && npx cap sync",
     "cap:add:ios": "npm run build && npx cap add ios",
     "cap:add:android": "npm run build && npx cap add android",
