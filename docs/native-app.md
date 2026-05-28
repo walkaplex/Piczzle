@@ -57,6 +57,14 @@ npm run android:run
 
 If more than one Android device is connected, set `ANDROID_SERIAL` to choose the target.
 
+To create a timestamped APK copy with checksum notes for private tester handoff:
+
+```sh
+npm run android:package
+```
+
+The packaged APK and `.sha256` checksum are written to the ignored `release/` folder.
+
 Add native projects when you are ready:
 
 ```sh

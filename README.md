@@ -46,9 +46,15 @@ Build, install, and launch on a running Android emulator:
 npm run android:run
 ```
 
+Create a shareable private-test APK copy in `release/`:
+
+```sh
+npm run android:package
+```
+
 ## Android notes
 
-On this Windows setup, `npm run android:debug` uses Android Studio's bundled Java runtime for Gradle builds. `npm run android:run` also installs and launches the app on the running emulator. The full manual command sequence is documented in [`docs/native-app.md`](docs/native-app.md).
+On this Windows setup, `npm run android:debug` uses Android Studio's bundled Java runtime for Gradle builds. `npm run android:run` installs and launches the app on the running emulator. `npm run android:package` creates an ignored private-test APK copy with checksum notes in `release/`. The full manual command sequence is documented in [`docs/native-app.md`](docs/native-app.md).
 
 ## Private sharing
 
