@@ -41,6 +41,7 @@ The generated `.txt` note is meant to travel with the APK. It includes the branc
 - Use `Restart`.
 - Use `Solve`.
 - Create a `Share Puzzle` link.
+- Confirm the share modal explains that testers should copy the link and include their device model with any report.
 - Open the shared puzzle link and confirm it starts in play mode.
 - Solve the shared puzzle and confirm `Send One Back` appears.
 - Check that the home screen icon and launch splash still look correct.
@@ -53,6 +54,7 @@ Tell testers:
 - Android may warn that the app came from an unknown source.
 - They should try their own photos if they are comfortable doing so.
 - They should report screenshots, device model, and what they tapped before any issue.
+- If a shared puzzle looks wrong, they should copy the puzzle link and include it with their report.
 - For structured bug reports, use [`tester-report-template.md`](tester-report-template.md).
 
 ## Feedback To Ask For

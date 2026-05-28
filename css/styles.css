@@ -2360,6 +2360,22 @@ h3 {
   text-align: center;
 }
 
+.shareSafety {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,207,90,.18);
+  border-radius: 14px;
+  background: rgba(255,207,90,.08);
+  color: rgba(247,249,255,.72);
+  font-size: .76rem;
+  line-height: 1.38;
+  text-align: center;
+}
+
+.toast {
+  z-index: 80 !important;
+}
+
 .btn:disabled,
 .btn[disabled] {
   cursor: not-allowed;
