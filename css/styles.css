@@ -2398,10 +2398,59 @@ h3 {
   display: block;
 }
 
+.textButton {
+  appearance: none;
+  justify-self: start;
+  border: 0;
+  border-bottom: 1px solid rgba(85,215,255,.55);
+  border-radius: 0;
+  padding: 0 0 2px;
+  background: transparent;
+  color: #8fe6ff;
+  font-size: .74rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.infoList {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0 18px;
+}
+
+.infoList div {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 14px;
+  background: rgba(255,255,255,.055);
+}
+
+.infoList strong {
+  color: var(--text);
+  font-size: .9rem;
+}
+
+.infoList span {
+  color: rgba(247,249,255,.72);
+  font-size: .82rem;
+  line-height: 1.4;
+}
+
 @media (max-width: 850px) {
   .testerNotes {
+    margin: 0 0 8px;
     padding: 8px 10px;
     font-size: .66rem;
+  }
+
+  .textButton {
+    font-size: .66rem;
+  }
+
+  .testerInfoModal {
+    padding: 18px;
   }
 }
 
