@@ -47,6 +47,7 @@ Tell testers:
 - Android may warn that the app came from an unknown source.
 - They should try their own photos if they are comfortable doing so.
 - They should report screenshots, device model, and what they tapped before any issue.
+- For structured bug reports, use [`tester-report-template.md`](tester-report-template.md).
 
 ## Feedback To Ask For
 

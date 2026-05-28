@@ -118,6 +118,7 @@ await writeFile(
     "- Screenshots or screen recordings of anything odd.",
     "- What you tapped right before any problem happened.",
     "- Anything that felt confusing or awkward.",
+    "- If possible, use docs/tester-report-template.md for structured reports.",
     "",
     "Maintainer note:",
     "- Rebuild with npm run android:package whenever the app changes.",
