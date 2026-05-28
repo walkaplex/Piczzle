@@ -5,8 +5,23 @@ create table if not exists public.shared_puzzles (
   image text not null,
   size integer not null check (size in (4, 6, 8)),
   created_at timestamptz not null default now(),
-  expires_at timestamptz not null default (now() + interval '30 days')
+  expires_at timestamptz not null default (now() + interval '30 days'),
+  constraint shared_puzzles_image_size check (char_length(image) <= 2500000)
 );
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'shared_puzzles_image_size'
+      and conrelid = 'public.shared_puzzles'::regclass
+  ) then
+    alter table public.shared_puzzles
+    add constraint shared_puzzles_image_size
+    check (char_length(image) <= 2500000);
+  end if;
+end $$;
 
 alter table public.shared_puzzles enable row level security;
 
@@ -17,6 +32,7 @@ for insert
 to anon
 with check (
   image like 'data:image/%'
+  and char_length(image) <= 2500000
   and size in (4, 6, 8)
   and expires_at <= now() + interval '31 days'
 );

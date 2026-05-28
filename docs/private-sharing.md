@@ -84,6 +84,7 @@ For a full smoke test:
 ## MVP safety limits
 
 - Shared puzzles expire after 30 days.
+- Shared image payloads are capped in SQL so accidental huge uploads are rejected.
 - Expiration immediately blocks public reads through row-level security. Expired rows can be removed by running `select public.delete_expired_shared_puzzles();` with a service-role/admin connection.
 - IDs are random and unlisted.
 - This is still an MVP. Before public release, add reporting, deletion, moderation policy, contact info, and blocking.

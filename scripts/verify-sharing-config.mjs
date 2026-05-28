@@ -86,6 +86,11 @@ assert(
   "Supabase sharing SQL should expire shared puzzles after 30 days and block expired reads"
 );
 assert(
+  sharingSql.includes("constraint shared_puzzles_image_size") &&
+    sharingSql.includes("char_length(image) <= 2500000"),
+  "Supabase sharing SQL should cap shared image payload size"
+);
+assert(
   sharingSql.includes("function public.delete_expired_shared_puzzles()") &&
     sharingSql.includes("grant execute on function public.delete_expired_shared_puzzles() to service_role") &&
     sharingSql.includes("revoke all on function public.delete_expired_shared_puzzles() from anon"),
