@@ -22,10 +22,11 @@ function assert(condition, message) {
   }
 }
 
-const [indexHtml, manifestText, swJs, shareConfig, shareCloud, privateSharingDoc] = await Promise.all([
+const [indexHtml, manifestText, swJs, appJs, shareConfig, shareCloud, privateSharingDoc] = await Promise.all([
   read("index.html"),
   read("manifest.webmanifest"),
   read("sw.js"),
+  read("js/app.js"),
   read("js/share-config.js"),
   read("js/share-cloud.js"),
   read("docs/private-sharing.md")
@@ -70,9 +71,9 @@ assert(
   "share-cloud.js should normalize Supabase REST URLs"
 );
 assert(
-  indexHtml.includes("js/app.js?v=20260527-share5") &&
-    swJs.includes("/Piczzle/js/app.js?v=20260527-share5"),
-  "app.js cache version should be bumped after shared-puzzle runtime changes"
+  appJs.includes("function normalizeSharedSize(size)") &&
+    appJs.includes("startPuzzleFromImage(data.image,normalizeSharedSize(data.size)"),
+  "app.js should normalize incoming shared puzzle sizes"
 );
 assert(
   privateSharingDoc.includes("npm run verify:sharing"),
