@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:scaleX="0.66"
+        android:scaleY="0.66">
+    <group>
+        <clip-path
+            android:pathData="M33,20h17c0,7 4.6,11.4 10.5,11.4S71,27 71,20h6.5C84,20 89,25 89,31.5v17c7,0 11.4,4.6 11.4,10.5S96,69.5 89,69.5v6.5C89,82.5 84,87.5 77.5,87.5h-17c0,-7 -4.6,-11.4 -10.5,-11.4S39.5,80.5 39.5,87.5H33c-6.5,0 -11.5,-5 -11.5,-11.5v-17c-7,0 -11.4,-4.6 -11.4,-10.5S14.5,38 21.5,38v-6.5C21.5,25 26.5,20 33,20z" />
+        <path
+            android:fillColor="#32E6A3"
+            android:pathData="M18,18h43v43h-43z" />
+        <path
+            android:fillColor="#27CFFF"
+            android:pathData="M61,18h32v43h-32z" />
+        <path
+            android:fillColor="#FFD45A"
+            android:pathData="M18,61h43v32h-43z" />
+        <path
+            android:fillColor="#7D5CFF"
+            android:pathData="M61,61h32v32h-32z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.20"
+            android:pathData="M18,79L89,28v27L36,92H26c-4,0 -7,-4 -8,-13z" />
+    </group>
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M33,20h17c0,7 4.6,11.4 10.5,11.4S71,27 71,20h6.5C84,20 89,25 89,31.5v17c7,0 11.4,4.6 11.4,10.5S96,69.5 89,69.5v6.5C89,82.5 84,87.5 77.5,87.5h-17c0,-7 -4.6,-11.4 -10.5,-11.4S39.5,80.5 39.5,87.5H33c-6.5,0 -11.5,-5 -11.5,-11.5v-17c-7,0 -11.4,-4.6 -11.4,-10.5S14.5,38 21.5,38v-6.5C21.5,25 26.5,20 33,20z"
+        android:strokeColor="#172033"
+        android:strokeAlpha="0.96"
+        android:strokeWidth="5.2"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M33,20h17c0,7 4.6,11.4 10.5,11.4S71,27 71,20h6.5C84,20 89,25 89,31.5v17c7,0 11.4,4.6 11.4,10.5S96,69.5 89,69.5v6.5C89,82.5 84,87.5 77.5,87.5h-17c0,-7 -4.6,-11.4 -10.5,-11.4S39.5,80.5 39.5,87.5H33c-6.5,0 -11.5,-5 -11.5,-11.5v-17c-7,0 -11.4,-4.6 -11.4,-10.5S14.5,38 21.5,38v-6.5C21.5,25 26.5,20 33,20z"
+        android:strokeColor="#07101D"
+        android:strokeAlpha="0.44"
+        android:strokeWidth="1.8"
+        android:strokeLineJoin="round" />
+    </group>
+</vector>

@@ -10,3 +10,4 @@ release/
 android-share-fix-check.png
 
 # Capacitor native projects should be committed after they are generated.
+android/.idea/

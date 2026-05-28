@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#151D31</color>
+    <color name="colorPrimaryDark">#0B1020</color>
+    <color name="colorAccent">#27CFFF</color>
+    <color name="piczzle_splash_background">#0B1020</color>
+</resources>
