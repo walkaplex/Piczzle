@@ -2398,6 +2398,13 @@ h3 {
   display: block;
 }
 
+.testerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+}
+
 .textButton {
   appearance: none;
   justify-self: start;
@@ -2436,6 +2443,10 @@ h3 {
   color: rgba(247,249,255,.72);
   font-size: .82rem;
   line-height: 1.4;
+}
+
+.testPlanList {
+  gap: 8px;
 }
 
 @media (max-width: 850px) {
