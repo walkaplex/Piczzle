@@ -2377,6 +2377,18 @@ h3 {
   z-index: 80 !important;
 }
 
+.modalBg .modal {
+  position: relative;
+  z-index: 1;
+}
+
+.celebrationCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .btn:disabled,
 .btn[disabled] {
   cursor: not-allowed;
