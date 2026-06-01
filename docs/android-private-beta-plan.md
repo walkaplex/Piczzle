@@ -50,7 +50,7 @@ Before that stage, Piczzle should have:
 - Local upload-key signing variables configured outside Git.
 - Store listing basics: app name, short description, icon, screenshots, and contact email.
 - Privacy policy and basic terms text, especially because users can upload and share photos.
-- A small moderation/deletion plan for shared puzzle links.
+- Supabase updated with the service-role-only shared puzzle deletion helper.
 
 ## Current Recommendation
 

@@ -86,6 +86,7 @@ For a full smoke test:
 - Shared puzzles expire after 30 days.
 - Shared image payloads are capped in SQL so accidental huge uploads are rejected.
 - Expiration immediately blocks public reads through row-level security. Expired rows can be removed by running `select public.delete_expired_shared_puzzles();` with a service-role/admin connection.
+- Reported or unwanted puzzle links can be removed by running `select public.delete_shared_puzzle('PUZZLE_ID');` with a service-role/admin connection.
 - IDs are full UUID-style random values and unlisted.
 - The current tester reporting path asks testers to copy the puzzle link and include their device model when sending feedback manually. It is not a public moderation queue.
 - This is still an MVP. Before public release, add reporting, deletion, moderation policy, contact info, and blocking.

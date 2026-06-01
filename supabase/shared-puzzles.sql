@@ -68,3 +68,25 @@ revoke all on function public.delete_expired_shared_puzzles() from public;
 revoke all on function public.delete_expired_shared_puzzles() from anon;
 revoke all on function public.delete_expired_shared_puzzles() from authenticated;
 grant execute on function public.delete_expired_shared_puzzles() to service_role;
+
+create or replace function public.delete_shared_puzzle(puzzle_id text)
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  deleted_count integer;
+begin
+  delete from public.shared_puzzles
+  where id = puzzle_id;
+
+  get diagnostics deleted_count = row_count;
+  return deleted_count;
+end;
+$$;
+
+revoke all on function public.delete_shared_puzzle(text) from public;
+revoke all on function public.delete_shared_puzzle(text) from anon;
+revoke all on function public.delete_shared_puzzle(text) from authenticated;
+grant execute on function public.delete_shared_puzzle(text) to service_role;
