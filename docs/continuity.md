@@ -18,7 +18,7 @@ Use this file as the durable handoff when the chat context fills, an automation 
 - App focus: web-first photo puzzle app, packaged for Android through Capacitor.
 - Sharing status: Supabase-backed private puzzle links are integrated into the main app flow behind `Share Puzzle`.
 - Tester status: private Android debug packaging and tester handoff docs exist.
-- Latest known APK at handoff: `release/piczzle-debug-20260601-1559.apk`
+- Latest known APK at handoff: `release/piczzle-debug-20260601-1602.apk`
 - APK build commit: see the generated APK `.txt` or `.json` note.
 - Difference after that APK: none.
 
