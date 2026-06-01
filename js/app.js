@@ -94,6 +94,7 @@ function hasTraySelection(){
   return state.selected && state.selected.from==="tray";
 }
 function goHome(){
+  const shouldResetStartImage=state.shared||!state.img;
   el.modal.classList.remove("show");
   if(el.shareModal) el.shareModal.classList.remove("show");
   if(el.missingShareModal) el.missingShareModal.classList.remove("show");
@@ -108,9 +109,13 @@ function goHome(){
   state.hint=false;
   state.shared=false;
   stop();
-  draw();
-  setMobileStep("upload");
   if(new URLSearchParams(location.search).has("puzzle")) history.replaceState(null,"",location.pathname);
+  if(shouldResetStartImage){
+    loadDefaultStart();
+  }else{
+    draw();
+    setMobileStep("upload");
+  }
   window.scrollTo({top:0,behavior:"smooth"});
 }
 function hideHintAfterMove(){
