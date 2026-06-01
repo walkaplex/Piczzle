@@ -227,6 +227,10 @@ async function copyShareLink(){
 async function sendShareLink(){
   if(!el.shareLink)return;
   const url=el.shareLink.value;
+  if(window.PiczzleAndroid&&typeof window.PiczzleAndroid.shareLink==="function"){
+    const result=window.PiczzleAndroid.shareLink(url);
+    if(result==="shared")return;
+  }
   if(navigator.share){
     try{
       await navigator.share({title:"Piczzle",text:"I made you a puzzle. Solve it to reveal the photo.",url});

@@ -3,6 +3,7 @@ package com.walkaplex.piczzle;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -37,6 +38,23 @@ public class MainActivity extends BridgeActivity {
 
         PiczzleAndroidBridge(Context context) {
             this.context = context;
+        }
+
+        @JavascriptInterface
+        public String shareLink(String url) {
+            try {
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Piczzle");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "I made you a puzzle. Solve it to reveal the photo.\n\n" + url);
+
+                Intent chooser = Intent.createChooser(sendIntent, "Share Piczzle");
+                chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(chooser);
+                return "shared";
+            } catch (Exception error) {
+                return "error:" + error.getClass().getSimpleName();
+            }
         }
 
         @JavascriptInterface
