@@ -1,4 +1,4 @@
-const CACHE_NAME = "piczzle-app-v14";
+const CACHE_NAME = "piczzle-app-v15";
 const APP_SHELL = [
   "/Piczzle/",
   "/Piczzle/index.html",
@@ -7,7 +7,7 @@ const APP_SHELL = [
   "/Piczzle/js/native.js?v=20260520",
   "/Piczzle/js/share-config.js?v=20260527",
   "/Piczzle/js/share-cloud.js?v=20260527-cloud2",
-  "/Piczzle/js/app.js?v=20260601-share-sheet",
+  "/Piczzle/js/app.js?v=20260601-random-splash",
   "/Piczzle/js/completion-actions.js?v=20260601-complete3",
   "/Piczzle/js/share-feedback.js?v=20260528-feedback1",
   "/Piczzle/js/save-image.js?v=20260528-save2",
@@ -20,6 +20,8 @@ const APP_SHELL = [
   "/Piczzle/assets/demo-landscape.png",
   "/Piczzle/assets/demo-challenge.png",
   "/Piczzle/assets/demo-splash.png",
+  "/Piczzle/assets/demo-splash2.png",
+  "/Piczzle/assets/demo-splash3.png",
   "/Piczzle/manifest.webmanifest",
   "/Piczzle/piczzle-preview.png"
 ];

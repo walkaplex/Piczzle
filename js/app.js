@@ -1,4 +1,4 @@
-(()=>{const DEMO="assets/demo-splash.png";const $=id=>document.getElementById(id);const native=window.PiczzleNative||{};const el={app:$("app"),file:$("fileInput"),camera:$("cameraBtn"),demo:$("demoBtn"),source:$("sourcePreview"),cropImg:$("cropImg"),cropStage:$("cropStage"),zoom:$("zoomRange"),create:$("createBtn"),shareBtn:$("shareBtn"),newBtn:$("newBtn"),shareModal:$("shareModal"),shareModalTitle:$("shareModalTitle"),shareModalMessage:$("shareModalMessage"),shareFinePrint:$("shareFinePrint"),missingShareModal:$("missingShareModal"),missingShareClose:$("missingShareCloseBtn"),shareLink:$("shareLink"),sendShare:$("sendShareBtn"),copyShare:$("copyShareBtn"),openShare:$("openShareBtn"),closeShare:$("closeShareBtn"),board:$("board"),tray:$("tray"),time:$("timeStat"),moves:$("movesStat"),left:$("leftStat"),size:$("sizeStat"),select:$("selectText"),toast:$("toast"),modal:$("modal"),modalTitle:$("modalTitle"),modalMessage:$("modalMessage"),again:$("againBtn"),close:$("closeBtn")};const state={src:DEMO,size:4,cropX:0,cropY:0,zoom:1,minZoom:1,img:null,pieces:[],board:[],tray:[],selected:null,moves:0,time:0,timer:null,solved:false,hint:false,shared:false,dragging:false,lastX:0,lastY:0,baseScale:1,square:DEMO,drag:null,cropRatio:4/3,outW:1200,outH:900};const SHARE_PREFIX="piczzle.share.";function tap(){if(native.selection)native.selection()}function impact(){if(native.lightImpact)native.lightImpact()}function success(){if(native.success)native.success()}function toast(t){el.toast.textContent=t;el.toast.classList.add("show");clearTimeout(state.tt);state.tt=setTimeout(()=>el.toast.classList.remove("show"),1700)}
+(()=>{const DEMO="assets/demo-splash.png";const DEMO_SPLASHES=[DEMO,"assets/demo-splash2.png","assets/demo-splash3.png"];const $=id=>document.getElementById(id);const native=window.PiczzleNative||{};const el={app:$("app"),file:$("fileInput"),camera:$("cameraBtn"),demo:$("demoBtn"),source:$("sourcePreview"),cropImg:$("cropImg"),cropStage:$("cropStage"),zoom:$("zoomRange"),create:$("createBtn"),shareBtn:$("shareBtn"),newBtn:$("newBtn"),shareModal:$("shareModal"),shareModalTitle:$("shareModalTitle"),shareModalMessage:$("shareModalMessage"),shareFinePrint:$("shareFinePrint"),missingShareModal:$("missingShareModal"),missingShareClose:$("missingShareCloseBtn"),shareLink:$("shareLink"),sendShare:$("sendShareBtn"),copyShare:$("copyShareBtn"),openShare:$("openShareBtn"),closeShare:$("closeShareBtn"),board:$("board"),tray:$("tray"),time:$("timeStat"),moves:$("movesStat"),left:$("leftStat"),size:$("sizeStat"),select:$("selectText"),toast:$("toast"),modal:$("modal"),modalTitle:$("modalTitle"),modalMessage:$("modalMessage"),again:$("againBtn"),close:$("closeBtn")};const state={src:DEMO,size:4,cropX:0,cropY:0,zoom:1,minZoom:1,img:null,pieces:[],board:[],tray:[],selected:null,moves:0,time:0,timer:null,solved:false,hint:false,shared:false,dragging:false,lastX:0,lastY:0,baseScale:1,square:DEMO,drag:null,cropRatio:4/3,outW:1200,outH:900};const SHARE_PREFIX="piczzle.share.";function tap(){if(native.selection)native.selection()}function impact(){if(native.lightImpact)native.lightImpact()}function success(){if(native.success)native.success()}function toast(t){el.toast.textContent=t;el.toast.classList.add("show");clearTimeout(state.tt);state.tt=setTimeout(()=>el.toast.classList.remove("show"),1700)}
 function setMobileStep(step){
   const panel=document.querySelector(".panel");
   if(!panel)return;
@@ -368,14 +368,26 @@ if (topPlay) topPlay.onclick = () => {
 
 function loadDefaultStart(){
   setSize(4);
-  state.src=DEMO;
-  el.source.src=DEMO;
-  el.cropImg.src=DEMO;
-  load(DEMO).then(img=>{
+  const candidates=shuffle(DEMO_SPLASHES);
+  const startImage=list=>{
+    const src=list.shift()||DEMO;
+    return load(src).then(img=>({img,src})).catch(()=>list.length?startImage(list):load(DEMO).then(img=>({img,src:DEMO})));
+  };
+  const src=candidates[0]||DEMO;
+  state.src=src;
+  el.source.src=src;
+  el.cropImg.src=src;
+  startImage(candidates).then(result=>{
+    const img=result.img;
+    if(result.src!==src){
+      state.src=result.src;
+      el.source.src=result.src;
+      el.cropImg.src=result.src;
+    }
     state.img=img;
     draw();
     setMobileStep("upload");
-  });
+  }).catch(()=>{});
 }
 function showMissingSharedPuzzle(){
   loadDefaultStart();
