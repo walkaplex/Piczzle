@@ -1,4 +1,4 @@
-const CACHE_NAME = "piczzle-app-v18";
+const CACHE_NAME = "piczzle-app-v19";
 const APP_SHELL = [
   "/Piczzle/",
   "/Piczzle/index.html",
@@ -23,7 +23,7 @@ const APP_SHELL = [
   "/Piczzle/assets/demo-splash2.png",
   "/Piczzle/assets/demo-splash3.png",
   "/Piczzle/manifest.webmanifest",
-  "/Piczzle/piczzle-preview.png"
+  "/Piczzle/piczzle-preview.png?v=20260601-preview"
 ];
 
 self.addEventListener("install", event => {
