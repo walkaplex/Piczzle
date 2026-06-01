@@ -2382,6 +2382,27 @@ h3 {
   z-index: 1;
 }
 
+.modalActions {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.modalActions .btn.secondary {
+  margin-top: 0;
+  padding-inline: 10px;
+}
+
+.completionSecondary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.completionSecondary #saveImageBtn {
+  grid-column: 1 / -1;
+}
+
 .celebrationCanvas {
   position: absolute;
   inset: 0;
