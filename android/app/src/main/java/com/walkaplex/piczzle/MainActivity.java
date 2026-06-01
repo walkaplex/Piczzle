@@ -17,6 +17,10 @@ import android.webkit.JavascriptInterface;
 
 import com.getcapacitor.BridgeActivity;
 
+import androidx.core.content.FileProvider;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 public class MainActivity extends BridgeActivity {
@@ -41,20 +45,47 @@ public class MainActivity extends BridgeActivity {
         }
 
         @JavascriptInterface
-        public String shareLink(String url) {
+        public String shareLink(String url, String dataUrl) {
             try {
                 Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                sendIntent.setType("text/plain");
                 sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Piczzle");
                 sendIntent.putExtra(Intent.EXTRA_TEXT, "I made you a puzzle. Solve it to reveal the photo.\n\n" + url);
 
+                Uri imageUri = previewImageUri(dataUrl);
+                if (imageUri != null) {
+                    sendIntent.setType("image/jpeg");
+                    sendIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+                    sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                } else {
+                    sendIntent.setType("text/plain");
+                }
+
                 Intent chooser = Intent.createChooser(sendIntent, "Share Piczzle");
                 chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                chooser.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 context.startActivity(chooser);
                 return "shared";
             } catch (Exception error) {
                 return "error:" + error.getClass().getSimpleName();
             }
+        }
+
+        private Uri previewImageUri(String dataUrl) throws Exception {
+            if (dataUrl == null || dataUrl.length() == 0) return null;
+
+            int comma = dataUrl.indexOf(',');
+            String base64 = comma >= 0 ? dataUrl.substring(comma + 1) : dataUrl;
+            byte[] imageBytes = Base64.decode(base64, Base64.DEFAULT);
+
+            File shareDir = new File(context.getCacheDir(), "shared");
+            if (!shareDir.exists() && !shareDir.mkdirs()) return null;
+
+            File imageFile = new File(shareDir, "piczzle-share-preview.jpg");
+            try (FileOutputStream out = new FileOutputStream(imageFile)) {
+                out.write(imageBytes);
+            }
+
+            return FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", imageFile);
         }
 
         @JavascriptInterface
