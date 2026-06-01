@@ -76,6 +76,8 @@ On this Windows setup, `npm run android:doctor` checks the Android build environ
 
 Use [`docs/tester-handoff.md`](docs/tester-handoff.md) before sending a private build to testers.
 
+Use [`docs/android-private-beta-plan.md`](docs/android-private-beta-plan.md) for the current debug-APK rollout path and the later Play Store internal testing path.
+
 If a chat or automation loses context, start from [`docs/continuity.md`](docs/continuity.md).
 
 ## Private sharing

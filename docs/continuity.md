@@ -13,13 +13,13 @@ Use this file as the durable handoff when the chat context fills, an automation 
 ## Current State
 
 - Branch: `main`
-- Latest known commit at handoff: `a905a7c0 Point handoff at current tester APK`
+- Latest known app-code commit at handoff: see the generated APK `.txt` or `.json` note.
 - Working tree at handoff: clean
 - App focus: web-first photo puzzle app, packaged for Android through Capacitor.
 - Sharing status: Supabase-backed private puzzle links are integrated into the main app flow behind `Share Puzzle`.
 - Tester status: private Android debug packaging and tester handoff docs exist.
 - Latest known APK at handoff: `release/piczzle-debug-20260601-1555.apk`
-- APK build commit: `a905a7c0 Point handoff at current tester APK`
+- APK build commit: see the generated APK `.txt` or `.json` note.
 - Difference after that APK: none.
 
 ## What Is Ready
@@ -36,6 +36,7 @@ Use this file as the durable handoff when the chat context fills, an automation 
 - Tester docs:
   - `docs/tester-handoff.md`
   - `docs/tester-report-template.md`
+  - `docs/android-private-beta-plan.md`
 - Sharing docs:
   - `docs/private-sharing.md`
 - Native setup docs:
