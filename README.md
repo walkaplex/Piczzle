@@ -64,6 +64,8 @@ Create a shareable private-test APK copy in `release/`:
 npm run android:package
 ```
 
+For repeat Android tester uploads, set `PICZZLE_VERSION_CODE` and `PICZZLE_VERSION_NAME` before packaging. See [`docs/native-app.md`](docs/native-app.md).
+
 Capture the current emulator screen into `preview/`:
 
 ```sh

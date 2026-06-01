@@ -73,6 +73,16 @@ The packaged APK and `.sha256` checksum are written to the ignored `release/` fo
 
 Before sending that APK to anyone, use the checklist in [`tester-handoff.md`](tester-handoff.md).
 
+For private debug builds, the Android version defaults to `versionCode 1` and `versionName 1.0`. When preparing repeat tester uploads, override them without editing Gradle:
+
+```powershell
+$env:PICZZLE_VERSION_CODE='2'
+$env:PICZZLE_VERSION_NAME='1.0-beta2'
+npm run android:package
+```
+
+Google Play uploads require each new release to use a higher version code.
+
 To save the current emulator screen into the ignored `preview/` folder:
 
 ```sh
