@@ -61,6 +61,7 @@ Tell testers:
 - This is a private debug build, not a store release.
 - Android may warn that the app came from an unknown source.
 - They should try their own photos if they are comfortable doing so.
+- They can review the current privacy note at `https://walkaplex.github.io/Piczzle/privacy.html`.
 - They should report screenshots, device model, and what they tapped before any issue.
 - If a shared puzzle looks wrong, they should copy the puzzle link and include it with their report.
 - For structured bug reports, use [`tester-report-template.md`](tester-report-template.md).
