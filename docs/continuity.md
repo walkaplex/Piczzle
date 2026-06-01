@@ -13,13 +13,13 @@ Use this file as the durable handoff when the chat context fills, an automation 
 ## Current State
 
 - Branch: `main`
-- Latest known commit at handoff: `0a8b2dcd Tighten social preview metadata`
+- Latest known commit at handoff: `031fbb41 Avoid selecting share link on copy`
 - Working tree at handoff: clean
 - App focus: web-first photo puzzle app, packaged for Android through Capacitor.
 - Sharing status: Supabase-backed private puzzle links are integrated into the main app flow behind `Share Puzzle`.
 - Tester status: private Android debug packaging and tester handoff docs exist.
-- Latest known APK at handoff: `release/piczzle-debug-20260601-1525.apk`
-- APK build commit: `0a8b2dcd Tighten social preview metadata`
+- Latest known APK at handoff: `release/piczzle-debug-20260601-1550.apk`
+- APK build commit: `031fbb41 Avoid selecting share link on copy`
 - Difference after that APK: none.
 
 ## What Is Ready
