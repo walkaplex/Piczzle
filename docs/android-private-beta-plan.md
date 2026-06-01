@@ -4,8 +4,8 @@ Use this as the practical path from the current private APK to a smoother outsid
 
 ## Current Test Build
 
-- Current APK: `release/piczzle-debug-20260601-1602.apk`
-- Build note: `release/piczzle-debug-20260601-1602.txt`
+- Current APK: `release/piczzle-debug-20260601-1608.apk`
+- Build note: `release/piczzle-debug-20260601-1608.txt`
 - Build commit: see the generated `.txt` or `.json` note beside the APK.
 - Status: ready for a small trusted Android test group after the handoff checklist is completed.
 
