@@ -45,7 +45,9 @@ The generated `.txt` note is meant to travel with the APK. It includes the branc
 - Tap `Start` and confirm it returns to the home screen.
 - Create a `Share Puzzle` link.
 - Confirm the share modal explains that testers should copy the link and include their device model with any report.
+- Tap `Share Link` and confirm Android opens the platform sharing options.
 - Tap `Copy Link` and confirm the button briefly changes to `Link Copied`.
+- Treat missing or stale message-preview thumbnails as a known non-blocker if the shared puzzle URL itself opens.
 - Open the shared puzzle link and confirm it starts in play mode.
 - Solve the shared puzzle and confirm `Send One Back` appears.
 - Check that the home screen icon and launch splash still look correct.

@@ -13,13 +13,13 @@ Use this file as the durable handoff when the chat context fills, an automation 
 ## Current State
 
 - Branch: `main`
-- Latest known commit at handoff: `fa092cb0 Add start escape from completed puzzle view`
+- Latest known commit at handoff: `0a8b2dcd Tighten social preview metadata`
 - Working tree at handoff: clean
 - App focus: web-first photo puzzle app, packaged for Android through Capacitor.
 - Sharing status: Supabase-backed private puzzle links are integrated into the main app flow behind `Share Puzzle`.
 - Tester status: private Android debug packaging and tester handoff docs exist.
-- Latest known APK at handoff: `release/piczzle-debug-20260601-1053.apk`
-- APK build commit: `fa092cb0 Add start escape from completed puzzle view`
+- Latest known APK at handoff: `release/piczzle-debug-20260601-1525.apk`
+- APK build commit: `0a8b2dcd Tighten social preview metadata`
 - Difference after that APK: none.
 
 ## What Is Ready
@@ -47,6 +47,10 @@ Use this file as the durable handoff when the chat context fills, an automation 
 2. Send the newest APK plus its generated `.txt` notes to a small trusted tester group.
 3. Collect tester feedback using `docs/tester-report-template.md`.
 4. Before public release, add reporting, deletion/moderation controls, blocking or abuse handling, public terms/privacy text, and clear contact information.
+
+## Known Non-Blockers
+
+- Social/message preview thumbnails are inconsistent across receiving apps and app caches. Piczzle exposes a valid generic `piczzle-preview.png` through Open Graph/Twitter metadata, but preview rendering should not block private Android testing as long as shared links open the puzzle.
 
 ## Automation Style
 
