@@ -1,4 +1,4 @@
-const CACHE_NAME = "piczzle-app-v15";
+const CACHE_NAME = "piczzle-app-v16";
 const APP_SHELL = [
   "/Piczzle/",
   "/Piczzle/index.html",
@@ -10,7 +10,7 @@ const APP_SHELL = [
   "/Piczzle/js/app.js?v=20260601-random-splash",
   "/Piczzle/js/completion-actions.js?v=20260601-complete3",
   "/Piczzle/js/share-feedback.js?v=20260528-feedback1",
-  "/Piczzle/js/save-image.js?v=20260528-save2",
+  "/Piczzle/js/save-image.js?v=20260601-ios-share",
   "/Piczzle/js/celebration.js?v=20260528-fireworks1",
   "/Piczzle/js/pwa.js?v=20260527-cache",
   "/Piczzle/assets/app-icon.svg",

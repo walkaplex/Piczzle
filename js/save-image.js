@@ -88,6 +88,20 @@
       }
 
       const blob = await canvasToBlob(canvas);
+      const file = new File([blob], filename, { type: "image/jpeg" });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
+        saveButton.textContent = "Choose Save Option";
+        await navigator.share({
+          files: [file],
+          title: "Piczzle",
+          text: "My completed Piczzle"
+        });
+        saveButton.textContent = "Image Ready";
+        showToast("Choose Save Image in the share sheet");
+        return;
+      }
+
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -97,7 +111,7 @@
       link.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1500);
       saveButton.textContent = "Image Saved";
-      showToast("Image saved");
+      showToast("Image downloaded");
     } catch (_) {
       saveButton.textContent = "Save Unavailable";
       showToast("Solve the puzzle before saving");
