@@ -185,7 +185,6 @@ async function sharePuzzle(){
   const image=cloud&&cloud.isReady()?await compactShareImage(await cropSquare()):await cropSquare();
   const id=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2,14);
   const data={id,image,size:state.size,createdAt:new Date().toISOString(),v:1};
-  state.lastShareImage=image;
   let link=shareUrl(id);
   let message="Share preview saved";
   let cloudSaved=false;
@@ -229,7 +228,7 @@ async function sendShareLink(){
   if(!el.shareLink)return;
   const url=el.shareLink.value;
   if(window.PiczzleAndroid&&typeof window.PiczzleAndroid.shareLink==="function"){
-    const result=window.PiczzleAndroid.shareLink(url,state.lastShareImage||"");
+    const result=window.PiczzleAndroid.shareLink(url);
     if(result==="shared")return;
   }
   if(navigator.share){
