@@ -1,4 +1,4 @@
-const CACHE_NAME = "piczzle-app-v13";
+const CACHE_NAME = "piczzle-app-v14";
 const APP_SHELL = [
   "/Piczzle/",
   "/Piczzle/index.html",
