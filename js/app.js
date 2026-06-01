@@ -216,11 +216,12 @@ async function sharePuzzle(){
 }
 async function copyShareLink(){
   if(!el.shareLink)return;
-  el.shareLink.select();
   try{
     await navigator.clipboard.writeText(el.shareLink.value);
   }catch(_){
+    el.shareLink.select();
     document.execCommand("copy");
+    el.shareLink.blur();
   }
   toast("Link copied");
 }
