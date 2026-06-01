@@ -2,6 +2,11 @@ apply plugin: 'com.android.application'
 
 def piczzleVersionCode = (project.findProperty('PICZZLE_VERSION_CODE') ?: System.getenv('PICZZLE_VERSION_CODE') ?: '1') as Integer
 def piczzleVersionName = (project.findProperty('PICZZLE_VERSION_NAME') ?: System.getenv('PICZZLE_VERSION_NAME') ?: '1.0').toString()
+def piczzleKeystorePath = project.findProperty('PICZZLE_UPLOAD_KEYSTORE') ?: System.getenv('PICZZLE_UPLOAD_KEYSTORE')
+def piczzleKeystorePassword = project.findProperty('PICZZLE_UPLOAD_KEYSTORE_PASSWORD') ?: System.getenv('PICZZLE_UPLOAD_KEYSTORE_PASSWORD')
+def piczzleKeyAlias = project.findProperty('PICZZLE_UPLOAD_KEY_ALIAS') ?: System.getenv('PICZZLE_UPLOAD_KEY_ALIAS')
+def piczzleKeyPassword = project.findProperty('PICZZLE_UPLOAD_KEY_PASSWORD') ?: System.getenv('PICZZLE_UPLOAD_KEY_PASSWORD')
+def piczzleHasReleaseSigning = piczzleKeystorePath && piczzleKeystorePassword && piczzleKeyAlias && piczzleKeyPassword
 
 android {
     namespace = "com.walkaplex.piczzle"
@@ -19,8 +24,21 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            if (piczzleHasReleaseSigning) {
+                storeFile file(piczzleKeystorePath)
+                storePassword piczzleKeystorePassword
+                keyAlias piczzleKeyAlias
+                keyPassword piczzleKeyPassword
+            }
+        }
+    }
     buildTypes {
         release {
+            if (piczzleHasReleaseSigning) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

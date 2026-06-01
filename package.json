@@ -11,6 +11,7 @@
     "verify:public": "node scripts/verify-public-site.mjs",
     "android:doctor": "node scripts/android-doctor.mjs",
     "android:debug": "node scripts/build-android-debug.mjs",
+    "android:release": "node scripts/build-android-release.mjs",
     "android:run": "node scripts/run-android-debug.mjs",
     "android:package": "node scripts/package-android-debug.mjs",
     "android:screenshot": "node scripts/android-screenshot.mjs",

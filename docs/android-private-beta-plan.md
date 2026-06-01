@@ -47,6 +47,7 @@ Before that stage, Piczzle should have:
 - A release-signed Android build instead of a debug APK.
 - Final app id confirmation: `com.walkaplex.piczzle`.
 - Incremented Android version codes for repeat uploads.
+- Local upload-key signing variables configured outside Git.
 - Store listing basics: app name, short description, icon, screenshots, and contact email.
 - Privacy policy and basic terms text, especially because users can upload and share photos.
 - A small moderation/deletion plan for shared puzzle links.

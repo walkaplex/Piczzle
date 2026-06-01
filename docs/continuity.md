@@ -30,6 +30,7 @@ Use this file as the durable handoff when the chat context fills, an automation 
 - Android helper scripts:
   - `npm.cmd run android:doctor`
   - `npm.cmd run android:debug`
+  - `npm.cmd run android:release`
   - `npm.cmd run android:run`
   - `npm.cmd run android:package`
   - `npm.cmd run android:screenshot`

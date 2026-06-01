@@ -55,6 +55,20 @@ npm run android:debug
 
 The APK is created at `android/app/build/outputs/apk/debug/app-debug.apk`.
 
+To build a signed Android App Bundle for Play Console internal testing, configure the local upload-key environment variables first:
+
+```powershell
+$env:PICZZLE_UPLOAD_KEYSTORE='C:\path\to\piczzle-upload-key.jks'
+$env:PICZZLE_UPLOAD_KEYSTORE_PASSWORD='local-keystore-password'
+$env:PICZZLE_UPLOAD_KEY_ALIAS='piczzle-upload'
+$env:PICZZLE_UPLOAD_KEY_PASSWORD='local-key-password'
+$env:PICZZLE_VERSION_CODE='2'
+$env:PICZZLE_VERSION_NAME='1.0-beta2'
+npm run android:release
+```
+
+The release bundle is created at `android/app/build/outputs/bundle/release/app-release.aab`. Do not commit the keystore, passwords, or local signing files.
+
 To build, install, and launch Piczzle on a running emulator:
 
 ```sh

@@ -52,6 +52,12 @@ Build the Android debug APK:
 npm run android:debug
 ```
 
+Build a signed Android release bundle after local signing variables are configured:
+
+```sh
+npm run android:release
+```
+
 Build, install, and launch on a running Android emulator:
 
 ```sh
