@@ -13,14 +13,14 @@ Use this file as the durable handoff when the chat context fills, an automation 
 ## Current State
 
 - Branch: `main`
-- Latest known commit at handoff: `1c85aa5 Add public check to tester handoff`
+- Latest known commit at handoff: `fa092cb0 Add start escape from completed puzzle view`
 - Working tree at handoff: clean
 - App focus: web-first photo puzzle app, packaged for Android through Capacitor.
 - Sharing status: Supabase-backed private puzzle links are integrated into the main app flow behind `Share Puzzle`.
 - Tester status: private Android debug packaging and tester handoff docs exist.
-- Latest known APK at handoff: `release/piczzle-debug-20260528-0131.apk`
-- APK build commit: `0b37471 Add tester report template`
-- Difference after that APK: documentation-only tester handoff update at `1c85aa5`.
+- Latest known APK at handoff: `release/piczzle-debug-20260601-1053.apk`
+- APK build commit: `fa092cb0 Add start escape from completed puzzle view`
+- Difference after that APK: none.
 
 ## What Is Ready
 
@@ -43,11 +43,10 @@ Use this file as the durable handoff when the chat context fills, an automation 
 
 ## Recommended Next Decisions
 
-1. Re-package Android from the exact current commit so APK metadata matches `HEAD`.
-2. Run the tester handoff checklist on an emulator.
-3. Send the newest APK plus its generated `.txt` notes to a small trusted tester group.
-4. Collect tester feedback using `docs/tester-report-template.md`.
-5. Before public release, add reporting, deletion/moderation controls, blocking or abuse handling, public terms/privacy text, and clear contact information.
+1. Run the tester handoff checklist on an emulator.
+2. Send the newest APK plus its generated `.txt` notes to a small trusted tester group.
+3. Collect tester feedback using `docs/tester-report-template.md`.
+4. Before public release, add reporting, deletion/moderation controls, blocking or abuse handling, public terms/privacy text, and clear contact information.
 
 ## Automation Style
 

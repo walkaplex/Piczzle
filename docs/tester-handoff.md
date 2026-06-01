@@ -40,6 +40,9 @@ The generated `.txt` note is meant to travel with the APK. It includes the branc
 - Use `Hint`, then place a piece and confirm the hint turns off.
 - Use `Restart`.
 - Use `Solve`.
+- On the completion popup, tap `View Puzzle`.
+- Confirm the completed puzzle remains visible and the bottom-right tool button says `Start`.
+- Tap `Start` and confirm it returns to the home screen.
 - Create a `Share Puzzle` link.
 - Confirm the share modal explains that testers should copy the link and include their device model with any report.
 - Tap `Copy Link` and confirm the button briefly changes to `Link Copied`.
