@@ -49,6 +49,7 @@ Before that stage, Piczzle should have:
 - Incremented Android version codes for repeat uploads.
 - Local upload-key signing variables configured outside Git.
 - Store listing basics: app name, short description, icon, screenshots, and contact email.
+- Play listing draft: [`play-store-listing-draft.md`](play-store-listing-draft.md).
 - Public privacy page: `https://walkaplex.github.io/Piczzle/privacy.html`.
 - Public support email and final terms text.
 - Supabase updated with the service-role-only shared puzzle deletion helper.

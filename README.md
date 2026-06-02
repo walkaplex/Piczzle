@@ -86,6 +86,8 @@ Use [`docs/tester-handoff.md`](docs/tester-handoff.md) before sending a private 
 
 Use [`docs/android-private-beta-plan.md`](docs/android-private-beta-plan.md) for the current debug-APK rollout path and the later Play Store internal testing path.
 
+Use [`docs/play-store-listing-draft.md`](docs/play-store-listing-draft.md) for Play Console listing copy and screenshot planning.
+
 If a chat or automation loses context, start from [`docs/continuity.md`](docs/continuity.md).
 
 ## Private sharing

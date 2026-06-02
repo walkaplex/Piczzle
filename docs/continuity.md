@@ -42,6 +42,8 @@ Use this file as the durable handoff when the chat context fills, an automation 
   - `docs/private-sharing.md`
 - Native setup docs:
   - `docs/native-app.md`
+- Store listing draft:
+  - `docs/play-store-listing-draft.md`
 
 ## Recommended Next Decisions
 
