@@ -2405,6 +2405,12 @@ h3 {
   color: var(--text);
 }
 
+@media (max-width: 850px) {
+  .appFooter {
+    display: none;
+  }
+}
+
 .legalPage {
   max-width: 860px;
 }
