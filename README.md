@@ -28,6 +28,12 @@ Check the public GitHub Pages deployment when needed:
 npm run verify:public
 ```
 
+Check Play/internal-test readiness:
+
+```sh
+npm run verify:play
+```
+
 Check the local Android build setup:
 
 ```sh

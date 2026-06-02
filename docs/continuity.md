@@ -27,6 +27,7 @@ Use this file as the durable handoff when the chat context fills, an automation 
 - Local verification scripts:
   - `npm.cmd run verify`
   - `npm.cmd run verify:public`
+  - `npm.cmd run verify:play`
 - Android helper scripts:
   - `npm.cmd run android:doctor`
   - `npm.cmd run android:debug`

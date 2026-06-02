@@ -44,6 +44,7 @@ For a Play Store-like tester experience, the next stage is a Google Play Console
 
 Before that stage, Piczzle should have:
 
+- Play readiness check run with `npm run verify:play`.
 - A release-signed Android build instead of a debug APK.
 - Final app id confirmation: `com.walkaplex.piczzle`.
 - Incremented Android version codes for repeat uploads.

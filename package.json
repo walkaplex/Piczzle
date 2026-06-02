@@ -9,6 +9,7 @@
     "verify:sharing": "node scripts/verify-sharing-config.mjs",
     "verify:native": "npm run build && node scripts/verify-native-package.mjs",
     "verify:public": "node scripts/verify-public-site.mjs",
+    "verify:play": "node scripts/verify-play-readiness.mjs",
     "android:doctor": "node scripts/android-doctor.mjs",
     "android:debug": "node scripts/build-android-debug.mjs",
     "android:release": "node scripts/build-android-release.mjs",
