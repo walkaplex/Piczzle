@@ -8,7 +8,7 @@ Use this as the starting copy and checklist for Google Play internal testing and
 - App id: `com.walkaplex.piczzle`
 - Category: Game / Puzzle
 - Current privacy URL: `https://walkaplex.github.io/Piczzle/privacy.html`
-- Support email: pending
+- Support email: `piczzle.support@gmail.com`
 - Website: `https://walkaplex.github.io/Piczzle/`
 
 ## Short Description
@@ -55,7 +55,7 @@ Before uploading:
 - Build a signed `.aab` with `npm run android:release`.
 - Increment `PICZZLE_VERSION_CODE`.
 - Confirm the privacy page is public.
-- Add a real support email.
+- Confirm `piczzle.support@gmail.com` is monitored for tester and support messages.
 - Confirm shared puzzle deletion/moderation process is available in Supabase.
 
 ## Content Notes
