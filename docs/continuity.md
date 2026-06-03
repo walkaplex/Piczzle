@@ -30,6 +30,7 @@ Use this file as the durable handoff when the chat context fills, an automation 
   - `npm.cmd run verify:play`
 - Android helper scripts:
   - `npm.cmd run android:doctor`
+  - `npm.cmd run android:create-upload-key`
   - `npm.cmd run android:debug`
   - `npm.cmd run android:release`
   - `npm.cmd run android:run`

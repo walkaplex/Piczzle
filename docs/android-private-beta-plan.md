@@ -48,6 +48,7 @@ Before that stage, Piczzle should have:
 - A release-signed Android build instead of a debug APK.
 - Final app id confirmation: `com.walkaplex.piczzle`.
 - Incremented Android version codes for repeat uploads.
+- Local upload key created with `npm run android:create-upload-key`.
 - Local upload-key signing variables configured outside Git.
 - Store listing basics: app name, short description, icon, screenshots, and contact email.
 - Play listing draft: [`play-store-listing-draft.md`](play-store-listing-draft.md).

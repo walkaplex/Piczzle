@@ -9,6 +9,12 @@ preview/
 release/
 android-share-fix-check.png
 
+# Local Android signing secrets. Never commit these.
+secrets/
+*.jks
+*.keystore
+*.p12
+
 # Capacitor native projects should be committed after they are generated.
 android/.idea/
 

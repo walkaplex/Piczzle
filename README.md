@@ -40,6 +40,12 @@ Check the local Android build setup:
 npm run android:doctor
 ```
 
+Create a local Android upload key for Play release builds:
+
+```sh
+npm run android:create-upload-key
+```
+
 Prepare the native web bundle:
 
 ```sh

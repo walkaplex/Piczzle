@@ -57,8 +57,20 @@ The APK is created at `android/app/build/outputs/apk/debug/app-debug.apk`.
 
 To build a signed Android App Bundle for Play Console internal testing, configure the local upload-key environment variables first:
 
+Create the upload key once, using passwords you keep outside Git:
+
 ```powershell
-$env:PICZZLE_UPLOAD_KEYSTORE='C:\path\to\piczzle-upload-key.jks'
+$env:PICZZLE_UPLOAD_KEYSTORE_PASSWORD='choose-a-strong-local-password'
+$env:PICZZLE_UPLOAD_KEY_PASSWORD='choose-a-strong-local-password'
+npm run android:create-upload-key
+```
+
+By default, this writes `secrets/piczzle-upload-key.jks`. The `secrets/` folder and common keystore formats are ignored by Git. Keep a backup of the upload key and passwords somewhere safe; losing them can block future Play updates.
+
+Then configure release build variables:
+
+```powershell
+$env:PICZZLE_UPLOAD_KEYSTORE='C:\Users\walkm\Downloads\Piczzle-live\secrets\piczzle-upload-key.jks'
 $env:PICZZLE_UPLOAD_KEYSTORE_PASSWORD='local-keystore-password'
 $env:PICZZLE_UPLOAD_KEY_ALIAS='piczzle-upload'
 $env:PICZZLE_UPLOAD_KEY_PASSWORD='local-key-password'
