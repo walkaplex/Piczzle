@@ -2415,9 +2415,14 @@ h3 {
   max-width: 860px;
 }
 
+.testerInvitePage {
+  max-width: 920px;
+}
+
 .legalCard {
   display: block;
   line-height: 1.65;
+  padding: 28px;
 }
 
 .legalCard h2,
@@ -2433,14 +2438,19 @@ h3 {
   margin: 0 0 18px;
 }
 
+.testerInviteCard {
+  padding: 28px;
+  overflow: hidden;
+}
+
 .inviteHero {
   border: 1px solid rgba(255,255,255,.12);
   background:
     linear-gradient(135deg, rgba(125,92,255,.22), rgba(39,207,255,.16)),
     rgba(255,255,255,.04);
-  border-radius: 20px;
-  padding: 22px;
-  margin-bottom: 20px;
+  border-radius: 24px;
+  padding: 28px;
+  margin-bottom: 22px;
 }
 
 .inviteHero span {
@@ -2462,6 +2472,64 @@ h3 {
   margin: 0;
 }
 
+.downloadPanel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid rgba(39,207,255,.22);
+  background:
+    linear-gradient(135deg, rgba(39,207,255,.12), rgba(125,92,255,.12)),
+    rgba(255,255,255,.035);
+  border-radius: 22px;
+  padding: 22px;
+  margin-bottom: 22px;
+}
+
+.downloadPanel h3 {
+  margin: 0 0 6px;
+}
+
+.downloadPanel p {
+  margin: 0;
+}
+
+.downloadEyebrow {
+  display: inline-flex;
+  color: #76ecff;
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.downloadMeta {
+  color: rgba(247,249,255,.58);
+  font-size: .92rem;
+  margin-top: 8px !important;
+}
+
+.downloadButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  min-width: 210px;
+  padding: 0 22px;
+  border-radius: 18px;
+  color: #11142a;
+  font-weight: 900;
+  text-decoration: none;
+  text-align: center;
+  background: linear-gradient(135deg, #ffde73, #27cfff);
+  box-shadow: 0 14px 34px rgba(39,207,255,.22);
+}
+
+.downloadButton:hover {
+  filter: brightness(1.06);
+}
+
 .testerInviteCard ol,
 .testerInviteCard ul {
   margin: 0 0 22px;
@@ -2476,8 +2544,8 @@ h3 {
 .inviteNotice {
   border: 1px solid rgba(255,212,90,.28);
   background: rgba(255,212,90,.08);
-  border-radius: 18px;
-  padding: 18px;
+  border-radius: 20px;
+  padding: 20px;
   margin: 18px 0 24px;
 }
 
@@ -2489,6 +2557,58 @@ h3 {
 
 .inviteNotice p {
   margin: 0;
+}
+
+.testerInviteCard > h3 {
+  margin-top: 24px;
+}
+
+@media (max-width: 650px) {
+  html.legalDocument,
+  html.legalDocument body {
+    height: auto !important;
+    overflow: auto !important;
+  }
+
+  .app.legalPage.testerInvitePage {
+    height: auto !important;
+    min-height: 100svh !important;
+    display: block !important;
+    overflow: visible !important;
+    padding: 14px !important;
+  }
+
+  .testerInviteCard,
+  .legalCard {
+    padding: 18px !important;
+    border-radius: 24px !important;
+  }
+
+  .inviteHero,
+  .downloadPanel,
+  .inviteNotice {
+    border-radius: 18px;
+    padding: 18px;
+  }
+
+  .inviteHero h2 {
+    font-size: 1.45rem;
+  }
+
+  .downloadPanel {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .downloadButton {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .testerInviteCard ol,
+  .testerInviteCard ul {
+    padding-left: 20px;
+  }
 }
 
 .toast {

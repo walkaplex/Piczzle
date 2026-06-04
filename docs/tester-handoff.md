@@ -34,7 +34,13 @@ npm run android:package
 
 The APK, checksum, and short install notes are written to the ignored `release/` folder.
 
-The generated `.txt` note is meant to travel with the APK. It includes the branch, commit, working-tree state, checksum, private-test warning, basic install notes, and simple feedback prompts for testers. The generated `.json` file captures the same build identity in a machine-readable form.
+The public tester invite page is the friendlier path for regular users:
+
+```text
+https://walkaplex.github.io/Piczzle/tester-invite.html
+```
+
+The generated `.txt` note is a backup if sending the APK or ZIP directly. It includes the branch, commit, working-tree state, checksum, private-test warning, basic install notes, and simple feedback prompts for testers. The generated `.json` file captures the same build identity in a machine-readable form.
 
 ## Before Sending
 
@@ -61,6 +67,7 @@ The generated `.txt` note is meant to travel with the APK. It includes the branc
 Tell testers:
 
 - This is a private debug build, not a store release.
+- The tester invite page includes the current test-build download.
 - Android may warn that the app came from an unknown source.
 - They should try their own photos if they are comfortable doing so.
 - They can review the current privacy note at `https://walkaplex.github.io/Piczzle/privacy.html`.

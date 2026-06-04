@@ -1,6 +1,6 @@
 # Manual APK Tester Message
 
-Use this when sending the private debug APK directly to trusted Android testers.
+Use this when inviting trusted Android testers to download the private debug build.
 
 ## Short Message
 
@@ -8,7 +8,7 @@ Hi! I am testing an early Android build of Piczzle, a photo puzzle app.
 
 This is a private test build, not a Play Store release yet. Android may warn you that the app came from an unknown source. Only install it if you are comfortable testing an early build.
 
-Please read the tester invite and install instructions here:
+Please open the tester invite page. It has the download link and install instructions:
 
 https://walkaplex.github.io/Piczzle/tester-invite.html
 
@@ -34,31 +34,33 @@ https://walkaplex.github.io/Piczzle/privacy.html
 
 ## Best Way To Send
 
-Paste the short message directly into the text or email thread, then attach the APK or tester ZIP. The webpage is the friendlier source of instructions for regular users:
+Paste the short message directly into the text or email thread. The webpage is the friendlier source of instructions for regular users and includes the current test-build download:
 
 ```text
 https://walkaplex.github.io/Piczzle/tester-invite.html
 ```
 
-Do not rely on testers opening a Markdown file. The generated tester ZIP uses plain `.txt` files for regular users.
+Do not rely on testers opening a Markdown file.
 
 ## Files To Send
 
-- Preferred: `piczzle-manual-test-20260602-1126.zip`
-- Or send directly: `piczzle-debug-20260602-1126.apk`
+- Preferred: send the invite page link.
+- Backup: `piczzle-manual-test-20260602-1126.zip`
+- Direct APK fallback: `piczzle-debug-20260602-1126.apk`
 
 ## Tester Install Notes
 
 The tester usually needs to:
 
-1. Download the APK on their Android phone.
-2. Open the downloaded APK.
-3. Allow installation from that app if Android asks.
-4. Confirm install.
-5. Open Piczzle.
+1. Open the invite page on their Android phone.
+2. Download and unzip the test build.
+3. Open the APK.
+4. Allow installation from that app if Android asks.
+5. Confirm install.
+6. Open Piczzle.
 
 Different Android phones word the warning differently. That is expected for direct APK testing.
 
 ## Do Not Send Publicly
 
-Only send this APK to trusted testers. It is not a public release and should not be posted publicly.
+Only send this invite to trusted testers. It is not a public release and should not be posted publicly.

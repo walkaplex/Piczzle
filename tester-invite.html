@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="legalDocument">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -7,10 +7,10 @@
 <meta name="theme-color" content="#0b1020">
 <title>Piczzle Tester Invite</title>
 <link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/styles.css?v=20260603-tester-invite">
+<link rel="stylesheet" href="css/styles.css?v=20260603-tester-download">
 <link rel="stylesheet" href="css/pwa-safe-area.css?v=20260520">
 </head>
-<body>
+<body class="legalBody">
 <div class="app legalPage testerInvitePage">
   <div class="top">
     <div class="brand">
@@ -28,6 +28,16 @@
       <p>Piczzle turns photos into playable puzzles. This is an early private Android build, not a Play Store release yet.</p>
     </div>
 
+    <section class="downloadPanel" aria-labelledby="download-title">
+      <div>
+        <span class="downloadEyebrow">Test build download</span>
+        <h3 id="download-title">Install Piczzle on Android</h3>
+        <p>Download the private test package, unzip it, then open the APK on your Android phone.</p>
+        <p class="downloadMeta">Android only. Private test build. About 29 MB.</p>
+      </div>
+      <a class="downloadButton" href="downloads/piczzle-manual-test-20260602-1126.zip" download>Download test build</a>
+    </section>
+
     <div class="inviteNotice">
       <strong>Install note</strong>
       <p>Android may warn that the app came from an unknown source. That is expected for this private test build. Only install it if you are comfortable testing an early app.</p>
@@ -35,8 +45,8 @@
 
     <h3>How to install</h3>
     <ol class="inviteSteps">
-      <li>Download the Piczzle APK file sent with this invitation.</li>
-      <li>Open the downloaded APK on your Android phone.</li>
+      <li>Download the Piczzle test build from this page.</li>
+      <li>Unzip the downloaded file and open the APK on your Android phone.</li>
       <li>If Android asks, allow installation from the app you used to open the file.</li>
       <li>Confirm install, then open Piczzle.</li>
     </ol>
