@@ -8,6 +8,8 @@ For a copy/paste message to direct APK testers, see [`manual-apk-tester-message.
 
 For iPhone, iPad, desktop, or browser testers, see [`web-tester-message.md`](web-tester-message.md).
 
+Track incoming tester feedback in [`feedback-tracker.md`](feedback-tracker.md).
+
 ## Build Prep
 
 Run the full verification pass:
@@ -93,6 +95,14 @@ Tell testers:
 - Did the puzzle fit on the screen without awkward scrolling?
 - Did share links open and play correctly?
 - Did anything feel confusing, broken, or unpolished?
+
+## Feedback Triage
+
+- Add each report to [`feedback-tracker.md`](feedback-tracker.md).
+- Mark unclear reports as `Needs repro`.
+- Fix high-severity blockers before polish.
+- Batch low-severity visual polish so it does not interrupt core testing.
+- Keep tester screenshots out of Git unless they are safe to publish.
 
 ## Not Ready For Public Release
 
