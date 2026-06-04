@@ -87,6 +87,7 @@ async function checkPublicSite() {
       publicWebInvite.includes("Open Piczzle") &&
       publicWebInvite.includes("Safari recommended") &&
       publicWebInvite.includes("Add to Home Screen") &&
+      publicWebInvite.includes("Piczzle will appear with its app icon") &&
       publicWebInvite.includes("piczzle.support@gmail.com"),
     "Public web tester invite should include current launch and support text"
   );

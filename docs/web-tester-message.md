@@ -10,6 +10,12 @@ If you are on iPhone or iPad, please open this in Safari:
 
 https://walkaplex.github.io/Piczzle/web-tester-invite.html
 
+For an app-like feel on iPhone or iPad:
+
+1. Open the invite in Safari.
+2. Tap Share.
+3. Choose Add to Home Screen, then tap Add.
+
 Please try:
 
 - Open Piczzle.
