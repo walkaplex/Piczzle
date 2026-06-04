@@ -2548,6 +2548,13 @@ h3 {
   filter: brightness(1.06);
 }
 
+.webLaunchPanel {
+  border-color: rgba(255,222,115,.26);
+  background:
+    linear-gradient(135deg, rgba(255,222,115,.14), rgba(39,207,255,.12)),
+    rgba(255,255,255,.035);
+}
+
 .testerInviteCard ol,
 .testerInviteCard ul {
   margin: 0;

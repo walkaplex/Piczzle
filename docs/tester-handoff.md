@@ -1,10 +1,12 @@
 # Tester Handoff Checklist
 
-Use this when preparing a private Android test build for a small group of trusted testers.
+Use this when preparing a private test build or web test for a small group of trusted testers.
 
 For the rollout path and Play Store internal testing notes, see [`android-private-beta-plan.md`](android-private-beta-plan.md).
 
 For a copy/paste message to direct APK testers, see [`manual-apk-tester-message.md`](manual-apk-tester-message.md).
+
+For iPhone, iPad, desktop, or browser testers, see [`web-tester-message.md`](web-tester-message.md).
 
 ## Build Prep
 
@@ -34,10 +36,16 @@ npm run android:package
 
 The APK, checksum, and short install notes are written to the ignored `release/` folder.
 
-The public tester invite page is the friendlier path for regular users:
+The Android tester invite page is the friendlier path for APK testers:
 
 ```text
 https://walkaplex.github.io/Piczzle/tester-invite.html
+```
+
+The web tester invite page is the best path for iPhone, iPad, desktop, or browser testers:
+
+```text
+https://walkaplex.github.io/Piczzle/web-tester-invite.html
 ```
 
 The generated `.txt` note is a backup if sending the APK or ZIP directly. It includes the branch, commit, working-tree state, checksum, private-test warning, basic install notes, and simple feedback prompts for testers. The generated `.json` file captures the same build identity in a machine-readable form.
@@ -68,6 +76,7 @@ Tell testers:
 
 - This is a private debug build, not a store release.
 - The tester invite page includes the current APK download.
+- The web tester invite page is for iPhone, iPad, desktop, and browser testers.
 - Android may warn that the app came from an unknown source.
 - They should try their own photos if they are comfortable doing so.
 - They can review the current privacy note at `https://walkaplex.github.io/Piczzle/privacy.html`.

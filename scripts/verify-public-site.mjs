@@ -44,12 +44,13 @@ function wait(ms) {
 }
 
 async function checkPublicSite() {
-  const [localIndex, localSw, publicIndex, publicSw, publicInvite] = await Promise.all([
+  const [localIndex, localSw, publicIndex, publicSw, publicInvite, publicWebInvite] = await Promise.all([
     read("index.html"),
     read("sw.js"),
     fetchText(`${publicBase}/index.html`),
     fetchText(`${publicBase}/sw.js`),
-    fetchText(`${publicBase}/tester-invite.html`)
+    fetchText(`${publicBase}/tester-invite.html`),
+    fetchText(`${publicBase}/web-tester-invite.html`)
   ]);
 
   for (const [label, pattern] of assetPatterns) {
@@ -80,6 +81,14 @@ async function checkPublicSite() {
       publicInvite.includes("piczzle.support@gmail.com") &&
       publicInvite.includes("unknown source"),
     "Public tester invite should include current install and support text"
+  );
+  assert(
+    publicWebInvite.includes("Private web test") &&
+      publicWebInvite.includes("Open Piczzle") &&
+      publicWebInvite.includes("Safari recommended") &&
+      publicWebInvite.includes("Add to Home Screen") &&
+      publicWebInvite.includes("piczzle.support@gmail.com"),
+    "Public web tester invite should include current launch and support text"
   );
 }
 
