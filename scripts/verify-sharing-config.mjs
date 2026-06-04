@@ -22,11 +22,12 @@ function assert(condition, message) {
   }
 }
 
-const [indexHtml, manifestText, swJs, appJs, shareConfig, shareCloud, privateSharingDoc, sharingSql] = await Promise.all([
+const [indexHtml, manifestText, swJs, appJs, completionActions, shareConfig, shareCloud, privateSharingDoc, sharingSql] = await Promise.all([
   read("index.html"),
   read("manifest.webmanifest"),
   read("sw.js"),
   read("js/app.js"),
+  read("js/completion-actions.js"),
   read("js/share-config.js"),
   read("js/share-cloud.js"),
   read("docs/private-sharing.md"),
@@ -40,6 +41,7 @@ const cachedAssets = [
   { file: "js/share-config.js", indexPattern: /js\/share-config\.js\?v=([^"]+)/ },
   { file: "js/share-cloud.js", indexPattern: /js\/share-cloud\.js\?v=([^"]+)/ },
   { file: "js/app.js", indexPattern: /js\/app\.js\?v=([^"]+)/ },
+  { file: "js/completion-actions.js", indexPattern: /js\/completion-actions\.js\?v=([^"]+)/ },
   { file: "js/pwa.js", indexPattern: /js\/pwa\.js\?v=([^"]+)/ }
 ];
 
@@ -104,6 +106,13 @@ assert(
 assert(
   indexHtml.includes('<link rel="apple-touch-icon" href="assets/app-icon-premium.png">'),
   "index.html should use the polished PNG icon for Apple touch installs"
+);
+assert(
+  indexHtml.includes('id="feedbackBtn"') &&
+    indexHtml.includes("Send Feedback") &&
+    completionActions.includes("piczzle.support@gmail.com") &&
+    completionActions.includes("Puzzle size:"),
+  "completion modal should include a feedback mailto with puzzle context"
 );
 assert(
   manifest.icons.some(icon => icon.src === "/Piczzle/assets/app-icon-premium.png" && icon.purpose === "any"),
