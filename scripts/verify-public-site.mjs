@@ -44,11 +44,12 @@ function wait(ms) {
 }
 
 async function checkPublicSite() {
-  const [localIndex, localSw, publicIndex, publicSw] = await Promise.all([
+  const [localIndex, localSw, publicIndex, publicSw, publicInvite] = await Promise.all([
     read("index.html"),
     read("sw.js"),
     fetchText(`${publicBase}/index.html`),
-    fetchText(`${publicBase}/sw.js`)
+    fetchText(`${publicBase}/sw.js`),
+    fetchText(`${publicBase}/tester-invite.html`)
   ]);
 
   for (const [label, pattern] of assetPatterns) {
@@ -71,6 +72,12 @@ async function checkPublicSite() {
     publicIndex.includes("Puzzle link created") &&
       publicIndex.includes("Unlisted link. Expires after 30 days."),
     "Public index should include the current share modal text"
+  );
+  assert(
+    publicInvite.includes("You are invited to test Piczzle") &&
+      publicInvite.includes("piczzle.support@gmail.com") &&
+      publicInvite.includes("unknown source"),
+    "Public tester invite should include current install and support text"
   );
 }
 

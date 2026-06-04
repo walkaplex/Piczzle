@@ -8,6 +8,10 @@ Hi! I am testing an early Android build of Piczzle, a photo puzzle app.
 
 This is a private test build, not a Play Store release yet. Android may warn you that the app came from an unknown source. Only install it if you are comfortable testing an early build.
 
+Please read the tester invite and install instructions here:
+
+https://walkaplex.github.io/Piczzle/tester-invite.html
+
 Please try:
 
 - Open Piczzle.
@@ -28,11 +32,20 @@ Privacy note:
 
 https://walkaplex.github.io/Piczzle/privacy.html
 
+## Best Way To Send
+
+Paste the short message directly into the text or email thread, then attach the APK or tester ZIP. The webpage is the friendlier source of instructions for regular users:
+
+```text
+https://walkaplex.github.io/Piczzle/tester-invite.html
+```
+
+Do not rely on testers opening a Markdown file. The generated tester ZIP uses plain `.txt` files for regular users.
+
 ## Files To Send
 
-- `piczzle-debug-20260602-1126.apk`
-- `piczzle-debug-20260602-1126.txt`
-- Optional: this message copied into the email/text thread.
+- Preferred: `piczzle-manual-test-20260602-1126.zip`
+- Or send directly: `piczzle-debug-20260602-1126.apk`
 
 ## Tester Install Notes
 

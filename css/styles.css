@@ -2433,6 +2433,64 @@ h3 {
   margin: 0 0 18px;
 }
 
+.inviteHero {
+  border: 1px solid rgba(255,255,255,.12);
+  background:
+    linear-gradient(135deg, rgba(125,92,255,.22), rgba(39,207,255,.16)),
+    rgba(255,255,255,.04);
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.inviteHero span {
+  display: inline-flex;
+  color: #ffde73;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.inviteHero h2 {
+  margin: 0 0 10px;
+}
+
+.inviteHero p {
+  color: rgba(247,249,255,.78);
+  margin: 0;
+}
+
+.testerInviteCard ol,
+.testerInviteCard ul {
+  margin: 0 0 22px;
+  padding-left: 24px;
+}
+
+.testerInviteCard li {
+  margin-bottom: 10px;
+  color: rgba(247,249,255,.78);
+}
+
+.inviteNotice {
+  border: 1px solid rgba(255,212,90,.28);
+  background: rgba(255,212,90,.08);
+  border-radius: 18px;
+  padding: 18px;
+  margin: 18px 0 24px;
+}
+
+.inviteNotice strong {
+  display: block;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.inviteNotice p {
+  margin: 0;
+}
+
 .toast {
   z-index: 80 !important;
 }
