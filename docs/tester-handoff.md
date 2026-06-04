@@ -67,7 +67,7 @@ The generated `.txt` note is a backup if sending the APK or ZIP directly. It inc
 Tell testers:
 
 - This is a private debug build, not a store release.
-- The tester invite page includes the current test-build download.
+- The tester invite page includes the current APK download.
 - Android may warn that the app came from an unknown source.
 - They should try their own photos if they are comfortable doing so.
 - They can review the current privacy note at `https://walkaplex.github.io/Piczzle/privacy.html`.

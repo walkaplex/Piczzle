@@ -75,8 +75,8 @@ async function checkPublicSite() {
   );
   assert(
     publicInvite.includes("You are invited to test Piczzle") &&
-      publicInvite.includes("Download test build") &&
-      publicInvite.includes("downloads/piczzle-manual-test-20260602-1126.zip") &&
+      publicInvite.includes("Download APK") &&
+      publicInvite.includes("downloads/piczzle-debug-20260602-1126.apk") &&
       publicInvite.includes("piczzle.support@gmail.com") &&
       publicInvite.includes("unknown source"),
     "Public tester invite should include current install and support text"

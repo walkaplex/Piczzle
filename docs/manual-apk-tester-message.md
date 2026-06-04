@@ -8,7 +8,7 @@ Hi! I am testing an early Android build of Piczzle, a photo puzzle app.
 
 This is a private test build, not a Play Store release yet. Android may warn you that the app came from an unknown source. Only install it if you are comfortable testing an early build.
 
-Please open the tester invite page. It has the download link and install instructions:
+Please open the tester invite page. It has the APK download link and install instructions:
 
 https://walkaplex.github.io/Piczzle/tester-invite.html
 
@@ -34,7 +34,7 @@ https://walkaplex.github.io/Piczzle/privacy.html
 
 ## Best Way To Send
 
-Paste the short message directly into the text or email thread. The webpage is the friendlier source of instructions for regular users and includes the current test-build download:
+Paste the short message directly into the text or email thread. The webpage is the friendlier source of instructions for regular users and includes the current APK download:
 
 ```text
 https://walkaplex.github.io/Piczzle/tester-invite.html
@@ -45,19 +45,18 @@ Do not rely on testers opening a Markdown file.
 ## Files To Send
 
 - Preferred: send the invite page link.
-- Backup: `piczzle-manual-test-20260602-1126.zip`
 - Direct APK fallback: `piczzle-debug-20260602-1126.apk`
+- ZIP backup: `piczzle-manual-test-20260602-1126.zip`
 
 ## Tester Install Notes
 
 The tester usually needs to:
 
 1. Open the invite page on their Android phone.
-2. Download and unzip the test build.
-3. Open the APK.
+2. Download the APK.
+3. Open the downloaded file.
 4. Allow installation from that app if Android asks.
-5. Confirm install.
-6. Open Piczzle.
+5. Confirm install, then open Piczzle.
 
 Different Android phones word the warning differently. That is expected for direct APK testing.
 
