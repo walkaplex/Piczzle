@@ -78,6 +78,8 @@ async function checkPublicSite() {
     publicInvite.includes("You are invited to test Piczzle") &&
       publicInvite.includes("Download APK") &&
       publicInvite.includes("downloads/piczzle-debug-20260602-1126.apk") &&
+      publicInvite.includes("og:image") &&
+      publicInvite.includes("piczzle-preview.png") &&
       publicInvite.includes("piczzle.support@gmail.com") &&
       publicInvite.includes("unknown source"),
     "Public tester invite should include current install and support text"
@@ -88,6 +90,8 @@ async function checkPublicSite() {
       publicWebInvite.includes("Safari recommended") &&
       publicWebInvite.includes("Add to Home Screen") &&
       publicWebInvite.includes("Piczzle will appear with its app icon") &&
+      publicWebInvite.includes("og:image") &&
+      publicWebInvite.includes("piczzle-preview.png") &&
       publicWebInvite.includes("piczzle.support@gmail.com"),
     "Public web tester invite should include current launch and support text"
   );
