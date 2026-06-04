@@ -4,6 +4,8 @@ Use this when preparing a private Android test build for a small group of truste
 
 For the rollout path and Play Store internal testing notes, see [`android-private-beta-plan.md`](android-private-beta-plan.md).
 
+For a copy/paste message to direct APK testers, see [`manual-apk-tester-message.md`](manual-apk-tester-message.md).
+
 ## Build Prep
 
 Run the full verification pass:

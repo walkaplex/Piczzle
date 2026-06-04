@@ -40,6 +40,7 @@ Use this file as the durable handoff when the chat context fills, an automation 
   - `docs/tester-handoff.md`
   - `docs/tester-report-template.md`
   - `docs/android-private-beta-plan.md`
+  - `docs/manual-apk-tester-message.md`
 - Sharing docs:
   - `docs/private-sharing.md`
 - Native setup docs:
