@@ -100,6 +100,8 @@ Use [`docs/android-private-beta-plan.md`](docs/android-private-beta-plan.md) for
 
 Use [`docs/play-store-listing-draft.md`](docs/play-store-listing-draft.md) for Play Console listing copy and screenshot planning.
 
+Use [`docs/play-console-internal-testing.md`](docs/play-console-internal-testing.md) when uploading the signed `.aab` to Google Play Console.
+
 If a chat or automation loses context, start from [`docs/continuity.md`](docs/continuity.md).
 
 ## Private sharing
