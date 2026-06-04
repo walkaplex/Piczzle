@@ -2425,8 +2425,8 @@ h3 {
   overflow: hidden;
 }
 
-.webTesterInviteDocument,
-.webTesterInviteDocument body {
+.scrollSafeInviteDocument,
+.scrollSafeInviteDocument body {
   height: auto;
   min-height: 100%;
   overflow: auto;
@@ -2440,7 +2440,7 @@ h3 {
   padding: clamp(10px, 2vh, 16px);
 }
 
-.testerInviteDocument .webTesterInvitePage {
+.testerInviteDocument .testerInvitePage {
   min-height: 100svh;
   height: auto;
   padding-bottom: max(18px, calc(env(safe-area-inset-bottom) + 18px));
@@ -2473,7 +2473,7 @@ h3 {
   overflow: hidden;
 }
 
-.webTesterInvitePage .testerInviteCard {
+.scrollSafeInviteDocument .testerInviteCard {
   overflow: visible;
 }
 
@@ -2644,17 +2644,11 @@ h3 {
   }
 
   .app.legalPage.testerInvitePage {
-    height: 100svh !important;
-    min-height: 0 !important;
-    display: grid !important;
-    overflow: hidden !important;
-    padding: 10px !important;
-  }
-
-  .app.legalPage.webTesterInvitePage {
     height: auto !important;
     min-height: 100svh !important;
+    display: grid !important;
     overflow: visible !important;
+    padding: 10px !important;
     padding-bottom: max(18px, calc(env(safe-area-inset-bottom) + 18px)) !important;
   }
 
