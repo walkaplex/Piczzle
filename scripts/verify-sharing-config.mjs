@@ -75,13 +75,22 @@ assert(
 );
 assert(
   appJs.includes("function normalizeSharedSize(size)") &&
-    appJs.includes("startPuzzleFromImage(data.image,normalizeSharedSize(data.size)"),
+    appJs.includes("size:normalizeSharedSize(data.size)") &&
+    appJs.includes("startPuzzleFromImage(pending.image,pending.size"),
   "app.js should normalize incoming shared puzzle sizes"
 );
 assert(
   appJs.includes("(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():") &&
     !appJs.includes("randomUUID().slice(0,12)"),
   "app.js should use full random UUIDs for new shared puzzle ids"
+);
+assert(
+  indexHtml.includes('id="sharedIntroModal"') &&
+    indexHtml.includes("A friend sent you a Piczzle") &&
+    appJs.includes("pendingSharedPuzzle") &&
+    appJs.includes("Photo puzzle received") &&
+    appJs.includes("I made you a Piczzle photo puzzle"),
+  "shared puzzle links should show a recipient intro before gameplay"
 );
 assert(
   privateSharingDoc.includes("npm run verify:sharing"),
