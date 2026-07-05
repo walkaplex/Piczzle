@@ -2759,6 +2759,10 @@ h3 {
   grid-column: auto;
 }
 
+.completionSecondary #completeShareBtn {
+  grid-column: 1 / -1;
+}
+
 .feedbackBtn {
   margin-top: 0 !important;
   display: inline-flex;
@@ -2773,6 +2777,19 @@ h3 {
   inset: 0;
   z-index: 0;
   pointer-events: none;
+}
+
+@media (max-width: 850px) {
+  .app:not(.playMode) .panel.mobile-upload {
+    overflow-y: auto !important;
+    padding-bottom: max(18px, calc(env(safe-area-inset-bottom) + 18px)) !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .app:not(.playMode) .panel.mobile-upload .demoPicker {
+    margin-bottom: max(10px, env(safe-area-inset-bottom)) !important;
+    padding-bottom: 2px !important;
+  }
 }
 
 .btn:disabled,

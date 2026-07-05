@@ -1,16 +1,16 @@
-const CACHE_NAME = "piczzle-app-v37";
+const CACHE_NAME = "piczzle-app-v38";
 const APP_SHELL = [
   "/Piczzle/",
   "/Piczzle/index.html",
   "/Piczzle/privacy.html",
   "/Piczzle/tester-invite.html",
   "/Piczzle/web-tester-invite.html",
-  "/Piczzle/css/styles.css?v=20260603-feedback",
+  "/Piczzle/css/styles.css?v=20260705-ux2",
   "/Piczzle/css/pwa-safe-area.css?v=20260520",
   "/Piczzle/js/native.js?v=20260520",
   "/Piczzle/js/share-config.js?v=20260527",
   "/Piczzle/js/share-cloud.js?v=20260527-cloud2",
-  "/Piczzle/js/app.js?v=20260705-ux1",
+  "/Piczzle/js/app.js?v=20260705-ux2",
   "/Piczzle/js/completion-actions.js?v=20260603-feedback",
   "/Piczzle/js/share-feedback.js?v=20260528-feedback1",
   "/Piczzle/js/save-image.js?v=20260601-ios-share",
