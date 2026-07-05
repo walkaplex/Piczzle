@@ -63,7 +63,7 @@ function setMobileStep(step){
   if (ih <= stageH) state.cropY = 0;
   else state.cropY = Math.max(-(ih-stageH)/2, Math.min((ih-stageH)/2, state.cropY));
 }el.zoom.oninput=()=>{state.zoom=Math.max(state.minZoom, +el.zoom.value);clamp();applyCrop()};el.cropStage.addEventListener("pointerdown",e=>{state.dragging=true;state.lastX=e.clientX;state.lastY=e.clientY;try{el.cropStage.setPointerCapture(e.pointerId)}catch(_){}});el.cropStage.addEventListener("pointermove",e=>{if(!state.dragging)return;state.cropX+=e.clientX-state.lastX;state.cropY+=e.clientY-state.lastY;state.lastX=e.clientX;state.lastY=e.clientY;clamp();applyCrop()});["pointerup","pointercancel","pointerleave"].forEach(ev=>el.cropStage.addEventListener(ev,()=>state.dragging=false));async function cropSquare(){
-  const img = await load(state.src);
+  const img = state.img || await load(state.src);
   const stage = el.cropStage.getBoundingClientRect();
   const stageW = stage.width || el.cropStage.offsetWidth || 320;
   const stageH = stage.height || el.cropStage.offsetHeight || Math.round(stageW * 3 / 4);
@@ -314,7 +314,7 @@ if(el.camera) el.camera.onclick=()=>{
   el.file.setAttribute("capture","environment");
   el.file.click();
 };
-el.file.onchange=e=>{const f=e.target.files&&e.target.files[0];el.file.removeAttribute("capture");if(!f)return;const r=new FileReader();r.onload=()=>setImage(r.result);r.readAsDataURL(f)};$("againBtn").onclick=()=>{if(state.shared){goHome();toast("Choose a photo to send back");return}$("restartBtn").click();el.modal.classList.remove("show")};
+el.file.onchange=e=>{const f=e.target.files&&e.target.files[0];el.file.removeAttribute("capture");if(!f)return;el.file.value="";const r=new FileReader();r.onload=()=>setImage(r.result);r.readAsDataURL(f)};$("againBtn").onclick=()=>{if(state.shared){goHome();toast("Choose a photo to send back");return}$("restartBtn").click();el.modal.classList.remove("show")};
 $("closeBtn").onclick=goHome;
 el.newBtn.onclick=goHome;
 const toolActions={
@@ -435,6 +435,22 @@ function showMissingSharedPuzzle(){
   if(el.missingShareModal)el.missingShareModal.classList.add("show");
   toast("Shared puzzle unavailable");
 }
+(function purgeExpiredLocalShares(){
+  try{
+    const cutoff=Date.now()-30*24*60*60*1000;
+    for(let i=localStorage.length-1;i>=0;i--){
+      const key=localStorage.key(i);
+      if(!key||!key.startsWith(SHARE_PREFIX))continue;
+      let expired=true;
+      try{
+        const item=JSON.parse(localStorage.getItem(key));
+        const created=Date.parse(item&&item.createdAt);
+        expired=!created||created<cutoff;
+      }catch(_){}
+      if(expired)localStorage.removeItem(key);
+    }
+  }catch(_){}
+})();
 const requestedPuzzle=new URLSearchParams(location.search).get("puzzle");
 if(requestedPuzzle){
   const saved=localStorage.getItem(SHARE_PREFIX+requestedPuzzle);
