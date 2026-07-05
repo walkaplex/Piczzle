@@ -58,7 +58,7 @@ Use this file as the durable handoff when the chat context fills, an automation 
 
 ## Known Non-Blockers
 
-- Social/message preview thumbnails are inconsistent across receiving apps and app caches. Piczzle exposes a valid generic `piczzle-preview.png` through Open Graph/Twitter metadata, but preview rendering should not block private Android testing as long as shared links open the puzzle.
+- Social/message preview thumbnails are inconsistent across receiving apps and app caches. Piczzle exposes a valid generic `piczzle-preview.jpg` through Open Graph/Twitter metadata, but preview rendering should not block private Android testing as long as shared links open the puzzle.
 
 ## Automation Style
 

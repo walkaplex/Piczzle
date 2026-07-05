@@ -9,7 +9,7 @@ const copyTargets = [
   "assets",
   "css",
   "js",
-  "piczzle-preview.png",
+  "piczzle-preview.jpg",
   "privacy.html"
 ];
 
