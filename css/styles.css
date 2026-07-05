@@ -2781,14 +2781,31 @@ h3 {
 
 @media (max-width: 850px) {
   .app:not(.playMode) .panel.mobile-upload {
-    overflow-y: auto !important;
-    padding-bottom: max(18px, calc(env(safe-area-inset-bottom) + 18px)) !important;
-    -webkit-overflow-scrolling: touch !important;
+    overflow: visible !important;
+    padding-bottom: 12px !important;
+  }
+
+  .app:not(.playMode) .panel.mobile-upload .uploadBox {
+    gap: 6px !important;
+    padding: 10px !important;
+  }
+
+  .app:not(.playMode) .panel.mobile-upload .uploadBox .preview {
+    aspect-ratio: 16 / 9 !important;
+    max-height: clamp(150px, 26svh, 190px) !important;
+    border-radius: 20px !important;
+  }
+
+  .app:not(.playMode) .panel.mobile-upload .uploadBox .btn,
+  .app:not(.playMode) .panel.mobile-upload .uploadBox label.btn {
+    min-height: 42px !important;
+    padding: 11px 12px !important;
   }
 
   .app:not(.playMode) .panel.mobile-upload .demoPicker {
-    margin-bottom: max(10px, env(safe-area-inset-bottom)) !important;
-    padding-bottom: 2px !important;
+    gap: 6px !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
   }
 }
 
