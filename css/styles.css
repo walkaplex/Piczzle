@@ -61,8 +61,8 @@ body {
   height: 100%;
   display: block;
   border-radius: inherit;
-  object-fit: cover;
-  transform: scale(1.46);
+  object-fit: contain;
+  transform: none;
   transform-origin: center;
 }
 
@@ -2780,7 +2780,26 @@ h3 {
 }
 
 @media (max-width: 850px) {
+  html:has(.panel.mobile-upload),
+  html:has(.panel.mobile-upload) body {
+    height: auto !important;
+    min-height: 100svh !important;
+    overflow: auto !important;
+  }
+
+  .app:not(.playMode):has(.panel.mobile-upload) {
+    height: auto !important;
+    min-height: 100svh !important;
+    overflow: visible !important;
+  }
+
+  .app:not(.playMode):has(.panel.mobile-upload) .shell {
+    overflow: visible !important;
+  }
+
   .app:not(.playMode) .panel.mobile-upload {
+    height: auto !important;
+    max-height: none !important;
     overflow: visible !important;
     padding-bottom: 12px !important;
   }
@@ -2806,6 +2825,13 @@ h3 {
     gap: 6px !important;
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
+  }
+
+  .logo img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    transform: none !important;
   }
 }
 
