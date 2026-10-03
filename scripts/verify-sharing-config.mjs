@@ -22,7 +22,7 @@ function assert(condition, message) {
   }
 }
 
-const [indexHtml, manifestText, swJs, appJs, completionActions, shareConfig, shareCloud, privateSharingDoc, sharingSql] = await Promise.all([
+const [indexHtml, manifestText, swJs, appJs, completionActions, shareConfig, shareCloud, privateSharingDoc, sharingSql, readerSql] = await Promise.all([
   read("index.html"),
   read("manifest.webmanifest"),
   read("sw.js"),
@@ -31,17 +31,31 @@ const [indexHtml, manifestText, swJs, appJs, completionActions, shareConfig, sha
   read("js/share-config.js"),
   read("js/share-cloud.js"),
   read("docs/private-sharing.md"),
-  read("supabase/shared-puzzles.sql")
+  read("supabase/shared-puzzles.sql"),
+  read("supabase/install-share-reader.sql")
 ]);
 
 const manifest = JSON.parse(manifestText);
+const readerDefinition = matchOne("sharing reader migration", sharingSql,
+  /create or replace function public\.get_shared_puzzle\(puzzle_id text\)[\s\S]*?grant execute on function public\.get_shared_puzzle\(text\) to anon;/);
+const normalizeSql = sql => sql.replace(/^--.*$/gm, "").replace(/\s+/g, " ").trim();
+assert(normalizeSql(readerSql) === normalizeSql(`begin; ${readerDefinition} commit;`),
+  "Reader-only migration must match the planned reader without extra database changes");
+const appVersion = matchOne("app build identifier", appJs, /version:"([^"]+)"/);
+const scriptVersion = matchOne("app script version", indexHtml, /js\/app\.js\?v=([^"]+)/);
+assert(appVersion === scriptVersion, "App build identifier must match its script cache version");
+assert(indexHtml.includes('id="appVersion"') && completionActions.includes("version.textContent"),
+  "The setup footer should display the app build identifier");
 
 const cachedAssets = [
   { file: "css/styles.css", indexPattern: /css\/styles\.css\?v=([^"]+)/ },
+  { file: "css/pwa-safe-area.css", indexPattern: /css\/pwa-safe-area\.css\?v=([^"]+)/ },
   { file: "js/share-config.js", indexPattern: /js\/share-config\.js\?v=([^"]+)/ },
   { file: "js/share-cloud.js", indexPattern: /js\/share-cloud\.js\?v=([^"]+)/ },
   { file: "js/app.js", indexPattern: /js\/app\.js\?v=([^"]+)/ },
   { file: "js/completion-actions.js", indexPattern: /js\/completion-actions\.js\?v=([^"]+)/ },
+  { file: "js/save-image.js", indexPattern: /js\/save-image\.js\?v=([^"]+)/ },
+  { file: "js/celebration.js", indexPattern: /js\/celebration\.js\?v=([^"]+)/ },
   { file: "js/pwa.js", indexPattern: /js\/pwa\.js\?v=([^"]+)/ }
 ];
 
@@ -98,12 +112,14 @@ assert(
 );
 assert(
   sharingSql.includes("expires_at timestamptz not null default (now() + interval '30 days')") &&
-    sharingSql.includes("using (expires_at > now())"),
+    sharingSql.includes("p.expires_at > now()") &&
+    sharingSql.includes("function public.get_shared_puzzle(puzzle_id text)") &&
+    !sharingSql.includes('create policy "Anyone can open unexpired shared puzzles"'),
   "Supabase sharing SQL should expire shared puzzles after 30 days and block expired reads"
 );
 assert(
   sharingSql.includes("constraint shared_puzzles_image_size") &&
-    sharingSql.includes("char_length(image) <= 2500000"),
+    sharingSql.includes("char_length(image) <= 800000") && appJs.includes("SHARE_IMAGE_MAX_CHARS=800000"),
   "Supabase sharing SQL should cap shared image payload size"
 );
 assert(

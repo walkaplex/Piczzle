@@ -1,4 +1,5 @@
 import { access, readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -38,26 +39,35 @@ function block(label, detail) {
   line("BLOCK", label, detail);
 }
 
-const betaPlan = await read("docs/android-private-beta-plan.md");
 const listing = await read("docs/play-store-listing-draft.md");
 const privacy = await read("privacy.html");
 const sql = await read("supabase/shared-puzzles.sql");
 const packageJson = JSON.parse(await read("package.json"));
 
-const apkMatch = betaPlan.match(/Current APK: `([^`]+)`/);
-const noteMatch = betaPlan.match(/Build note: `([^`]+)`/);
-
-if (apkMatch && await exists(apkMatch[1])) {
-  pass("Current debug APK", apkMatch[1]);
-} else {
-  block("Current debug APK", "missing or not referenced in docs/android-private-beta-plan.md");
-}
-
-if (noteMatch && await exists(noteMatch[1])) {
-  pass("Current APK note", noteMatch[1]);
-} else {
-  block("Current APK note", "missing or not referenced in docs/android-private-beta-plan.md");
-}
+if (await exists("release/latest-debug.json")) {
+  try {
+    const build = JSON.parse(await read("release/latest-debug.json"));
+    const appVersion = (await read("js/app.js")).match(/version:"([^"]+)"/)?.[1];
+    if (!build.apk || !build.notes || [build.apk, build.notes].some(name => path.basename(name) !== name)) {
+      throw new Error("invalid package filenames");
+    }
+    const apkPath = `release/${build.apk}`;
+    if (await exists(apkPath)) {
+      const apk = await readFile(path.join(root, apkPath));
+      const hash = createHash("sha256").update(apk).digest("hex");
+      if (appVersion && build.appVersion === appVersion && build.sizeBytes === apk.length && build.sha256 === hash) {
+        pass("Current debug APK", `${apkPath} (build ${appVersion}, checksum verified)`);
+      } else {
+        block("Current debug APK", "stale build identifier or mismatched size/checksum; run npm run android:package");
+      }
+    } else block("Current debug APK", "packaged APK missing; run npm run android:package");
+    if (await exists(`release/${build.notes}`)) pass("Current APK note", `release/${build.notes}`);
+    else block("Current APK note", "packaged build note missing");
+    if (!build.workingTreeClean) warn("Debug build source", "includes uncommitted changes; use a clean approved commit for distribution");
+  } catch (error) {
+    block("Current debug package", `invalid release/latest-debug.json: ${error.message}`);
+  }
+} else block("Current debug package", "run npm run android:package to generate release/latest-debug.json");
 
 if (packageJson.scripts?.["android:release"]) {
   pass("Release build command", "npm run android:release");

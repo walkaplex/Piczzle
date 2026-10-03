@@ -1,20 +1,18 @@
-const CACHE_NAME = "piczzle-app-v40";
+const CACHE_NAME = "piczzle-app-v44";
 const APP_SHELL = [
   "/Piczzle/",
   "/Piczzle/index.html",
   "/Piczzle/privacy.html",
-  "/Piczzle/tester-invite.html",
-  "/Piczzle/web-tester-invite.html",
-  "/Piczzle/css/styles.css?v=20260705-ux4",
-  "/Piczzle/css/pwa-safe-area.css?v=20260520",
+  "/Piczzle/css/styles.css?v=20261002-release1",
+  "/Piczzle/css/pwa-safe-area.css?v=20261002-fixes",
   "/Piczzle/js/native.js?v=20260520",
   "/Piczzle/js/share-config.js?v=20260527",
-  "/Piczzle/js/share-cloud.js?v=20260527-cloud2",
-  "/Piczzle/js/app.js?v=20260705-ux2",
-  "/Piczzle/js/completion-actions.js?v=20260603-feedback",
+  "/Piczzle/js/share-cloud.js?v=20261002-network1",
+  "/Piczzle/js/app.js?v=20261002-network1",
+  "/Piczzle/js/completion-actions.js?v=20261002-release1",
   "/Piczzle/js/share-feedback.js?v=20260528-feedback1",
-  "/Piczzle/js/save-image.js?v=20260601-ios-share",
-  "/Piczzle/js/celebration.js?v=20260528-fireworks1",
+  "/Piczzle/js/save-image.js?v=20261002-fixes",
+  "/Piczzle/js/celebration.js?v=20261002-fixes",
   "/Piczzle/js/pwa.js?v=20260527-cache",
   "/Piczzle/assets/app-icon.svg",
   "/Piczzle/assets/app-icon-premium.png",
@@ -52,7 +50,8 @@ self.addEventListener("fetch", event => {
 
   if (request.mode === "navigate") {
     event.respondWith(
-      fetch(request).catch(() => caches.match("/Piczzle/index.html").then(cached => cached || caches.match("/Piczzle/")))
+      fetch(request).catch(() => caches.match(request, { ignoreSearch: true }).then(cached =>
+        cached || caches.match("/Piczzle/index.html").then(app => app || caches.match("/Piczzle/"))))
     );
     return;
   }

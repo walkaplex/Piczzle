@@ -23,9 +23,41 @@ The share modal has three actions:
 - `Copy Link` copies the public GitHub Pages puzzle URL.
 - `Open Puzzle` opens the received-puzzle flow for quick local testing. In the Android app, this stays inside Piczzle instead of launching Chrome.
 
-If cloud sharing is unavailable, Piczzle creates a same-device test link and disables `Share Link` so testers do not accidentally send a URL that only works in their current browser.
+If cloud sharing is unavailable, Piczzle keeps a local preview where possible,
+disables both sending and copying, and offers Try again. Local preview links are
+visible only with `?tester=1`; they are not public puzzle links.
 
 ## Supabase setup
+
+### Audit migration order (2026-10-02)
+
+The configured project was resumed on 2026-10-02. Demo upload/download and the
+public recipient flow passed. The reader-only migration was then applied with
+owner approval. Anonymous exact-ID RPC reads passed, including matching demo
+image bytes; missing, wildcard and injection-like IDs returned no rows. The old
+exact-ID table read still works. Retain the existing project URL.
+
+For an existing database:
+
+1. Completed: `supabase/install-share-reader.sql` installed only the reader and
+   its grants in a transaction. The existing read policy remains temporarily.
+2. Deploy the updated web client and provide an updated APK. Reads use the new
+   single-id RPC; uploads use `return=minimal`. The client only falls back to
+   the old single-id REST read if Supabase reports that the RPC is not installed.
+3. Run the complete `supabase/shared-puzzles.sql` to remove the anonymous list
+   policy and enforce an 800,000-character limit for new writes. Existing larger
+   rows are preserved by a `NOT VALID` constraint. Old cached clients/APKs need
+   to update before reading links after this step.
+4. Enable Supabase Cron, then review and run `supabase/schedule-share-cleanup.sql`.
+   It permanently deletes expired rows daily. This has NOT been run by Codex.
+   See [Supabase Cron](https://supabase.com/docs/guides/cron/quickstart).
+5. Verify an anonymous `GET /rest/v1/shared_puzzles?select=id` returns no rows,
+   while the RPC returns only the requested unexpired puzzle. Never print photo
+   contents or API keys during checks. Check the cleanup job in the dashboard.
+
+No environment variables or signing changes are needed. This changes the read
+API and database access policy, but preserves ids, photo data and link format.
+Rate-limited inserts are still required before a public launch.
 
 1. Create a Supabase project.
 2. Open the SQL editor.
@@ -85,7 +117,7 @@ For a full smoke test:
 
 - Shared puzzles expire after 30 days.
 - Shared image payloads are capped in SQL so accidental huge uploads are rejected.
-- Expiration immediately blocks public reads through row-level security. Expired rows can be removed by running `select public.delete_expired_shared_puzzles();` with a service-role/admin connection.
+- After the migration, the single-id RPC blocks expired reads and the anonymous table read policy is removed. The separate cleanup job must be applied in the dashboard to delete expired rows daily.
 - Reported or unwanted puzzle links can be removed by running `select public.delete_shared_puzzle('PUZZLE_ID');` with a service-role/admin connection.
 - IDs are full UUID-style random values and unlisted.
 - The current tester reporting path asks testers to copy the puzzle link and include their device model when sending feedback manually. It is not a public moderation queue.

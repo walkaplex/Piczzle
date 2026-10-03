@@ -26,7 +26,7 @@ body {
 
     .app:not(.playMode) {
       min-height: 100dvh !important;
-      height: 100dvh !important;
+      height: auto !important;
     }
 
     .app:not(.playMode) .shell {

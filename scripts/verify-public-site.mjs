@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import vm from "node:vm";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const publicBase = "https://walkaplex.github.io/Piczzle";
@@ -10,7 +11,7 @@ async function read(relativePath) {
 }
 
 async function fetchText(url) {
-  const response = await fetch(`${url}${url.includes("?") ? "&" : "?"}verify=${Date.now()}`);
+  const response = await fetch(`${url}${url.includes("?") ? "&" : "?"}verify=${Date.now()}`, { signal: AbortSignal.timeout(12000) });
   if (!response.ok) {
     throw new Error(`Could not fetch ${url}: ${response.status}`);
   }
@@ -33,14 +34,40 @@ function assert(condition, message) {
 
 const assetPatterns = [
   ["styles.css", /css\/styles\.css\?v=([^"]+)/],
+  ["pwa-safe-area.css", /css\/pwa-safe-area\.css\?v=([^"]+)/],
   ["share-config.js", /js\/share-config\.js\?v=([^"]+)/],
   ["share-cloud.js", /js\/share-cloud\.js\?v=([^"]+)/],
   ["app.js", /js\/app\.js\?v=([^"]+)/],
+  ["completion-actions.js", /js\/completion-actions\.js\?v=([^"]+)/],
+  ["save-image.js", /js\/save-image\.js\?v=([^"]+)/],
+  ["celebration.js", /js\/celebration\.js\?v=([^"]+)/],
   ["pwa.js", /js\/pwa\.js\?v=([^"]+)/]
 ];
 
 function wait(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function checkSharingBackend() {
+  const context = { window: {} };
+  vm.runInNewContext(await fetchText(`${publicBase}/js/share-config.js`), context, { timeout: 1000 });
+  const config = context.window.PiczzleShareConfig;
+  assert(config?.enabled, "Public cloud sharing is disabled");
+  const base = config.supabaseUrl.replace(/\/$/, "").replace(/\/rest\/v1$/, "");
+  let response;
+  try {
+    response = await fetch(`${base}/rest/v1/rpc/get_shared_puzzle`, {
+      method: "POST",
+      headers: { apikey: config.supabaseAnonKey, Authorization: `Bearer ${config.supabaseAnonKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ puzzle_id: "piczzle-health-check-no-image" }),
+      signal: AbortSignal.timeout(12000)
+    });
+  } catch (_) {
+    throw new Error("Sharing backend is unreachable. Restore the Supabase project before distributing puzzle links.");
+  }
+  assert(response.ok, `Sharing reader health check failed (${response.status}); apply the sharing privacy migration.`);
+  const rows = await response.json();
+  assert(Array.isArray(rows) && rows.length === 0, "Sharing health probe should return no images");
 }
 
 async function checkPublicSite() {
@@ -117,6 +144,9 @@ for (let attempt = 1; attempt <= attempts; attempt += 1) {
   }
 }
 
-if (!verified) {
-  throw lastError;
-}
+let backendError;
+try { await checkSharingBackend(); }
+catch (error) { backendError = error; console.error(error.message); }
+if (!verified) throw lastError;
+if (backendError) throw backendError;
+console.log("Public sharing backend verified.");

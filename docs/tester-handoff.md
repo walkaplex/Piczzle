@@ -61,14 +61,14 @@ The generated `.txt` note is a backup if sending the APK or ZIP directly. It inc
 - Use `Restart`.
 - Use `Solve`.
 - On the completion popup, tap `View Puzzle`.
-- Confirm the completed puzzle remains visible and the bottom-right tool button says `Start`.
-- Tap `Start` and confirm it returns to the home screen.
+- Confirm the completed puzzle remains visible and the bottom-right tool says `Back to Start`.
+- Tap `Back to Start` and confirm it returns to the home screen.
 - Create a `Share Puzzle` link.
-- Confirm the share modal explains that testers should copy the link and include their device model with any report.
+- Confirm failed sharing offers Retry and cannot copy/send an unusable link.
 - Tap `Share Link` and confirm Android opens the platform sharing options.
 - Tap `Copy Link` and confirm the button briefly changes to `Link Copied`.
 - Treat missing or stale message-preview thumbnails as a known non-blocker if the shared puzzle URL itself opens.
-- Open the shared puzzle link and confirm it starts in play mode.
+- Open the shared puzzle link, confirm the recipient intro, then start the puzzle.
 - Solve the shared puzzle and confirm `Send One Back` appears.
 - Check that the home screen icon and launch splash still look correct.
 

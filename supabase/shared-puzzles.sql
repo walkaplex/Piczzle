@@ -6,22 +6,13 @@ create table if not exists public.shared_puzzles (
   size integer not null check (size in (4, 6, 8)),
   created_at timestamptz not null default now(),
   expires_at timestamptz not null default (now() + interval '30 days'),
-  constraint shared_puzzles_image_size check (char_length(image) <= 2500000)
+  constraint shared_puzzles_image_size check (char_length(image) <= 800000)
 );
 
-do $$
-begin
-  if not exists (
-    select 1
-    from pg_constraint
-    where conname = 'shared_puzzles_image_size'
-      and conrelid = 'public.shared_puzzles'::regclass
-  ) then
-    alter table public.shared_puzzles
-    add constraint shared_puzzles_image_size
-    check (char_length(image) <= 2500000);
-  end if;
-end $$;
+-- Preserve older, larger shared images; enforce the smaller limit on new writes.
+alter table public.shared_puzzles drop constraint if exists shared_puzzles_image_size;
+alter table public.shared_puzzles add constraint shared_puzzles_image_size
+check (char_length(image) <= 800000) not valid;
 
 alter table public.shared_puzzles enable row level security;
 
@@ -32,17 +23,30 @@ for insert
 to anon
 with check (
   image like 'data:image/%'
-  and char_length(image) <= 2500000
+  and char_length(image) <= 800000
   and size in (4, 6, 8)
   and expires_at <= now() + interval '31 days'
+  and expires_at > now()
 );
 
 drop policy if exists "Anyone can open unexpired shared puzzles" on public.shared_puzzles;
-create policy "Anyone can open unexpired shared puzzles"
-on public.shared_puzzles
-for select
-to anon
-using (expires_at > now());
+
+-- A link holder can read one image by its unguessable id, never list the table.
+create or replace function public.get_shared_puzzle(puzzle_id text)
+returns table (id text, image text, size integer, created_at timestamptz)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select p.id, p.image, p.size, p.created_at
+  from public.shared_puzzles p
+  where p.id = puzzle_id and p.expires_at > now()
+  limit 1;
+$$;
+
+revoke all on function public.get_shared_puzzle(text) from public;
+grant execute on function public.get_shared_puzzle(text) to anon;
 
 create index if not exists shared_puzzles_expires_at_idx
 on public.shared_puzzles (expires_at);

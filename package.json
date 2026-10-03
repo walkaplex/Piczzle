@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/prepare-capacitor.mjs",
-    "verify": "npm run verify:sharing && npm run verify:native",
+    "verify": "npm run verify:sharing && npm run test:images && npm run test:offline && npm run verify:native",
+    "test:images": "node scripts/test-image-correctness.mjs",
+    "test:offline": "node scripts/test-offline-cache.mjs",
     "verify:sharing": "node scripts/verify-sharing-config.mjs",
     "verify:native": "npm run build && node scripts/verify-native-package.mjs",
     "verify:public": "node scripts/verify-public-site.mjs",

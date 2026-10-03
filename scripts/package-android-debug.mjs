@@ -71,6 +71,23 @@ const commit = await run(gitCommand, ["rev-parse", "--short", "HEAD"], { capture
 const branch = await run(gitCommand, ["branch", "--show-current"], { capture: true });
 const workingTreeStatus = await run(gitCommand, ["status", "--porcelain"], { capture: true });
 const workingTreeClean = workingTreeStatus.length === 0;
+const appSource = await readFile(path.join(root, "js", "app.js"), "utf8");
+const appVersion = appSource.match(/version:"([^"]+)"/)?.[1];
+if (!appVersion) throw new Error("Missing app build identifier.");
+const metadata = {
+  app: "Piczzle",
+  type: "android-debug",
+  version,
+  appVersion,
+  branch,
+  commit,
+  workingTreeClean,
+  apk: apkName,
+  notes: path.basename(notesTarget),
+  sizeBytes: info.size,
+  sha256: hash,
+  generatedAt: new Date().toISOString()
+};
 
 await mkdir(releaseDir, { recursive: true });
 await copyFile(apkSource, apkTarget);
@@ -78,22 +95,14 @@ await writeFile(checksumTarget, `${hash}  ${apkName}\n`);
 await writeFile(
   manifestTarget,
   `${JSON.stringify({
-    app: "Piczzle",
-    type: "android-debug",
-    version,
-    branch,
-    commit,
-    workingTreeClean,
-    apk: apkName,
-    sizeBytes: info.size,
-    sha256: hash,
-    generatedAt: new Date().toISOString()
+    ...metadata
   }, null, 2)}\n`
 );
 await writeFile(
   notesTarget,
   [
     `Piczzle Android debug build ${version}`,
+    `App build: ${appVersion}`,
     "",
     `Branch: ${branch}`,
     `Commit: ${commit}`,
@@ -122,8 +131,10 @@ await writeFile(
     "",
     "Maintainer note:",
     "- Rebuild with npm run android:package whenever the app changes.",
+    "- Local packaging does not publish the APK or verify live sharing; run verify:public before inviting testers.",
     ""
   ].join("\n")
 );
+await writeFile(path.join(releaseDir, "latest-debug.json"), `${JSON.stringify(metadata, null, 2)}\n`);
 
 console.log(`Packaged Android debug APK at release/${apkName}`);

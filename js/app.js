@@ -1,4 +1,11 @@
-(()=>{const DEMO="assets/demo-splash.jpg";const DEMO_SPLASHES=[DEMO,"assets/demo-splash2.jpg","assets/demo-splash3.jpg"];const SHARE_IMAGE_MAX_CHARS=2400000;const $=id=>document.getElementById(id);const native=window.PiczzleNative||{};const el={app:$("app"),file:$("fileInput"),camera:$("cameraBtn"),source:$("sourcePreview"),cropImg:$("cropImg"),cropStage:$("cropStage"),zoom:$("zoomRange"),create:$("createBtn"),shareBtn:$("shareBtn"),newBtn:$("newBtn"),shareModal:$("shareModal"),shareModalTitle:$("shareModalTitle"),shareModalMessage:$("shareModalMessage"),shareFinePrint:$("shareFinePrint"),missingShareModal:$("missingShareModal"),missingShareClose:$("missingShareCloseBtn"),sharedIntroModal:$("sharedIntroModal"),sharedIntroStart:$("sharedIntroStartBtn"),sharedIntroClose:$("sharedIntroCloseBtn"),shareLink:$("shareLink"),sendShare:$("sendShareBtn"),copyShare:$("copyShareBtn"),openShare:$("openShareBtn"),closeShare:$("closeShareBtn"),board:$("board"),tray:$("tray"),time:$("timeStat"),moves:$("movesStat"),left:$("leftStat"),size:$("sizeStat"),select:$("selectText"),toast:$("toast"),modal:$("modal"),modalTitle:$("modalTitle"),modalMessage:$("modalMessage"),again:$("againBtn"),close:$("closeBtn")};const state={src:DEMO,size:4,cropX:0,cropY:0,zoom:1,minZoom:1,img:null,pieces:[],board:[],tray:[],selected:null,moves:0,time:0,timer:null,solved:false,hint:false,shared:false,pendingSharedPuzzle:null,dragging:false,lastX:0,lastY:0,baseScale:1,square:DEMO,drag:null,cropRatio:4/3,outW:1200,outH:900};const SHARE_PREFIX="piczzle.share.";function tap(){if(native.selection)native.selection()}function impact(){if(native.lightImpact)native.lightImpact()}function success(){if(native.success)native.success()}function toast(t){el.toast.textContent=t;el.toast.classList.add("show");clearTimeout(state.tt);state.tt=setTimeout(()=>el.toast.classList.remove("show"),1700)}
+(()=>{const DEMO="assets/demo-splash.jpg";const DEMO_SPLASHES=[DEMO,"assets/demo-splash2.jpg","assets/demo-splash3.jpg"];const SHARE_IMAGE_MAX_CHARS=800000;const $=id=>document.getElementById(id);const native=window.PiczzleNative||{};const el={app:$("app"),file:$("fileInput"),camera:$("cameraBtn"),source:$("sourcePreview"),cropImg:$("cropImg"),cropStage:$("cropStage"),zoom:$("zoomRange"),create:$("createBtn"),shareBtn:$("shareBtn"),newBtn:$("newBtn"),shareModal:$("shareModal"),shareModalTitle:$("shareModalTitle"),shareModalMessage:$("shareModalMessage"),shareFinePrint:$("shareFinePrint"),missingShareModal:$("missingShareModal"),missingShareClose:$("missingShareCloseBtn"),sharedIntroModal:$("sharedIntroModal"),sharedIntroStart:$("sharedIntroStartBtn"),sharedIntroClose:$("sharedIntroCloseBtn"),shareLink:$("shareLink"),sendShare:$("sendShareBtn"),copyShare:$("copyShareBtn"),openShare:$("openShareBtn"),closeShare:$("closeShareBtn"),board:$("board"),tray:$("tray"),time:$("timeStat"),moves:$("movesStat"),left:$("leftStat"),size:$("sizeStat"),select:$("selectText"),toast:$("toast"),modal:$("modal"),modalTitle:$("modalTitle"),modalMessage:$("modalMessage"),again:$("againBtn"),close:$("closeBtn")};const state={src:DEMO,size:4,cropX:0,cropY:0,zoom:1,minZoom:1,img:null,pieces:[],board:[],tray:[],selected:null,moves:0,time:0,timer:null,solved:false,hint:false,shared:false,pendingSharedPuzzle:null,dragging:false,lastX:0,lastY:0,baseScale:1,square:DEMO,drag:null,cropRatio:4/3,outW:1200,outH:900};const SHARE_PREFIX="piczzle.share.";function tap(){if(native.selection)native.selection()}function impact(){if(native.lightImpact)native.lightImpact()}function success(){if(native.success)native.success()}function toast(t){el.toast.textContent=t;el.toast.classList.add("show");clearTimeout(state.tt);state.tt=setTimeout(()=>el.toast.classList.remove("show"),1700)}
+const scrollBehavior=()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
+let imageRequest=0;
+function cropStageSize(){
+  const r=el.cropStage.getBoundingClientRect();
+  if(r.width>0&&r.height>0){state.stageW=r.width;state.stageH=r.height}
+  return {width:state.stageW||320,height:state.stageH||240};
+}
 function setMobileStep(step){
   const panel=document.querySelector(".panel");
   if(!panel)return;
@@ -10,27 +17,48 @@ function setMobileStep(step){
   }
   const map={upload:0,crop:1,size:2};
   ["Upload","Crop","Size","Play"].forEach((x,i)=>$("step"+x).classList.toggle("active",i<=map[step]));
-  if(window.matchMedia("(max-width:850px)").matches) window.scrollTo({top:0,behavior:"smooth"});
-}function fmt(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}function steps(n){["Upload","Crop","Size","Play"].forEach((x,i)=>$("step"+x).classList.toggle("active",i<=n))}function setSize(n){state.size=n;document.querySelectorAll(".sizeBtn").forEach(b=>b.classList.toggle("active",+b.dataset.size===n));el.size.textContent=n+"x"+n}document.querySelectorAll(".sizeBtn").forEach(b=>b.onclick=()=>{tap();setSize(+b.dataset.size)});function load(src){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;if(src.startsWith("data:")||src.startsWith("blob:")){im.src=src;return}fetch(src).then(r=>r.blob()).then(b=>{const fr=new FileReader();fr.onload=()=>{im.src=fr.result};fr.onerror=()=>{im.crossOrigin="anonymous";im.src=src};fr.readAsDataURL(b)}).catch(()=>{im.crossOrigin="anonymous";im.src=src})})}async function setImage(src){
-  state.src=src;
-  el.source.src=src;
-  el.cropImg.src=src;
-  state.img=await load(src);
-
-  // Important mobile fix:
-  // The cropStage has no real size while the crop screen is hidden.
-  // Show the crop step first, then wait for layout before measuring and positioning the image.
-  setMobileStep("crop");
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      resetCrop();
-      toast("Image ready");
-    });
+  if(window.matchMedia("(max-width:850px)").matches) window.scrollTo({top:0,behavior:scrollBehavior()});
+  if(step==="crop")requestAnimationFrame(()=>{
+    const r=el.cropStage.getBoundingClientRect();
+    if(state.img&&r.width>0&&(!state.stageW||Math.abs(r.width-state.stageW)>.5))resetCrop();
   });
+}function fmt(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}function steps(n){["Upload","Crop","Size","Play"].forEach((x,i)=>$("step"+x).classList.toggle("active",i<=n))}function setSize(n){state.size=n;document.querySelectorAll(".sizeBtn").forEach(b=>b.classList.toggle("active",+b.dataset.size===n));el.size.textContent=n+"x"+n}document.querySelectorAll(".sizeBtn").forEach(b=>b.onclick=()=>{tap();setSize(+b.dataset.size)});function load(src){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;if(src.startsWith("data:")||src.startsWith("blob:")){im.src=src;return}fetch(src).then(r=>r.blob()).then(b=>{const fr=new FileReader();fr.onload=()=>{im.src=fr.result};fr.onerror=()=>{im.crossOrigin="anonymous";im.src=src};fr.readAsDataURL(b)}).catch(()=>{im.crossOrigin="anonymous";im.src=src})})}async function setImage(src){
+  const request=++imageRequest;
+  el.create.disabled=true;
+  if(el.shareBtn)el.shareBtn.disabled=true;
+  toast("Opening photo...");
+  try{
+    let img=await load(src);
+    if(request!==imageRequest)return;
+    const scale=Math.min(1,2400/Math.max(img.naturalWidth,img.naturalHeight));
+    if(scale<1){
+      const canvas=document.createElement("canvas");
+      canvas.width=Math.round(img.naturalWidth*scale);
+      canvas.height=Math.round(img.naturalHeight*scale);
+      canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+      src=canvas.toDataURL("image/png");
+      img=await load(src);
+    }
+    if(request!==imageRequest)return;
+    if(state.src.startsWith("blob:")&&state.src!==src)URL.revokeObjectURL(state.src);
+    state.src=src;
+    state.img=img;
+    el.source.src=src;
+    el.cropImg.src=src;
+    setMobileStep("crop");
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    if(request===imageRequest)resetCrop();
+  }catch(_){
+    if(request===imageRequest)toast("That photo couldn't be opened. Try a JPEG or PNG.");
+  }finally{
+    if(request===imageRequest){
+      el.create.disabled=false;
+      if(el.shareBtn)el.shareBtn.disabled=false;
+    }
+  }
 }function resetCrop(){
-  const r=el.cropStage.getBoundingClientRect();
-  const stageW = r.width || el.cropStage.offsetWidth || 320;
-  const stageH = r.height || el.cropStage.offsetHeight || stageW;
+  if(!state.img)return;
+  const {width:stageW,height:stageH}=cropStageSize();
   const iw=state.img.naturalWidth, ih=state.img.naturalHeight;
 
   // cover scale = current behavior (fills the 4:3 frame)
@@ -51,9 +79,7 @@ function setMobileStep(step){
 
   applyCrop();
 }function applyCrop(){if(!state.img)return;const iw=state.img.naturalWidth,ih=state.img.naturalHeight,s=state.baseScale*state.zoom;el.cropImg.style.width=iw*s+"px";el.cropImg.style.height=ih*s+"px";el.cropImg.style.transform=`translate(-50%, -50%) translate(${state.cropX}px, ${state.cropY}px)`}function clamp(){
-  const r=el.cropStage.getBoundingClientRect();
-  const stageW = r.width || el.cropStage.offsetWidth || 320;
-  const stageH = r.height || el.cropStage.offsetHeight || stageW;
+  const {width:stageW,height:stageH}=cropStageSize();
   const iw = state.img.naturalWidth * state.baseScale * state.zoom;
   const ih = state.img.naturalHeight * state.baseScale * state.zoom;
 
@@ -63,10 +89,13 @@ function setMobileStep(step){
   if (ih <= stageH) state.cropY = 0;
   else state.cropY = Math.max(-(ih-stageH)/2, Math.min((ih-stageH)/2, state.cropY));
 }el.zoom.oninput=()=>{state.zoom=Math.max(state.minZoom, +el.zoom.value);clamp();applyCrop()};el.cropStage.addEventListener("pointerdown",e=>{state.dragging=true;state.lastX=e.clientX;state.lastY=e.clientY;try{el.cropStage.setPointerCapture(e.pointerId)}catch(_){}});el.cropStage.addEventListener("pointermove",e=>{if(!state.dragging)return;state.cropX+=e.clientX-state.lastX;state.cropY+=e.clientY-state.lastY;state.lastX=e.clientX;state.lastY=e.clientY;clamp();applyCrop()});["pointerup","pointercancel","pointerleave"].forEach(ev=>el.cropStage.addEventListener(ev,()=>state.dragging=false));async function cropSquare(){
+  if(!state.stageW){
+    setMobileStep("crop");
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    resetCrop();
+  }
   const img = state.img || await load(state.src);
-  const stage = el.cropStage.getBoundingClientRect();
-  const stageW = stage.width || el.cropStage.offsetWidth || 320;
-  const stageH = stage.height || el.cropStage.offsetHeight || Math.round(stageW * 3 / 4);
+  const {width:stageW,height:stageH}=cropStageSize();
 
   const can = document.createElement("canvas");
   can.width = state.outW;
@@ -89,7 +118,7 @@ function setMobileStep(step){
 
   ctx.drawImage(img, dx, dy, drawW, drawH);
   return can.toDataURL("image/jpeg", .92);
-}function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function start(){if(!state.timer)state.timer=setInterval(()=>{state.time++;stats()},1000)}function stop(){clearInterval(state.timer);state.timer=null}function stats(){el.time.textContent=fmt(state.time);el.moves.textContent=state.moves;el.left.textContent=state.tray.length;el.size.textContent=state.size+"x"+state.size}
+}function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function start(){if(!state.timer)state.timer=setInterval(()=>{if(state.active!==false&&!document.hidden&&el.app.classList.contains("playMode")&&!state.solved){state.time++;stats()}},1000)}function stop(){clearInterval(state.timer);state.timer=null}function stats(){el.time.textContent=fmt(state.time);el.moves.textContent=state.moves;el.left.textContent=state.tray.length;el.size.textContent=state.size+"x"+state.size}
 function hasTraySelection(){
   return state.selected && state.selected.from==="tray";
 }
@@ -102,7 +131,7 @@ function clearHint(){
 function scrollToPuzzleBoard(){
   const target=el.board&&el.board.closest?el.board.closest(".game"):el.board;
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    if(target&&target.scrollIntoView)target.scrollIntoView({behavior:"smooth",block:"start"});
+    if(target&&target.scrollIntoView)target.scrollIntoView({behavior:scrollBehavior(),block:"start"});
   }));
 }
 function goHome(){
@@ -113,6 +142,7 @@ function goHome(){
   el.app.classList.remove("playMode");
   state.board=[];
   state.tray=[];
+  state.pieces.forEach(piece=>URL.revokeObjectURL(piece.url));
   state.pieces=[];
   state.selected=null;
   state.moves=0;
@@ -120,6 +150,8 @@ function goHome(){
   state.solved=false;
   clearHint();
   state.shared=false;
+  state.pendingSharedPuzzle=null;
+  if(el.sharedIntroModal)el.sharedIntroModal.classList.remove("show");
   clearTimeout(state.completeModalTimer);
   stop();
   if(new URLSearchParams(location.search).has("puzzle")) history.replaceState(null,"",location.pathname);
@@ -129,7 +161,20 @@ function goHome(){
     draw();
     setMobileStep("upload");
   }
-  window.scrollTo({top:0,behavior:"smooth"});
+  window.scrollTo({top:0,behavior:scrollBehavior()});
+}
+function handleNativeBack(){
+  if(window.PiczzleDialogs?.closeTop())return true;
+  if(el.app.classList.contains("playMode")){
+    clearTimeout(state.completeModalTimer);
+    el.app.classList.remove("playMode");
+    setMobileStep("size");
+    return true;
+  }
+  const panel=document.querySelector(".panel");
+  if(panel?.classList.contains("mobile-size")){setMobileStep("crop");return true}
+  if(panel?.classList.contains("mobile-crop")){setMobileStep("upload");return true}
+  return false;
 }
 function hideHintAfterMove(){
   if(!state.hint) return;
@@ -142,16 +187,27 @@ async function startPuzzleFromImage(image,n,message,options){
   const img=await load(state.square);
   const pieceW=img.naturalWidth/n;
   const pieceH=img.naturalHeight/n;
-  state.pieces=[];
+  const previousPieces=state.pieces;
+  const pieceImages=[];
   for(let r=0;r<n;r++){
     for(let c=0;c<n;c++){
       const id=r*n+c,can=document.createElement("canvas");
       can.width=300;
       can.height=225;
       can.getContext("2d").drawImage(img,c*pieceW,r*pieceH,pieceW,pieceH,0,0,300,225);
-      state.pieces.push({id,url:can.toDataURL("image/jpeg",.92)});
+      pieceImages.push(new Promise((resolve,reject)=>can.toBlob(blob=>{
+        if(blob)resolve({id,url:URL.createObjectURL(blob)});
+        else reject(new Error("Could not prepare puzzle pieces"));
+      },"image/jpeg",.92)));
     }
   }
+  try{state.pieces=await Promise.all(pieceImages)}
+  catch(error){
+    const results=await Promise.allSettled(pieceImages);
+    results.forEach(result=>{if(result.status==="fulfilled")URL.revokeObjectURL(result.value.url)});
+    throw error;
+  }
+  previousPieces.forEach(piece=>URL.revokeObjectURL(piece.url));
   state.board=Array(n*n).fill(null);
   state.tray=shuffle(state.pieces.map(p=>p.id));
   state.selected=null;
@@ -159,6 +215,9 @@ async function startPuzzleFromImage(image,n,message,options){
   state.time=0;
   state.solved=false;
   state.hint=false;
+  el.modal.dataset.autoSolved="false";
+  const completeShare=$("completeShareBtn");
+  if(completeShare)completeShare.hidden=state.shared;
   stop();
   draw();
   steps(3);
@@ -182,6 +241,7 @@ async function compactShareImage(image){
       if(candidate.length<=SHARE_IMAGE_MAX_CHARS)return candidate;
     }
   }
+  if(best.length>SHARE_IMAGE_MAX_CHARS)throw new Error("Photo is too large to share");
   return best;
 }
 function publicShareBase(){
@@ -211,11 +271,25 @@ function trySaveLocalShare(id,data){
     return false;
   }
 }
-async function sharePuzzle(){
+async function sharePuzzle(source="setup"){
+  if(state.creatingShare)return;
+  state.creatingShare=true;
+  state.shareSource=source;
   impact();
   toast("Creating share link...");
   const cloud=window.PiczzleShareCloud;
-  const image=cloud&&cloud.isReady()?await compactShareImage(await cropSquare()):await cropSquare();
+  let image;
+  try{
+    const original=source==="puzzle"?state.square:await cropSquare();
+    if(source==="puzzle"&&state.shared)return;
+    image=cloud&&cloud.isReady()?await compactShareImage(original):original;
+  }catch(_){
+    toast("Couldn't prepare that photo. Try opening it again.");
+    return;
+  }finally{
+    state.creatingShare=false;
+  }
+  state.creatingShare=true;
   const id=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2,14);
   const data={id,image,size:state.size,createdAt:new Date().toISOString(),v:1};
   let link=shareUrl(id);
@@ -236,21 +310,27 @@ async function sharePuzzle(){
     localSaved=trySaveLocalShare(id,data);
     message=localSaved?"Cloud unavailable - saved test link":"Sharing unavailable right now";
   }
-  if(el.shareLink)el.shareLink.value=link;
-  if(el.shareModalTitle)el.shareModalTitle.textContent=cloudSaved?"Puzzle link created":(localSaved?"Test link saved":"Sharing unavailable");
-  if(el.shareModalMessage)el.shareModalMessage.textContent=cloudSaved?"Send this link to a friend. They solve the puzzle first, then the image is revealed.":(localSaved?"This puzzle is saved in this browser for testing. Cloud sharing was unavailable, so this link is not ready to send to a friend.":"The share service could not be reached and this browser could not store a test copy. Please try again later.");
-  if(el.shareFinePrint)el.shareFinePrint.textContent=cloudSaved?"Unlisted link. Expires after 30 days.":(localSaved?"Same-device test link only.":"This link will not work yet.");
+  state.creatingShare=false;
+  state.shareReady=cloudSaved;
+  if(el.shareLink){el.shareLink.value=cloudSaved?link:"";el.shareLink.hidden=!cloudSaved}
+  if(el.shareModalTitle)el.shareModalTitle.textContent=cloudSaved?"Puzzle link created":"Sharing unavailable";
+  if(el.shareModalMessage)el.shareModalMessage.textContent=cloudSaved?"Send this link to a friend. They solve the puzzle first, then the image is revealed.":"Couldn't create a link right now. Check your connection and try again.";
+  if(el.shareFinePrint)el.shareFinePrint.textContent=cloudSaved?"Unlisted link. Expires after 30 days.":"Your photo has not been shared.";
   if(el.sendShare)el.sendShare.disabled=!cloudSaved;
+  if(el.copyShare)el.copyShare.disabled=!cloudSaved;
+  const retry=$("retryShareBtn");
+  if(retry)retry.hidden=cloudSaved;
   if(el.openShare){
     const inAppLink=native.isNative?appShareUrl(id):link;
     el.openShare.href=inAppLink;
     el.openShare.dataset.appHref=inAppLink;
+    el.openShare.hidden=!localSaved&&!cloudSaved||!new URLSearchParams(location.search).has("tester");
   }
   if(el.shareModal)el.shareModal.classList.add("show");
-  toast(message);
+  toast(cloudSaved?message:"Couldn't create a share link");
 }
 async function copyShareLink(){
-  if(!el.shareLink)return;
+  if(!el.shareLink||!state.shareReady)return;
   try{
     await navigator.clipboard.writeText(el.shareLink.value);
   }catch(_){
@@ -261,7 +341,7 @@ async function copyShareLink(){
   toast("Link copied");
 }
 async function sendShareLink(){
-  if(!el.shareLink)return;
+  if(!el.shareLink||!state.shareReady)return;
   const url=el.shareLink.value;
   if(window.PiczzleAndroid&&typeof window.PiczzleAndroid.shareLink==="function"){
     const result=window.PiczzleAndroid.shareLink(url);
@@ -295,17 +375,50 @@ async function startPendingSharedPuzzle(){
   if(el.sharedIntroModal)el.sharedIntroModal.classList.remove("show");
   await startPuzzleFromImage(pending.image,pending.size,"Puzzle received",{shared:true});
   if(el.select)el.select.textContent="Received puzzle - solve it to reveal the photo";
-  requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"smooth"}));
+  requestAnimationFrame(()=>window.scrollTo({top:0,behavior:scrollBehavior()}));
 }
-async function create(){impact();const edit=$("editBtn");if(edit)edit.textContent="Edit";await startPuzzleFromImage(await cropSquare(),state.size,"Puzzle created")}function piece(id){return state.pieces.find(p=>p.id===id)}function select(from,index){if(state.drag&&state.drag.moved)return;tap();if(state.selected&&state.selected.from===from&&state.selected.index===index)state.selected=null;else state.selected={from,index};draw()}function place(i){if(!state.selected||state.solved)return;start();if(state.selected.from==="tray"){const id=state.tray[state.selected.index];if(id==null)return;const old=state.board[i];state.tray.splice(state.selected.index,1);if(old!=null)state.tray.push(old);state.board[i]=id}else{const from=state.selected.index;if(from===i){state.selected=null;draw();return}const a=state.board[from],b=state.board[i];state.board[i]=a;state.board[from]=b}impact();state.moves++;state.selected=null;hideHintAfterMove();draw();check()}function remove(){if(!state.selected||state.selected.from!=="board")return;start();const id=state.board[state.selected.index];state.board[state.selected.index]=null;state.tray.push(id);impact();state.selected=null;state.moves++;hideHintAfterMove();draw()}function dropPayloadToSlot(payload,i){state.selected=payload;place(i)}function dropPayloadToTray(payload){if(payload.from!=="board")return;state.selected=payload;remove()}function make(id,from,index){const b=document.createElement("button");b.className=(from==="tray"?"trayPiece ":"")+"piece";b.dataset.from=from;b.dataset.index=index;b.setAttribute("aria-label",from==="tray"?`Puzzle piece ${index+1}`:`Placed puzzle piece ${index+1}`);if(state.selected&&state.selected.from===from&&state.selected.index===index)b.classList.add("selected");const im=document.createElement("img");im.src=piece(id).url;b.appendChild(im);b.onclick=e=>{e.stopPropagation();select(from,index)};b.addEventListener("pointerdown",e=>beginDrag(e,b,{from,index,id}));return b}function beginDrag(e,node,payload){if(e.button!==undefined&&e.button!==0)return;state.drag={payload,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,moved:false,ghost:null};try{node.setPointerCapture(e.pointerId)}catch(_){}node.addEventListener("pointermove",dragMove);node.addEventListener("pointerup",dragEnd,{once:true});node.addEventListener("pointercancel",dragEnd,{once:true});function dragMove(ev){const d=state.drag;if(!d)return;d.x=ev.clientX;d.y=ev.clientY;if(!d.moved&&Math.hypot(d.x-d.startX,d.y-d.startY)>8){d.moved=true;d.ghost=node.cloneNode(true);d.ghost.className="dragGhost";document.body.appendChild(d.ghost)}if(d.ghost){d.ghost.style.left=d.x+"px";d.ghost.style.top=d.y+"px";markDrop(d.x,d.y)}}function dragEnd(ev){node.removeEventListener("pointermove",dragMove);clearDropMarks();const d=state.drag;if(!d)return;if(d.ghost)d.ghost.remove();if(d.moved){const target=document.elementFromPoint(ev.clientX,ev.clientY);const slot=target&&target.closest?target.closest(".slot"):null;const tray=target&&target.closest?target.closest("#tray"):null;if(slot){dropPayloadToSlot(d.payload,+slot.dataset.i)}else if(tray){dropPayloadToTray(d.payload)}}setTimeout(()=>{state.drag=null},0)}}function markDrop(x,y){clearDropMarks();const target=document.elementFromPoint(x,y);const slot=target&&target.closest?target.closest(".slot"):null;const tray=target&&target.closest?target.closest("#tray"):null;if(slot)slot.classList.add("dropTarget");if(tray)tray.classList.add("dropTarget")}function clearDropMarks(){document.querySelectorAll(".dropTarget").forEach(x=>x.classList.remove("dropTarget"))}function draw(){const n=state.size;el.board.innerHTML="";el.board.classList.remove("grid4","grid6","grid8");if(!state.pieces.length){el.tray.innerHTML="";el.select.textContent="No piece selected";stats();return}el.board.classList.add("grid"+n);el.board.style.gridTemplateColumns=`repeat(${n},1fr)`;el.board.style.gridTemplateRows=`repeat(${n},1fr)`;const h=document.createElement("div");h.className="hint";h.style.backgroundImage=`url(${state.square})`;h.style.opacity=state.hint?".18":"0";el.board.classList.toggle("hintOn", state.hint);el.board.appendChild(h);state.board.forEach((id,i)=>{const s=document.createElement("div");
+async function create(){
+  if(el.create.disabled)return;
+  el.create.disabled=true;
+  try{
+    impact();
+    const edit=$("editBtn");if(edit)edit.textContent="Edit";
+    await startPuzzleFromImage(await cropSquare(),state.size,"Puzzle created");
+  }catch(_){toast("Couldn\u0027t create the puzzle. Try opening the photo again.")}
+  finally{el.create.disabled=false}
+}function piece(id){return state.pieces.find(p=>p.id===id)}function select(from,index){if(state.drag&&state.drag.moved)return;tap();if(state.selected&&state.selected.from===from&&state.selected.index===index)state.selected=null;else state.selected={from,index};draw()}function place(i){if(!state.selected||state.solved)return;start();if(state.selected.from==="tray"){const id=state.tray[state.selected.index];if(id==null)return;const old=state.board[i];state.tray.splice(state.selected.index,1);if(old!=null)state.tray.push(old);state.board[i]=id}else{const from=state.selected.index;if(from===i){state.selected=null;draw();return}const a=state.board[from],b=state.board[i];state.board[i]=a;state.board[from]=b}impact();state.moves++;state.selected=null;hideHintAfterMove();draw();check()}function remove(){if(!state.selected||state.selected.from!=="board")return;start();const id=state.board[state.selected.index];state.board[state.selected.index]=null;state.tray.push(id);impact();state.selected=null;state.moves++;hideHintAfterMove();draw()}function dropPayloadToSlot(payload,i){state.selected=payload;place(i)}function dropPayloadToTray(payload){if(payload.from!=="board")return;state.selected=payload;remove()}function make(id,from,index){const b=document.createElement(from==="tray"?"button":"div");b.className=(from==="tray"?"trayPiece ":"")+"piece";b.dataset.from=from;b.dataset.index=index;if(from==="tray")b.type="button";b.setAttribute("aria-label",from==="tray"?`Puzzle piece ${id+1} in tray`:`Puzzle piece ${id+1} on board`);if(state.selected&&state.selected.from===from&&state.selected.index===index)b.classList.add("selected");const im=document.createElement("img");im.src=piece(id).url;im.alt="";b.appendChild(im);b.onclick=e=>{e.stopPropagation();select(from,index)};b.addEventListener("pointerdown",e=>beginDrag(e,b,{from,index,id}));return b}function beginDrag(e,node,payload){if(e.button!==undefined&&e.button!==0)return;state.drag={payload,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,moved:false,ghost:null};try{node.setPointerCapture(e.pointerId)}catch(_){}node.addEventListener("pointermove",dragMove);node.addEventListener("pointerup",dragEnd,{once:true});node.addEventListener("pointercancel",dragEnd,{once:true});function dragMove(ev){const d=state.drag;if(!d)return;d.x=ev.clientX;d.y=ev.clientY;if(!d.moved&&Math.hypot(d.x-d.startX,d.y-d.startY)>8){d.moved=true;d.ghost=node.cloneNode(true);d.ghost.className="dragGhost";document.body.appendChild(d.ghost)}if(d.ghost){d.ghost.style.left=d.x+"px";d.ghost.style.top=d.y+"px";markDrop(d.x,d.y)}}function dragEnd(ev){node.removeEventListener("pointermove",dragMove);clearDropMarks();const d=state.drag;if(!d)return;if(d.ghost)d.ghost.remove();if(d.moved){const target=document.elementFromPoint(ev.clientX,ev.clientY);const slot=target&&target.closest?target.closest(".slot"):null;const tray=target&&target.closest?target.closest("#tray"):null;if(slot){dropPayloadToSlot(d.payload,+slot.dataset.i)}else if(tray){dropPayloadToTray(d.payload)}}setTimeout(()=>{state.drag=null},0)}}function markDrop(x,y){clearDropMarks();const target=document.elementFromPoint(x,y);const slot=target&&target.closest?target.closest(".slot"):null;const tray=target&&target.closest?target.closest("#tray"):null;if(slot)slot.classList.add("dropTarget");if(tray)tray.classList.add("dropTarget")}function clearDropMarks(){document.querySelectorAll(".dropTarget").forEach(x=>x.classList.remove("dropTarget"))}function draw(){const active=document.activeElement;const focus=active&&active.closest(".slot")?{slot:active.closest(".slot").dataset.i}:active&&active.dataset.from?{from:active.dataset.from,index:active.dataset.index}:null;const n=state.size;el.board.innerHTML="";el.board.classList.remove("grid4","grid6","grid8");if(!state.pieces.length){el.tray.innerHTML="";el.select.textContent="No piece selected";stats();return}el.board.classList.add("grid"+n);el.board.style.gridTemplateColumns=`repeat(${n},1fr)`;el.board.style.gridTemplateRows=`repeat(${n},1fr)`;const h=document.createElement("div");h.className="hint";h.style.backgroundImage=`url(${state.square})`;h.style.opacity="0";el.board.classList.toggle("hintOn", state.hint);el.board.appendChild(h);state.board.forEach((id,i)=>{const s=document.createElement("div");
 s.className=hasTraySelection()&&id==null?"slot placementTarget":"slot";
 s.dataset.i=i;
-s.setAttribute("aria-label",id==null?`Board square ${i+1}`:`Board square ${i+1} with puzzle piece`);
+s.tabIndex=i===(state.focusSquare||0)?0:-1;
+s.setAttribute("role","button");
+s.setAttribute("aria-label",`Row ${Math.floor(i/n)+1}, column ${i%n+1}, ${id==null?"empty":`puzzle piece ${id+1}`}`);
+s.onfocus=()=>{state.focusSquare=i;el.board.querySelectorAll(".slot").forEach(slot=>slot.tabIndex=+slot.dataset.i===i?0:-1)};
+s.onkeydown=e=>{
+  if(e.target!==s)return;
+  const delta={ArrowLeft:-1,ArrowRight:1,ArrowUp:-n,ArrowDown:n}[e.key];
+  if(delta){e.preventDefault();const next=Math.max(0,Math.min(n*n-1,i+delta));el.board.querySelector(`.slot[data-i="${next}"]`).focus()}
+  else if(e.key==="Enter"||e.key===" "){e.preventDefault();if(state.selected)place(i);else if(id!=null)select("board",i)}
+  else if(e.key==="Escape"){e.preventDefault();state.selected=null;draw()}
+};
 s.style.setProperty("--hint-img", `url(${piece(i).url})`);
 if(state.selected&&state.selected.from==="board"&&state.selected.index===i)s.classList.add("target");
-s.onclick=()=>place(i);
-if(id!=null)s.appendChild(make(id,"board",i));
-el.board.appendChild(s)});el.tray.innerHTML="";if(!state.tray.length){const p=document.createElement("p");p.className="muted";p.textContent="No loose pieces.";p.style.padding="8px";el.tray.appendChild(p)}else state.tray.forEach((id,i)=>el.tray.appendChild(make(id,"tray",i)));el.tray.onclick=e=>{if(e.target===el.tray)remove()};el.select.textContent=state.selected?(state.selected.from==="tray"?"Piece selected - tap a square":"Board piece selected - tap another square or Remove"):"No piece selected";stats()}function check(){if(state.board.length&&state.board.every((id,i)=>id===i)){state.solved=true;clearHint();success();stop();$("modalTime").textContent=fmt(state.time);$("modalMoves").textContent=state.moves;$("modalSize").textContent=state.size+"x"+state.size;if(el.modalTitle)el.modalTitle.textContent=state.shared?"Puzzle solved":"Puzzle complete";if(el.modalMessage)el.modalMessage.textContent=state.shared?"You revealed the photo. Now send one back.":"Nice work. Your puzzle is finished.";if(el.again)el.again.textContent=state.shared?"Send One Back":"Play Again";if(el.close)el.close.textContent=state.shared?"Back to Piczzle":"Back to Start";const edit=$("editBtn");if(edit)edit.textContent=state.shared?"Back to Piczzle":"Back to Start";clearTimeout(state.completeModalTimer);state.completeModalTimer=setTimeout(()=>el.modal.classList.add("show"),1200)}}$("shuffleBtn").onclick=()=>{tap();state.tray=shuffle(state.tray);draw();toast("Shuffled")};$("hintBtn").onclick=()=>{tap();state.hint=!state.hint;$("hintBtn").textContent=state.hint?"Hide":"Hint";draw();toast(state.hint?"Hint on":"Hint off")};$("restartBtn").onclick=()=>{impact();state.board=Array(state.size*state.size).fill(null);state.tray=shuffle(state.pieces.map(p=>p.id));state.selected=null;state.moves=0;state.time=0;state.solved=false;clearHint();clearTimeout(state.completeModalTimer);el.modal.classList.remove("show");const edit=$("editBtn");if(edit)edit.textContent="Edit";stop();draw();toast("Restarted")};$("solveBtn").onclick=()=>{impact();state.board=state.pieces.map(p=>p.id);state.tray=[];state.solved=true;clearHint();stop();draw();check()};$("removeBtn").onclick=remove;$("unselectBtn").onclick=()=>{tap();state.selected=null;draw()};$("editBtn").onclick=()=>{tap();if(state.solved){goHome();return}el.app.classList.remove("playMode");steps(2);window.scrollTo({top:0,behavior:"smooth"})};el.create.onclick=create;if(el.shareBtn)el.shareBtn.onclick=sharePuzzle;const completeShare=$("completeShareBtn");if(completeShare)completeShare.onclick=()=>{el.modal.classList.remove("show");sharePuzzle()};if(el.sendShare)el.sendShare.onclick=sendShareLink;if(el.copyShare)el.copyShare.onclick=copyShareLink;if(el.openShare)el.openShare.onclick=e=>{if(!native.isNative)return;e.preventDefault();window.location.href=el.openShare.dataset.appHref||el.openShare.href};if(el.closeShare)el.closeShare.onclick=()=>el.shareModal.classList.remove("show");if(el.missingShareClose)el.missingShareClose.onclick=goHome;if(el.sharedIntroStart)el.sharedIntroStart.onclick=()=>{impact();startPendingSharedPuzzle().catch(showMissingSharedPuzzle)};if(el.sharedIntroClose)el.sharedIntroClose.onclick=goHome;const mbu=$("mobileBackUpload"), mts=$("mobileToSize"), mbc=$("mobileBackCrop");
+s.onclick=()=>{if(state.selected)place(i);else if(id!=null)select("board",i)};
+if(id!=null){const tile=make(id,"board",i);tile.tabIndex=-1;s.appendChild(tile)}
+el.board.appendChild(s)});el.tray.innerHTML="";if(!state.tray.length){const p=document.createElement("p");p.className="muted";p.textContent="No loose pieces.";p.style.padding="8px";el.tray.appendChild(p)}else state.tray.forEach((id,i)=>el.tray.appendChild(make(id,"tray",i)));el.tray.onclick=e=>{if(e.target===el.tray)remove()};el.select.textContent=state.selected?(state.selected.from==="tray"?"Piece selected - tap a square":"Board piece selected - tap another square or Remove"):"No piece selected";stats();if(focus){const target=focus.slot!=null?el.board.querySelector(`.slot[data-i="${focus.slot}"]`):document.querySelector(`.piece[data-from="${focus.from}"][data-index="${focus.index}"]`);if(target)target.focus({preventScroll:true})}}window.PiczzleGame={back:handleNativeBack,setActive:active=>{state.active=Boolean(active)},solvedImage:()=>state.solved?state.square:null,version:"20261002-network1"};
+function check(){if(state.board.length&&state.board.every((id,i)=>id===i)){state.solved=true;window.dispatchEvent(new Event("piczzle:solved"));clearHint();if(el.modal.dataset.autoSolved!=="true")success();stop();$("modalTime").textContent=fmt(state.time);$("modalMoves").textContent=state.moves;$("modalSize").textContent=state.size+"x"+state.size;const auto=el.modal.dataset.autoSolved==="true";const modalStats=el.modal.querySelector(".modalStats");if(modalStats)modalStats.hidden=auto;if(el.modalTitle)el.modalTitle.textContent=auto?"Here\u0027s the full photo":state.shared?"Puzzle solved":"Puzzle complete";if(el.modalMessage)el.modalMessage.textContent=auto?"Play again to solve it yourself.":state.shared?"You revealed the photo. Now send one back.":"Nice work. Your puzzle is finished.";if(el.again)el.again.textContent=state.shared?"Send One Back":"Play Again";if(el.close)el.close.textContent=state.shared?"Back to Piczzle":"Back to Start";const edit=$("editBtn");if(edit)edit.textContent=state.shared?"Back to Piczzle":"Back to Start";clearTimeout(state.completeModalTimer);state.completeModalTimer=setTimeout(()=>el.modal.classList.add("show"),1200)}}$("shuffleBtn").onclick=()=>{tap();state.tray=shuffle(state.tray);draw();toast("Shuffled")};$("hintBtn").onclick=()=>{tap();state.hint=!state.hint;$("hintBtn").textContent=state.hint?"Hide":"Hint";draw();toast(state.hint?"Hint on":"Hint off")};function confirmAction(message){
+  if(state.confirmation)return state.confirmation;
+  const dialog=$("confirmModal");
+  $("confirmMessage").textContent=message;
+  state.confirmation=new Promise(resolve=>{
+    const finish=answer=>{dialog.classList.remove("show");state.confirmation=null;resolve(answer)};
+    $("confirmContinueBtn").onclick=()=>finish(true);
+    $("confirmCancelBtn").onclick=()=>finish(false);
+  });
+  dialog.classList.add("show");
+  return state.confirmation;
+}
+function restartPuzzle(){impact();state.board=Array(state.size*state.size).fill(null);state.tray=shuffle(state.pieces.map(p=>p.id));state.selected=null;state.moves=0;state.time=0;state.solved=false;clearHint();clearTimeout(state.completeModalTimer);el.modal.classList.remove("show");const edit=$("editBtn");if(edit)edit.textContent="Edit";el.modal.dataset.autoSolved="false";stop();draw();toast("Restarted")}
+$("restartBtn").onclick=async()=>{if(!state.pieces.length)return;if(!state.solved&&state.moves&&!await confirmAction("Restart this puzzle? Your progress will be lost."))return;restartPuzzle()};$("solveBtn").onclick=async()=>{if(!state.pieces.length||state.solved)return;if(!await confirmAction("Show the solution? This ends the round."))return;el.modal.dataset.autoSolved="true";impact();state.board=state.pieces.map(p=>p.id);state.tray=[];state.solved=true;clearHint();stop();draw();check()};$("removeBtn").onclick=remove;$("unselectBtn").onclick=()=>{tap();state.selected=null;draw()};$("editBtn").onclick=()=>{tap();if(state.solved){goHome();return}el.app.classList.remove("playMode");steps(2);window.scrollTo({top:0,behavior:scrollBehavior()})};el.create.onclick=create;if(el.shareBtn)el.shareBtn.onclick=()=>sharePuzzle();const retryShare=$("retryShareBtn");if(retryShare)retryShare.onclick=()=>sharePuzzle(state.shareSource);const completeShare=$("completeShareBtn");if(completeShare)completeShare.onclick=()=>{el.modal.classList.remove("show");sharePuzzle("puzzle")};if(el.sendShare)el.sendShare.onclick=sendShareLink;if(el.copyShare)el.copyShare.onclick=copyShareLink;if(el.openShare)el.openShare.onclick=e=>{if(!native.isNative)return;e.preventDefault();window.location.href=el.openShare.dataset.appHref||el.openShare.href};if(el.closeShare)el.closeShare.onclick=()=>el.shareModal.classList.remove("show");if(el.missingShareClose)el.missingShareClose.onclick=goHome;if(el.sharedIntroStart)el.sharedIntroStart.onclick=()=>{impact();startPendingSharedPuzzle().catch(showMissingSharedPuzzle)};if(el.sharedIntroClose)el.sharedIntroClose.onclick=goHome;const mbu=$("mobileBackUpload"), mts=$("mobileToSize"), mbc=$("mobileBackCrop");
 if(mbu) mbu.onclick=()=>{tap();setMobileStep("upload")};
 if(mts) mts.onclick=()=>{tap();setMobileStep("size")};
 if(mbc) mbc.onclick=()=>{tap();setMobileStep("crop")};
@@ -321,9 +434,9 @@ if(el.camera) el.camera.onclick=()=>{
   el.file.setAttribute("capture","environment");
   el.file.click();
 };
-el.file.onchange=e=>{const f=e.target.files&&e.target.files[0];el.file.removeAttribute("capture");if(!f)return;el.file.value="";const r=new FileReader();r.onload=()=>setImage(r.result);r.readAsDataURL(f)};$("againBtn").onclick=()=>{if(state.shared){goHome();toast("Choose a photo to send back");return}$("restartBtn").click();el.modal.classList.remove("show")};
+el.file.onchange=e=>{const f=e.target.files&&e.target.files[0];el.file.removeAttribute("capture");if(!f)return;el.file.value="";const src=URL.createObjectURL(f);setImage(src).finally(()=>{if(state.src!==src)URL.revokeObjectURL(src)})};$("againBtn").onclick=()=>{if(state.shared){goHome();toast("Choose a photo to send back");return}restartPuzzle();el.modal.classList.remove("show")};
 $("closeBtn").onclick=goHome;
-el.newBtn.onclick=goHome;
+el.newBtn.onclick=async()=>{if(state.pieces.length&&!state.solved&&state.moves&&!await confirmAction("Start over? Your puzzle progress will be lost."))return;goHome()};
 const toolActions={
   shuffle:()=>{$("shuffleBtn").onclick()},
   hint:()=>{$("hintBtn").onclick()},
@@ -365,7 +478,7 @@ function focusDesktopSection(selector){
   if(!target) return;
   document.querySelectorAll(".stepFocus").forEach(x => x.classList.remove("stepFocus"));
   target.classList.add("stepFocus");
-  target.scrollIntoView({behavior:"smooth", block:"center"});
+  target.scrollIntoView({behavior:scrollBehavior(), block:"center"});
   setTimeout(() => target.classList.remove("stepFocus"), 900);
 }
 
@@ -414,7 +527,15 @@ if (topPlay) topPlay.onclick = () => {
   }
 };
 
+let cropResizeTimer;
+function resizeCrop(){
+  clearTimeout(cropResizeTimer);
+  cropResizeTimer=setTimeout(()=>{if(state.img&&el.cropStage.getBoundingClientRect().width>0)resetCrop()},150);
+}
+window.addEventListener("resize",resizeCrop);
+window.addEventListener("orientationchange",resizeCrop);
 function loadDefaultStart(){
+  const request=++imageRequest;
   setSize(4);
   const candidates=shuffle(DEMO_SPLASHES);
   const startImage=list=>{
@@ -426,6 +547,7 @@ function loadDefaultStart(){
   el.source.src=src;
   el.cropImg.src=src;
   startImage(candidates).then(result=>{
+    if(request!==imageRequest)return;
     const img=result.img;
     if(result.src!==src){
       state.src=result.src;
@@ -435,6 +557,7 @@ function loadDefaultStart(){
     state.img=img;
     draw();
     setMobileStep("upload");
+    if(!isMobileFlow())resetCrop();
   }).catch(()=>{});
 }
 function showMissingSharedPuzzle(){

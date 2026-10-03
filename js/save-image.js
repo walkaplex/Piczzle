@@ -1,129 +1,84 @@
 (() => {
   const saveButton = document.getElementById("saveImageBtn");
   const toast = document.getElementById("toast");
-  const board = document.getElementById("board");
-  const sizeStat = document.getElementById("sizeStat");
   let isSaving = false;
-
-  if (!saveButton || !board) return;
+  let prepared;
+  if (!saveButton) return;
 
   function showToast(message) {
     if (!toast) return;
     toast.textContent = message;
     toast.classList.add("show");
     clearTimeout(showToast.timer);
-    showToast.timer = setTimeout(() => toast.classList.remove("show"), 1700);
+    showToast.timer = setTimeout(() => toast.classList.remove("show"), 2400);
   }
 
-  function puzzleSize() {
-    const match = (sizeStat && sizeStat.textContent || "").match(/(\d+)x\1/);
-    return match ? Number(match[1]) : 4;
+  function prepareImage() {
+    const image = window.PiczzleGame?.solvedImage();
+    if (!image) return null;
+    if (prepared?.image === image) return prepared;
+    const [header, data] = image.split(",");
+    const mime = header.match(/^data:(image\/[a-z0-9.+-]+);base64$/i)?.[1];
+    if (!mime || !data) throw new Error("Invalid puzzle image");
+    const bytes = Uint8Array.from(atob(data), char => char.charCodeAt(0));
+    const stamp = new Date().toLocaleDateString("en-CA");
+    const file = new File([bytes], `piczzle-${stamp}.${mime === "image/png" ? "png" : "jpg"}`, { type: mime });
+    prepared = { image, file };
+    return prepared;
   }
 
-  function buildSolvedImageCanvas() {
-    const slots = Array.from(board.querySelectorAll(".slot"));
-    const n = puzzleSize();
-    const images = slots.map(slot => slot.querySelector(".piece img"));
-
-    if (images.length !== n * n || images.some(img => !img)) {
-      throw new Error("Puzzle is not complete yet");
-    }
-
-    const first = images[0];
-    const pieceW = first.naturalWidth || 300;
-    const pieceH = first.naturalHeight || 225;
-    const canvas = document.createElement("canvas");
-    canvas.width = pieceW * n;
-    canvas.height = pieceH * n;
-    const ctx = canvas.getContext("2d");
-
-    images.forEach((img, index) => {
-      const row = Math.floor(index / n);
-      const col = index % n;
-      ctx.drawImage(img, col * pieceW, row * pieceH, pieceW, pieceH);
-    });
-
-    return canvas;
-  }
-
-  function canvasToBlob(canvas) {
-    return new Promise((resolve, reject) => {
-      canvas.toBlob(blob => {
-        if (blob) resolve(blob);
-        else reject(new Error("Could not create image"));
-      }, "image/jpeg", 0.94);
-    });
-  }
-
-  function localDateStamp() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  }
+  // Prepare before the Save tap so iOS sharing retains its user gesture.
+  window.addEventListener("piczzle:solved", () => {
+    try { prepareImage(); } catch (_) { prepared = null; }
+  });
 
   async function saveImage(event) {
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    event.preventDefault();
+    event.stopPropagation();
     if (isSaving) return;
+    if (!window.PiczzleGame?.solvedImage()) {
+      showToast("Solve the puzzle before saving");
+      return;
+    }
     isSaving = true;
-
     const originalText = saveButton.textContent;
-    saveButton.textContent = "Preparing Image";
     saveButton.disabled = true;
-
     try {
-      const canvas = buildSolvedImageCanvas();
-      const filename = `piczzle-${localDateStamp()}.jpg`;
-
+      const { image, file } = prepareImage();
       if (window.PiczzleAndroid && typeof window.PiczzleAndroid.saveImage === "function") {
-        const result = window.PiczzleAndroid.saveImage(filename, canvas.toDataURL("image/jpeg", 0.94));
-        if (result !== "saved") throw new Error(result || "Native save failed");
-        saveButton.textContent = "Image Saved";
+        const result = window.PiczzleAndroid.saveImage(file.name, image);
+        if (result === "shared") {
+          showToast("Choose a save option in the share sheet");
+          return;
+        }
+        if (result !== "saved") throw new Error("Native save failed");
         showToast("Image saved to photos");
         return;
       }
-
-      const blob = await canvasToBlob(canvas);
-      const file = new File([blob], filename, { type: "image/jpeg" });
-
       if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
-        saveButton.textContent = "Choose Save Option";
-        await navigator.share({
-          files: [file],
-          title: "Piczzle",
-          text: "My completed Piczzle"
-        });
-        saveButton.textContent = "Image Ready";
-        showToast("Choose Save Image in the share sheet");
+        await navigator.share({ files: [file], title: "Piczzle", text: "My completed Piczzle" });
+        showToast("Image handed to the share sheet");
         return;
       }
-
-      const url = URL.createObjectURL(blob);
+      const url = URL.createObjectURL(file);
       const link = document.createElement("a");
       link.href = url;
-      link.download = filename;
+      link.download = file.name;
       document.body.appendChild(link);
       link.click();
       link.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1500);
-      saveButton.textContent = "Image Saved";
       showToast("Image downloaded");
-    } catch (_) {
-      saveButton.textContent = "Save Unavailable";
-      showToast("Solve the puzzle before saving");
+    } catch (error) {
+      showToast(error?.name === "AbortError" ? "Save cancelled" : "Couldn't save the image. Please try again.");
     } finally {
       setTimeout(() => {
         saveButton.disabled = false;
         saveButton.textContent = originalText;
         isSaving = false;
-      }, 1800);
+      }, 1000);
     }
   }
-
   saveButton.addEventListener("pointerdown", saveImage);
   saveButton.addEventListener("click", saveImage);
 })();

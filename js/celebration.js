@@ -83,7 +83,7 @@
   }
 
   new MutationObserver(() => {
-    if (modal.classList.contains("show")) start();
+    if (modal.classList.contains("show") && modal.dataset.autoSolved !== "true") start();
     else stop();
   }).observe(modal, { attributes: true, attributeFilter: ["class"] });
 
