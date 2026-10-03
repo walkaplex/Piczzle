@@ -35,25 +35,33 @@ The configured project was resumed on 2026-10-02. Demo upload/download and the
 public recipient flow passed. The reader-only migration was then applied with
 owner approval. Anonymous exact-ID RPC reads passed, including matching demo
 image bytes; missing, wildcard and injection-like IDs returned no rows. The old
-exact-ID table read still works. Retain the existing project URL.
+exact-ID table read still worked during that first step. Retain the existing project URL.
+
+After the updated web client and APK were published, the owner approved the privacy
+migration. `shared-puzzles.sql` was applied in one transaction on 2026-10-02.
+The anonymous SELECT policy is now removed, the new-write limit is enforced, and
+existing stored rows were preserved. Anonymous listing and legacy direct reads
+return no rows; the single-id reader still opens existing unexpired links.
+The Cron extension/job remains uninstalled: automatic deletion is NOT enabled.
 
 For an existing database:
 
 1. Completed: `supabase/install-share-reader.sql` installed only the reader and
    its grants in a transaction. The existing read policy remains temporarily.
-2. Deploy the updated web client and provide an updated APK. Reads use the new
+2. Completed: deploy the updated web client and provide an updated APK. Reads use the new
    single-id RPC; uploads use `return=minimal`. The client only falls back to
    the old single-id REST read if Supabase reports that the RPC is not installed.
-3. Run the complete `supabase/shared-puzzles.sql` to remove the anonymous list
+3. Completed: run `supabase/shared-puzzles.sql` to remove the anonymous list
    policy and enforce an 800,000-character limit for new writes. Existing larger
    rows are preserved by a `NOT VALID` constraint. Old cached clients/APKs need
    to update before reading links after this step.
 4. Enable Supabase Cron, then review and run `supabase/schedule-share-cleanup.sql`.
    It permanently deletes expired rows daily. This has NOT been run by Codex.
    See [Supabase Cron](https://supabase.com/docs/guides/cron/quickstart).
-5. Verify an anonymous `GET /rest/v1/shared_puzzles?select=id` returns no rows,
-   while the RPC returns only the requested unexpired puzzle. Never print photo
-   contents or API keys during checks. Check the cleanup job in the dashboard.
+5. Verified: anonymous `GET /rest/v1/shared_puzzles?select=id` returns no rows,
+   while the RPC returns the requested unexpired demo puzzle. Missing, wildcard
+   and injection-like IDs return no rows. Oversized writes are rejected. Never
+   print photo contents or API keys during checks. Cleanup is still disabled.
 
 No environment variables or signing changes are needed. This changes the read
 API and database access policy, but preserves ids, photo data and link format.
@@ -101,6 +109,15 @@ To check that GitHub Pages is serving the same cache-sensitive files as the curr
 ```sh
 npm run verify:public
 ```
+
+This also probes anonymous table listing with `select=id&limit=1`, never image
+data. It fails if an ID is exposed or the backend returns an unexpected response;
+empty rows or denied access pass after the reader health check succeeds. This
+probe is not a policy audit: an empty/fully expired table can hide an open policy.
+Keep the dashboard policy review as a separate migration check.
+
+`npm run test:public` tests the public privacy verifier with seven simulated
+responses. It makes no network requests or database writes and runs within verify.
 
 For a full smoke test:
 

@@ -1,5 +1,6 @@
 (() => {
   const modal = document.getElementById("modal");
+  const completedPhoto = document.getElementById("completedPhoto");
   const viewButton = document.getElementById("viewPuzzleBtn");
   const app = document.getElementById("app");
   const version = document.getElementById("appVersion");
@@ -7,6 +8,16 @@
   const dialogs = Array.from(document.querySelectorAll(".modalBg"));
   let activeDialog;
   let returnFocus;
+
+  function showCompletedPhoto() {
+    if (!completedPhoto) return;
+    const image = window.PiczzleGame?.solvedImage();
+    completedPhoto.hidden = !image;
+    if (image) {
+      if (completedPhoto.src !== image) completedPhoto.src = image;
+    } else completedPhoto.removeAttribute("src");
+  }
+  window.addEventListener("piczzle:solved", showCompletedPhoto);
 
   dialogs.forEach(dialog => {
     const title = dialog.querySelector("h2");
@@ -23,6 +34,10 @@
     if (next === activeDialog) return;
     if (!activeDialog && next) returnFocus = document.activeElement;
     activeDialog = next;
+    if (next === modal) {
+      showCompletedPhoto();
+      modal.scrollTop = 0;
+    }
     if (app) app.inert = Boolean(next);
     dialogs.forEach(dialog => {
       dialog.inert = dialog !== next;

@@ -157,6 +157,15 @@ console.log("PASS: save uses original puzzle bytes and reports cancellation hone
   vm.runInContext(dialogSource, f.context);
   const game = f.window.PiczzleGame;
   assert.equal(f.node("appVersion").textContent, `Build ${game.version}`);
+  f.test.state.solved = true;
+  f.test.state.square = "data:image/jpeg;base64,c29sdmVk";
+  f.window.dispatchEvent(new Event("piczzle:solved"));
+  assert.equal(f.node("completedPhoto").src, f.test.state.square);
+  assert.equal(f.node("completedPhoto").hidden, false);
+  f.test.state.solved = false;
+  f.window.dispatchEvent(new Event("piczzle:solved"));
+  assert.equal(f.node("completedPhoto").hidden, true);
+  assert.equal(f.node("completedPhoto").src, undefined);
   f.node("app").classList.add("playMode");
   f.test.state.board = [3, null]; f.test.state.moves = 1;
   const board = f.test.state.board;

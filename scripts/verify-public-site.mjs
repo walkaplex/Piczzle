@@ -68,6 +68,22 @@ async function checkSharingBackend() {
   assert(response.ok, `Sharing reader health check failed (${response.status}); apply the sharing privacy migration.`);
   const rows = await response.json();
   assert(Array.isArray(rows) && rows.length === 0, "Sharing health probe should return no images");
+
+  const listing = await fetch(`${base}/rest/v1/shared_puzzles?select=id&limit=1`, {
+    headers: { apikey: config.supabaseAnonKey, Authorization: `Bearer ${config.supabaseAnonKey}` },
+    signal: AbortSignal.timeout(12000)
+  });
+  if (listing.status === 401 || listing.status === 403) {
+    console.log("Public anonymous table reads blocked.");
+    return;
+  }
+  assert(listing.ok, `Sharing privacy check failed (${listing.status}).`);
+  const listedRows = await listing.json();
+  assert(
+    Array.isArray(listedRows) && listedRows.length === 0,
+    "Anonymous shared-puzzle listing is exposed or returned an unexpected response; check the sharing privacy policy."
+  );
+  console.log("Public anonymous table listing returned no rows.");
 }
 
 async function checkPublicSite() {

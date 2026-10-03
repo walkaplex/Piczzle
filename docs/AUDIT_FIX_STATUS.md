@@ -185,3 +185,53 @@ rollback is separate; do not restore broad photo-listing access casually.
   package metadata to report a dirty worktree; it is not packaged into the app.
 - The reader-only migration is installed. Stricter read/write policies and the
   expiry cleanup job are prepared files only; they are not applied by this release.
+
+## Privacy Migration Applied - 2026-10-02
+
+- After publication, the owner explicitly approved removing anonymous table reads
+  and limiting new uploads, leaving automatic deletion disabled.
+- Applied the existing supabase/shared-puzzles.sql inside BEGIN/COMMIT. Supabase
+  reported Success. No rows returned. No cleanup function or job was executed.
+- Before/after metadata showed all 61 stored rows preserved, RLS enabled, the
+  anonymous SELECT policy removed, and the 800,000-character image constraint and
+  INSERT policy present. The NOT VALID constraint preserves older larger rows.
+- Anonymous table listing and legacy direct-ID reads returned no rows. The known
+  unexpired demo link still returned exactly one puzzle through the reader.
+  Missing, wildcard and injection-like IDs returned no rows.
+- A targeted oversized new-upload check was rejected (42501); the attempted ID
+  was not stored. An initial test-fixture length assertion failed before upload;
+  corrected fixture length and reran only that check successfully.
+- npm run verify:public passed after migration. No app code, cache identifiers,
+  credentials, signing configuration or environment variables were changed.
+- Browser: the deployed app created a normal Landscape demo share, and a fresh
+  recipient opened it and started a 16-piece puzzle. Demo-only fixture:
+  118444eb-725e-448a-8e67-4b550d8746cd. This check added one new test share after
+  the unchanged-row-count migration check; no existing photos were altered/deleted.
+- Cron remains uninstalled. Insert rate limiting, explicit cleanup approval and
+  physical-device acceptance remain pending before broader public launch.
+
+## Public Privacy Regression Guard - 2026-10-02
+
+- verify:public now checks anonymous shared-puzzle listing using an ID-only,
+  single-row probe. It rejects exposed IDs, malformed responses and backend errors;
+  permission denial or empty rows pass after the reader health check.
+- test-public-sharing.mjs exercises the real verification command with seven
+  simulated responses and no network/database writes. It runs as test:public
+  and is included in npm run verify. All seven fixtures passed.
+- npm run verify and npm run verify:public passed. The live listing returned no
+  rows. This does not replace reviewing policies when the database is empty.
+- Changes are local verification tooling/documentation only: no app UI, database,
+  cache identifiers, APK, dependencies or production deployment changed this pass.
+
+## Photo-First Completion - 2026-10-02
+
+- Owner approved showing the solved photo immediately while retaining current
+  Piczzle branding. Completion uses the existing exact solved-image API, with
+  Share and Save above the retained replay, view, exit and feedback actions.
+- Completion scrolls as a whole on shorter screens; the inner card has no nested
+  scrolling. Recipient mode still hides re-sharing and offers Send One Back.
+- Targeted image assertions and npm run verify passed. Browser checks covered
+  normal 16-piece completion, phone-sized layouts, View Puzzle / Back to Start,
+  and a received demo puzzle revealed through Solve.
+- Local preview only: 20261002-reveal1, service worker v45. The published web app
+  and APK remain 20261002-network1 pending publication/build and device testing.
