@@ -71,9 +71,10 @@ async function checkSharingBackend() {
 }
 
 async function checkPublicSite() {
-  const [localIndex, localSw, publicIndex, publicSw, publicInvite, publicWebInvite] = await Promise.all([
+  const [localIndex, localSw, localInvite, publicIndex, publicSw, publicInvite, publicWebInvite] = await Promise.all([
     read("index.html"),
     read("sw.js"),
+    read("tester-invite.html"),
     fetchText(`${publicBase}/index.html`),
     fetchText(`${publicBase}/sw.js`),
     fetchText(`${publicBase}/tester-invite.html`),
@@ -104,7 +105,7 @@ async function checkPublicSite() {
   assert(
     publicInvite.includes("You are invited to test Piczzle") &&
       publicInvite.includes("Download APK") &&
-      publicInvite.includes("downloads/piczzle-debug-20260602-1126.apk") &&
+      publicInvite.includes(matchOne("local APK download", localInvite, /class="downloadButton" href="([^"]+)"/)) &&
       publicInvite.includes("og:image") &&
       publicInvite.includes("piczzle-preview.jpg") &&
       publicInvite.includes("piczzle.support@gmail.com") &&
