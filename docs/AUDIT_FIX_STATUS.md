@@ -233,5 +233,14 @@ rollback is separate; do not restore broad photo-listing access casually.
 - Targeted image assertions and npm run verify passed. Browser checks covered
   normal 16-piece completion, phone-sized layouts, View Puzzle / Back to Start,
   and a received demo puzzle revealed through Solve.
-- Local preview only: 20261002-reveal1, service worker v45. The published web app
-  and APK remain 20261002-network1 pending publication/build and device testing.
+- Published source commit dddfdae6: 20261002-reveal1, service worker v45.
+  Pages run 37104379781 succeeded; verify:public passed, including the anonymous
+  listing guard. A live Landscape puzzle was completed with all 16 placements;
+  the exact revealed photo and completion actions appeared correctly.
+- Packaged release/piczzle-debug-20261002-2350.apk from dddfdae6. Its checksum
+  and bundled reveal1 identity passed. Installed and launched on Pixel_8 / API 35;
+  no AndroidRuntime or Capacitor console error was reported. Interactive native
+  completion and physical iPhone checks remain pending, so the public Android
+  tester download still points to network1. No signing/configuration changes.
+- Packaging marked the checkout dirty because the owner's untracked audit
+  document remains local; tracked source matched dddfdae6 and was unchanged.
